@@ -81,9 +81,10 @@
 
   <script>
     let voices = [];
+
     const data = [
       {
-        category: "基本問候",
+        category: "打招呼",
         sentences: [
           {
             jp: "こんにちは。",
@@ -92,10 +93,88 @@
             romaji: "Konnichiwa."
           },
           {
+            jp: "おはようございます。",
+            kanji: "お早う御座います。",
+            zh: "早安。",
+            romaji: "Ohayou gozaimasu."
+          }
+        ]
+      },
+      {
+        category: "禮貌用語",
+        sentences: [
+          {
             jp: "ありがとうございます。",
             kanji: "有り難う御座います。",
             zh: "謝謝您。",
             romaji: "Arigatou gozaimasu."
+          },
+          {
+            jp: "すみません。",
+            kanji: "済みません。",
+            zh: "不好意思／對不起。",
+            romaji: "Sumimasen."
+          }
+        ]
+      },
+      {
+        category: "問路 / 方向",
+        sentences: [
+          {
+            jp: "駅はどこですか？",
+            kanji: "駅は何処ですか？",
+            zh: "車站在哪裡？",
+            romaji: "Eki wa doko desu ka?"
+          },
+          {
+            jp: "右に曲がってください。",
+            kanji: "右に曲がって下さい。",
+            zh: "請往右轉。",
+            romaji: "Migi ni magatte kudasai."
+          }
+        ]
+      },
+      {
+        category: "餐廳 / 飲食",
+        sentences: [
+          {
+            jp: "メニューをください。",
+            kanji: "メニューを下さい。",
+            zh: "請給我菜單。",
+            romaji: "Menyuu o kudasai."
+          }
+        ]
+      },
+      {
+        category: "購物 / 金錢",
+        sentences: [
+          {
+            jp: "いくらですか？",
+            kanji: "幾らですか？",
+            zh: "多少錢？",
+            romaji: "Ikura desu ka?"
+          }
+        ]
+      },
+      {
+        category: "交通 / 旅行",
+        sentences: [
+          {
+            jp: "東京へ行きたいです。",
+            kanji: "東京へ行きたいです。",
+            zh: "我想去東京。",
+            romaji: "Tokyo e ikitai desu."
+          }
+        ]
+      },
+      {
+        category: "語言溝通",
+        sentences: [
+          {
+            jp: "英語が話せますか？",
+            kanji: "英語が話せますか？",
+            zh: "你會講英文嗎？",
+            romaji: "Eigo ga hanasemasu ka?"
           }
         ]
       }
@@ -134,9 +213,15 @@
           ? `${item.jp} / ${item.kanji}`
           : item.jp;
 
+        // 產生「空格版」羅馬拼音
+        const romajiWithSpaces = item.romaji
+          .split("")
+          .map(char => char === " " ? " " : char)
+          .join(" ");
+
         const romajiDiv = document.createElement("div");
         romajiDiv.className = "romaji";
-        romajiDiv.textContent = `羅馬拼音：${item.romaji}`;
+        romajiDiv.textContent = `羅馬拼音：${romajiWithSpaces}`;
 
         const zhDiv = document.createElement("div");
         zhDiv.className = "zh";
