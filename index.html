@@ -1,229 +1,305 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Japanese Flashcards</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      max-width: 700px;
-      margin: 20px auto;
-      background: #f9f9f9;
-      padding: 20px;
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Japanese Flashcards with Voice Control</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    max-width: 700px;
+    margin: 20px auto;
+    background: #f9f9f9;
+    padding: 20px;
+  }
+  h1 {
+    text-align: center;
+    margin-bottom: 10px;
+  }
+  #controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+  }
+  label {
+    margin-right: 8px;
+    font-weight: bold;
+  }
+  select, input[type=range] {
+    margin-right: 20px;
+    padding: 4px 8px;
+    font-size: 1em;
+  }
+  .category {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
+  }
+  .category h2 {
+    background: #4a90e2;
+    color: white;
+    padding: 12px 16px;
+    margin: 0;
+    font-size: 1.2em;
+    cursor: pointer;
+    user-select: none;
+    border-radius: 8px 8px 0 0;
+  }
+  .content {
+    display: none;
+    padding: 15px;
+  }
+  .category.expanded .content {
+    display: block;
+  }
+  ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  li {
+    border-bottom: 1px solid #eee;
+    padding: 12px 0;
+  }
+  .jp-sentence {
+    font-weight: bold;
+    font-size: 1.1em;
+    margin-bottom: 8px;
+    color: #333;
+  }
+  .romaji, .zh {
+    font-size: 0.95em;
+    margin-bottom: 4px;
+    color: #555;
+  }
+  button.play-btn {
+    background-color: #4a90e2;
+    color: #fff;
+    border: none;
+    padding: 6px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 0.9em;
+    margin-top: 6px;
+  }
+  button.play-btn:hover {
+    background-color: #357abd;
+  }
+  @media (max-width: 480px) {
+    #controls {
+      flex-direction: column;
+      align-items: flex-start;
     }
-    h1 {
-      text-align: center;
-      margin-bottom: 20px;
+    select, input[type=range] {
+      margin-bottom: 10px;
+      margin-right: 0;
+      width: 100%;
     }
-    .category {
-      background: white;
-      border-radius: 8px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-      margin-bottom: 20px;
-    }
-    .category h2 {
-      background: #4a90e2;
-      color: white;
-      padding: 12px 16px;
-      margin: 0;
-      font-size: 1.2em;
-      cursor: pointer;
-      user-select: none;
-      border-radius: 8px 8px 0 0;
-    }
-    .content {
-      display: none;
-      padding: 15px;
-    }
-    .category.expanded .content {
-      display: block;
-    }
-    ul {
-      list-style: none;
-      margin: 0;
-      padding: 0;
-    }
-    li {
-      border-bottom: 1px solid #eee;
-      padding: 12px 0;
-    }
-    .jp-sentence {
-      font-weight: bold;
-      font-size: 1.1em;
-      margin-bottom: 8px;
-      color: #333;
-    }
-    .romaji, .zh {
-      font-size: 0.95em;
-      margin-bottom: 4px;
-      color: #555;
-    }
-    button.play-btn {
-      background-color: #4a90e2;
-      color: #fff;
-      border: none;
-      padding: 6px 10px;
-      border-radius: 4px;
-      cursor: pointer;
-      font-weight: bold;
-      font-size: 0.9em;
-      margin-top: 6px;
-    }
-    button.play-btn:hover {
-      background-color: #357abd;
-    }
-  </style>
+  }
+</style>
 </head>
 <body>
   <h1>Japanese Flashcards</h1>
+  <div id="controls">
+    <div>
+      <label for="voiceSelect">選擇語音：</label>
+      <select id="voiceSelect"></select>
+    </div>
+    <div>
+      <label for="rateRange">語速：</label>
+      <input type="range" id="rateRange" min="0.3" max="1.2" step="0.05" value="0.5" />
+      <span id="rateValue">0.5</span>
+    </div>
+  </div>
+
   <div id="categories-container"></div>
 
-  <script>
-    let voices = [];
-    const data = [
-      {
-        category: "打招呼",
-        sentences: [
-          { jp: "こんにちは。", kanji: "今日は。", zh: "你好/午安。", romaji: "Konnichiwa." },
-          { jp: "おはようございます。", kanji: "お早うございます。", zh: "早安。", romaji: "Ohayou gozaimasu." },
-          { jp: "こんばんは。", kanji: "今晩は。", zh: "晚上好。", romaji: "Konbanwa." },
-          { jp: "はじめまして。", kanji: "初めまして。", zh: "初次見面。", romaji: "Hajimemashite." },
-          { jp: "お元気ですか？", kanji: "お元気ですか？", zh: "你好嗎？", romaji: "Ogenki desu ka?" },
-          { jp: "さようなら。", kanji: "左様なら。", zh: "再見。", romaji: "Sayounara." }
-        ]
-      },
-      {
-        category: "感謝/道歉",
-        sentences: [
-          { jp: "ありがとうございます。", kanji: "有り難う御座います。", zh: "謝謝您。", romaji: "Arigatou gozaimasu." },
-          { jp: "すみません。", kanji: "済みません。", zh: "不好意思/對不起。", romaji: "Sumimasen." },
-          { jp: "ごめんなさい。", kanji: "御免なさい。", zh: "對不起。", romaji: "Gomen nasai." },
-          { jp: "どういたしまして。", kanji: "どう致しまして。", zh: "不客氣。", romaji: "Dou itashimashite." }
-        ]
-      },
-      {
-        category: "問路/交通",
-        sentences: [
-          { jp: "駅はどこですか？", kanji: "駅は何処ですか？", zh: "車站在哪裡？", romaji: "Eki wa doko desu ka?" },
-          { jp: "右に曲がってください。", kanji: "右に曲がって下さい。", zh: "請往右轉。", romaji: "Migi ni magatte kudasai." },
-          { jp: "左に曲がってください。", kanji: "左に曲がって下さい。", zh: "請往左轉。", romaji: "Hidari ni magatte kudasai." },
-          { jp: "まっすぐ行ってください。", kanji: "真っ直ぐ行って下さい。", zh: "請直走。", romaji: "Massugu itte kudasai." },
-          { jp: "この近くにバス停はありますか？", kanji: "この近くにバス停はありますか？", zh: "這附近有公車站嗎？", romaji: "Kono chikaku ni basu-tei wa arimasu ka?" }
-        ]
-      },
-      {
-        category: "餐廳/點餐",
-        sentences: [
-          { jp: "メニューをください。", kanji: "メニューを下さい。", zh: "請給我菜單。", romaji: "Menyuu o kudasai." },
-          { jp: "おすすめは何ですか？", kanji: "おすすめは何ですか？", zh: "有什麼推薦嗎？", romaji: "Osusume wa nan desu ka?" },
-          { jp: "お水をお願いします。", kanji: "お水をお願いします。", zh: "請給我水。", romaji: "O-mizu o onegaishimasu." },
-          { jp: "これは何ですか？", kanji: "これは何ですか？", zh: "這是什麼？", romaji: "Kore wa nan desu ka?" },
-          { jp: "辛くしないでください。", kanji: "辛くしないで下さい。", zh: "請不要辣。", romaji: "Karakushinaide kudasai." }
-        ]
-      },
-      {
-        category: "購物/金額",
-        sentences: [
-          { jp: "いくらですか？", kanji: "幾らですか？", zh: "這個多少錢？", romaji: "Ikura desu ka?" },
-          { jp: "安くなりますか？", kanji: "安く成りますか？", zh: "可以便宜一點嗎？", romaji: "Yasuku narimasu ka?" },
-          { jp: "試着できますか？", kanji: "試着出来ますか？", zh: "可以試穿嗎？", romaji: "Shichaku dekimasu ka?" },
-          { jp: "クレジットカードは使えますか？", kanji: "クレジットカードは使えますか？", zh: "可以使用信用卡嗎？", romaji: "Kurejitto kaado wa tsukaemasu ka?" }
-        ]
-      },
-      {
-        category: "應急/求助",
-        sentences: [
-          { jp: "救急車を呼んでください。", kanji: "救急車を呼んで下さい。", zh: "請叫救護車。", romaji: "Kyuukyuusha o yonde kudasai." },
-          { jp: "助けてください。", kanji: "助けて下さい。", zh: "請幫我！", romaji: "Tasukete kudasai." },
-          { jp: "警察を呼んでください。", kanji: "警察を呼んで下さい。", zh: "請叫警察。", romaji: "Keisatsu o yonde kudasai." }
-        ]
-      }
-    ];
+<script>
+  let voices = [];
+  const voiceSelect = document.getElementById('voiceSelect');
+  const rateRange = document.getElementById('rateRange');
+  const rateValue = document.getElementById('rateValue');
+  const container = document.getElementById('categories-container');
+  
+  const data = [
+    {
+      category: "打招呼",
+      sentences: [
+        { jp: "こんにちは。", kanji: "今日は。", zh: "你好/午安。", romaji: "Konnichiwa." },
+        { jp: "おはようございます。", kanji: "お早うございます。", zh: "早安。", romaji: "Ohayou gozaimasu." },
+        { jp: "こんばんは。", kanji: "今晩は。", zh: "晚上好。", romaji: "Konbanwa." },
+        { jp: "はじめまして。", kanji: "初めまして。", zh: "初次見面。", romaji: "Hajimemashite." },
+        { jp: "お元気ですか？", kanji: "お元気ですか？", zh: "你好嗎？", romaji: "Ogenki desu ka?" },
+        { jp: "さようなら。", kanji: "左様なら。", zh: "再見。", romaji: "Sayounara." }
+      ]
+    },
+    {
+      category: "感謝/道歉",
+      sentences: [
+        { jp: "ありがとうございます。", kanji: "有り難う御座います。", zh: "謝謝您。", romaji: "Arigatou gozaimasu." },
+        { jp: "すみません。", kanji: "済みません。", zh: "不好意思/對不起。", romaji: "Sumimasen." },
+        { jp: "ごめんなさい。", kanji: "御免なさい。", zh: "對不起。", romaji: "Gomen nasai." },
+        { jp: "どういたしまして。", kanji: "どう致しまして。", zh: "不客氣。", romaji: "Dou itashimashite." }
+      ]
+    },
+    {
+      category: "問路/交通",
+      sentences: [
+        { jp: "駅はどこですか？", kanji: "駅は何処ですか？", zh: "車站在哪裡？", romaji: "Eki wa doko desu ka?" },
+        { jp: "右に曲がってください。", kanji: "右に曲がって下さい。", zh: "請往右轉。", romaji: "Migi ni magatte kudasai." },
+        { jp: "左に曲がってください。", kanji: "左に曲がって下さい。", zh: "請往左轉。", romaji: "Hidari ni magatte kudasai." },
+        { jp: "まっすぐ行ってください。", kanji: "真っ直ぐ行って下さい。", zh: "請直走。", romaji: "Massugu itte kudasai." },
+        { jp: "この近くにバス停はありますか？", kanji: "この近くにバス停はありますか？", zh: "這附近有公車站嗎？", romaji: "Kono chikaku ni basu-tei wa arimasu ka?" }
+      ]
+    },
+    {
+      category: "餐廳/點餐",
+      sentences: [
+        { jp: "メニューをください。", kanji: "メニューを下さい。", zh: "請給我菜單。", romaji: "Menyuu o kudasai." },
+        { jp: "おすすめは何ですか？", kanji: "おすすめは何ですか？", zh: "有什麼推薦嗎？", romaji: "Osusume wa nan desu ka?" },
+        { jp: "お水をお願いします。", kanji: "お水をお願いします。", zh: "請給我水。", romaji: "O-mizu o onegaishimasu." },
+        { jp: "これは何ですか？", kanji: "これは何ですか？", zh: "這是什麼？", romaji: "Kore wa nan desu ka?" },
+        { jp: "辛くしないでください。", kanji: "辛くしないで下さい。", zh: "請不要辣。", romaji: "Karakushinaide kudasai." }
+      ]
+    },
+    {
+      category: "購物/金額",
+      sentences: [
+        { jp: "いくらですか？", kanji: "幾らですか？", zh: "這個多少錢？", romaji: "Ikura desu ka?" },
+        { jp: "安くなりますか？", kanji: "安く成りますか？", zh: "可以便宜一點嗎？", romaji: "Yasuku narimasu ka?" },
+        { jp: "試着できますか？", kanji: "試着出来ますか？", zh: "可以試穿嗎？", romaji: "Shichaku dekimasu ka?" },
+        { jp: "クレジットカードは使えますか？", kanji: "クレジットカードは使えますか？", zh: "可以使用信用卡嗎？", romaji: "Kurejitto kaado wa tsukaemasu ka?" }
+      ]
+    },
+    {
+      category: "應急/求助",
+      sentences: [
+        { jp: "救急車を呼んでください。", kanji: "救急車を呼んで下さい。", zh: "請叫救護車。", romaji: "Kyuukyuusha o yonde kudasai." },
+        { jp: "助けてください。", kanji: "助けて下さい。", zh: "請幫我！", romaji: "Tasukete kudasai." },
+        { jp: "警察を呼んでください。", kanji: "警察を呼んで下さい。", zh: "請叫警察。", romaji: "Keisatsu o yonde kudasai." }
+      ]
+    }
+  ];
 
-    function loadVoices() {
-      voices = window.speechSynthesis.getVoices();
+  function loadVoices() {
+    voices = speechSynthesis.getVoices();
+    voiceSelect.innerHTML = '';
+
+    // 手機預設優先 Kyoto 這個語音，如果有的話放最上方
+    const kyotoVoice = voices.find(v => v.name.toLowerCase().includes('kyoto'));
+    if (kyotoVoice) {
+      const option = document.createElement('option');
+      option.value = kyotoVoice.name;
+      option.textContent = `${kyotoVoice.name} (${kyotoVoice.lang})`;
+      voiceSelect.appendChild(option);
     }
 
-    if (typeof speechSynthesis !== "undefined") {
-      loadVoices();
-      speechSynthesis.onvoiceschanged = loadVoices;
-    }
-
-    const container = document.getElementById("categories-container");
-    const fragment = document.createDocumentFragment();
-
-    data.forEach(cat => {
-      const div = document.createElement("div");
-      div.className = "category";
-
-      const h2 = document.createElement("h2");
-      h2.textContent = cat.category;
-      div.appendChild(h2);
-
-      const contentDiv = document.createElement("div");
-      contentDiv.className = "content";
-
-      const ul = document.createElement("ul");
-
-      cat.sentences.forEach(item => {
-        const li = document.createElement("li");
-
-        const jpSpan = document.createElement("div");
-        jpSpan.className = "jp-sentence";
-        jpSpan.textContent = item.kanji
-          ? `${item.jp} / ${item.kanji}`
-          : item.jp;
-
-        const romajiDiv = document.createElement("div");
-        romajiDiv.className = "romaji";
-        romajiDiv.textContent = `羅馬拼音：${item.romaji}`;
-
-        const zhDiv = document.createElement("div");
-        zhDiv.className = "zh";
-        zhDiv.textContent = `繁體中文：${item.zh}`;
-
-        const btn = document.createElement("button");
-        btn.className = "play-btn";
-        btn.textContent = "播放";
-        btn.onclick = () => playJapanese(item.jp);
-
-        li.appendChild(jpSpan);
-        li.appendChild(romajiDiv);
-        li.appendChild(zhDiv);
-        li.appendChild(btn);
-        ul.appendChild(li);
-      });
-
-      contentDiv.appendChild(ul);
-      div.appendChild(contentDiv);
-      fragment.appendChild(div);
-    });
-
-    container.appendChild(fragment);
-
-    document.addEventListener("click", e => {
-      if (e.target.tagName === "H2") {
-        e.target.parentElement.classList.toggle("expanded");
+    // 將其他日語語音也加入清單，但不重複 Kyoto
+    voices.forEach(voice => {
+      if (voice.lang.includes('ja') && voice.name !== (kyotoVoice ? kyotoVoice.name : '')) {
+        const option = document.createElement('option');
+        option.value = voice.name;
+        option.textContent = `${voice.name} (${voice.lang})`;
+        voiceSelect.appendChild(option);
       }
     });
 
-    function playJapanese(text) {
-      if (!("speechSynthesis" in window)) {
-        alert("您的瀏覽器不支援語音。");
-        return;
-      }
-      // 停止可能還在播放的語音，避免重疊
-      if (speechSynthesis.speaking) speechSynthesis.cancel();
-
-      const utter = new SpeechSynthesisUtterance(text);
-      const jaVoices = voices.filter(v => v.lang.includes("ja"));
-      if (jaVoices.length > 0) {
-        utter.voice = jaVoices[0];
-      }
-      utter.rate = 0.5;
-      speechSynthesis.speak(utter);
+    // 如果沒有 Kyoto，預設選第一個
+    if (!kyotoVoice && voices.length > 0) {
+      voiceSelect.selectedIndex = 0;
     }
-  </script>
+  }
+
+  if ('speechSynthesis' in window) {
+    loadVoices();
+    speechSynthesis.onvoiceschanged = loadVoices;
+  }
+
+  rateRange.addEventListener('input', () => {
+    rateValue.textContent = rateRange.value;
+  });
+
+  const fragment = document.createDocumentFragment();
+
+  data.forEach(cat => {
+    const div = document.createElement('div');
+    div.className = 'category';
+
+    const h2 = document.createElement('h2');
+    h2.textContent = cat.category;
+    div.appendChild(h2);
+
+    const contentDiv = document.createElement('div');
+    contentDiv.className = 'content';
+
+    const ul = document.createElement('ul');
+
+    cat.sentences.forEach(item => {
+      const li = document.createElement('li');
+
+      const jpSpan = document.createElement('div');
+      jpSpan.className = 'jp-sentence';
+      jpSpan.textContent = item.kanji
+        ? `${item.jp} / ${item.kanji}`
+        : item.jp;
+
+      const romajiDiv = document.createElement('div');
+      romajiDiv.className = 'romaji';
+      romajiDiv.textContent = `羅馬拼音：${item.romaji}`;
+
+      const zhDiv = document.createElement('div');
+      zhDiv.className = 'zh';
+      zhDiv.textContent = `繁體中文：${item.zh}`;
+
+      const btn = document.createElement('button');
+      btn.className = 'play-btn';
+      btn.textContent = '播放';
+      btn.onclick = () => playJapanese(item.jp);
+
+      li.appendChild(jpSpan);
+      li.appendChild(romajiDiv);
+      li.appendChild(zhDiv);
+      li.appendChild(btn);
+      ul.appendChild(li);
+    });
+
+    contentDiv.appendChild(ul);
+    div.appendChild(contentDiv);
+    fragment.appendChild(div);
+  });
+
+  container.appendChild(fragment);
+
+  document.addEventListener('click', e => {
+    if (e.target.tagName === 'H2') {
+      e.target.parentElement.classList.toggle('expanded');
+    }
+  });
+
+  function playJapanese(text) {
+    if (!('speechSynthesis' in window)) {
+      alert('您的瀏覽器不支援語音。');
+      return;
+    }
+
+    if (speechSynthesis.speaking) speechSynthesis.cancel();
+
+    const utter = new SpeechSynthesisUtterance(text);
+
+    // 依照下拉選單選擇語音
+    const selectedVoiceName = voiceSelect.value;
+    const voice = voices.find(v => v.name === selectedVoiceName);
+    if (voice) {
+      utter.voice = voice;
+    }
+
+    utter.rate = parseFloat(rateRange.value);
+    speechSynthesis.speak(utter);
+  }
+</script>
 </body>
 </html>
