@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>日語句子卡</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 700px;
+      margin: 20px auto;
+      padding: 0 15px;
+      background: #f9f9f9;
+      color: #333;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 25px;
+    }
+    .category {
+      margin-bottom: 30px;
+    }
+    .category h2 {
+      background-color: #4a90e2;
+      color: white;
+      padding: 8px 12px;
+      border-radius: 5px;
+      font-size: 1.2em;
+    }
+    ul {
+      list-style: none;
+      padding-left: 0;
+    }
+    li {
+      background: white;
+      margin: 8px 0;
+      padding: 10px 15px;
+      border-radius: 6px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: background-color 0.3s;
+    }
+    li:hover {
+      background-color: #e6f0ff;
+    }
+    .text-info {
+      flex-grow: 1;
+    }
+    .jp-sentence {
+      font-weight: bold;
+      font-size: 1.1em;
+      margin-bottom: 4px;
+    }
+    .translation {
+      color: #555;
+      font-size: 0.9em;
+      margin-bottom: 2px;
+    }
+    .romaji {
+      font-style: italic;
+      font-size: 0.9em;
+      color: #777;
+    }
+    button.play-btn {
+      background-color: #4a90e2;
+      border: none;
+      color: white;
+      padding: 7px 12px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: bold;
+      font-size: 0.9em;
+      margin-left: 15px;
+      flex-shrink: 0;
+    }
+    button.play-btn:hover {
+      background-color: #357abd;
+    }
+    .info-area {
+      margin-top: 25px;
+      background: #fff;
+      padding: 15px 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 7px rgba(0,0,0,0.12);
+      min-height: 60px;
+      font-size: 1em;
+      color: #222;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>日語句子卡</h1>
+
+  <div id="categories-container"></div>
+
+  <div class="info-area" id="info-area">點擊任一句子查看中文與羅馬拼音，並可播放語音。</div>
+
+<script>
+  // 日語句子資料結構
+  const data = [
+    {
+      category: "問候語",
+      sentences: [
+        { jp: "おはようございます。", zh: "早安。", romaji: "Ohayou gozaimasu." },
+        { jp: "こんにちは。", zh: "你好。", romaji: "Konnichiwa." },
+        { jp: "こんばんは。", zh: "晚上好。", romaji: "Konbanwa." },
+      ],
+    },
+    {
+      category: "日常會話",
+      sentences: [
+        { jp: "元気ですか？", zh: "你還好嗎？", romaji: "Genki desu ka?" },
+        { jp: "ありがとう。", zh: "謝謝。", romaji: "Arigatou." },
+        { jp: "すみません。", zh: "不好意思。", romaji: "Sumimasen." },
+      ],
+    },
+    {
+      category: "購物用語",
+      sentences: [
+        { jp: "これをください。", zh: "請給我這個。", romaji: "Kore o kudasai." },
+        { jp: "いくらですか？", zh: "多少錢？", romaji: "Ikura desu ka?" },
+        { jp: "カードで払えますか？", zh: "可以用信用卡付款嗎？", romaji: "Kaado de haraemasu ka?" },
+      ],
+    },
+  ];
+
+  // 取得 DOM 容器
+  const categoriesContainer = document.getElementById("categories-container");
+  const infoArea = document.getElementById("info-area");
+
+  // 建立分類與句子列表
+  data.forEach(cat => {
+    const catDiv = document.createElement("div");
+    catDiv.className = "category";
+
+    const catTitle = document.createElement("h2");
+    catTitle.textContent = cat.category;
+    catDiv.appendChild(catTitle);
+
+    const ul = document.createElement("ul");
+
+    cat.sentences.forEach((sent, idx) => {
+      const li = document.createElement("li");
+
+      const textDiv = document.createElement("div");
+      textDiv.className = "text-info";
+
+      const jpSpan = document.createElement("div");
+      jpSpan.className = "jp-sentence";
+      jpSpan.textContent = sent.jp;
+      textDiv.appendChild(jpSpan);
+
+      // 預設不顯示翻譯和羅馬拼音，點擊後顯示在 infoArea
+      li.appendChild(textDiv);
+
+      const playBtn = document.createElement("button");
+      playBtn.className = "play-btn";
+      playBtn.textContent = "播放";
+      playBtn.onclick = e => {
+        e.stopPropagation();
+        playJapanese(sent.jp);
+      };
+      li.appendChild(playBtn);
+
+      li.onclick = () => {
+        infoArea.innerHTML = `
+          <strong>日文：</strong>${sent.jp} <br/>
+          <strong>中文：</strong>${sent.zh} <br/>
+          <strong>羅馬拼音：</strong>${sent.romaji}
+        `;
+      };
+
+      ul.appendChild(li);
+    });
+
+    catDiv.appendChild(ul);
+    categoriesContainer.appendChild(catDiv);
+  });
+
+  // 播放語音，使用 Web Speech API
+  function playJapanese(text) {
+    if (!('speechSynthesis' in window)) {
+      alert("抱歉，您的瀏覽器不支援語音合成功能。");
+      return;
+    }
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = "ja-JP";
+    window.speechSynthesis.cancel(); // 取消正在播放的語音
+    window.speechSynthesis.speak(utterance);
+  }
+</script>
+
+</body>
+</html>
