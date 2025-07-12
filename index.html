@@ -169,16 +169,16 @@
       voiceSelect.appendChild(option);
     });
 
-    // 優先找名稱包含 "Kyoto" 的語音，找不到才找日文語音，最後才選第一個
-const kyotoVoiceIndex = voices.findIndex(v => v.name.toLowerCase().includes('kyoto'));
-if (kyotoVoiceIndex >= 0) {
-  voiceSelect.selectedIndex = kyotoVoiceIndex;
-} else {
-  const jaVoiceIndex = voices.findIndex(v => v.lang.startsWith('ja'));
-  voiceSelect.selectedIndex = jaVoiceIndex >= 0 ? jaVoiceIndex : 0;
-}
+    // 預設選擇名稱包含 "Kyoto" 的語音，找不到再選日文語音，最後選第一個
+    const kyotoVoiceIndex = voices.findIndex(v => v.name.toLowerCase().includes('kyoto'));
+    if (kyotoVoiceIndex >= 0) {
+      voiceSelect.selectedIndex = kyotoVoiceIndex;
+    } else {
+      const jaVoiceIndex = voices.findIndex(v => v.lang.startsWith('ja'));
+      voiceSelect.selectedIndex = jaVoiceIndex >= 0 ? jaVoiceIndex : 0;
+    }
+  }
 
-  // 初次載入語音清單
   if (typeof speechSynthesis !== 'undefined') {
     loadVoices();
     if (speechSynthesis.onvoiceschanged !== undefined) {
@@ -259,7 +259,6 @@ if (kyotoVoiceIndex >= 0) {
     window.speechSynthesis.speak(utterance);
   }
 
-  // 更新語速顯示值
   rateRange.addEventListener('input', () => {
     rateValue.textContent = rateRange.value;
   });
