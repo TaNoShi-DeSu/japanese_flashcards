@@ -61,17 +61,20 @@
       justify-content: space-between;
       align-items: center;
       transition: background-color 0.3s;
+      flex-wrap: wrap;
     }
     li:hover {
       background-color: #e6f0ff;
     }
     .text-info {
       flex-grow: 1;
+      min-width: 0;
     }
     .jp-sentence {
       font-weight: bold;
       font-size: 1.1em;
       margin-bottom: 4px;
+      word-break: break-word;
     }
     button.play-btn {
       background-color: #4a90e2;
@@ -84,19 +87,18 @@
       font-size: 0.9em;
       margin-left: 15px;
       flex-shrink: 0;
+      height: 36px;
+      white-space: nowrap;
     }
     button.play-btn:hover {
       background-color: #357abd;
     }
-    .info-area {
-      margin-top: 25px;
-      background: #fff;
-      padding: 15px 20px;
-      border-radius: 8px;
-      box-shadow: 0 0 7px rgba(0,0,0,0.12);
-      min-height: 60px;
-      font-size: 1em;
-      color: #222;
+    .detail-text {
+      width: 100%;
+      margin-top: 6px;
+      font-size: 0.9em;
+      color: #555;
+      padding-left: 5px;
     }
     .label-inline {
       white-space: nowrap;
@@ -120,8 +122,6 @@
   </div>
 
   <div id="categories-container"></div>
-
-  <div class="info-area" id="info-area">點擊任一句子查看中文與羅馬拼音，並可播放語音。</div>
 
 <script>
   let voices = [];
@@ -157,7 +157,6 @@
   ];
 
   const categoriesContainer = document.getElementById("categories-container");
-  const infoArea = document.getElementById("info-area");
 
   function loadVoices() {
     voices = window.speechSynthesis.getVoices();
@@ -169,8 +168,8 @@
       voiceSelect.appendChild(option);
     });
 
-    // 預設選擇名稱包含 "Kyoko(ja-JP)" 的語音，找不到再選日文語音，最後選第一個
-    const kyotoVoiceIndex = voices.findIndex(v => v.name.toLowerCase().includes('Kyoko(ja-JP)'));
+    // 預設選擇名稱包含 "Kyoto" 的語音，找不到再選日文語音，最後選第一個
+    const kyotoVoiceIndex = voices.findIndex(v => v.name.toLowerCase().includes('kyoto（jp-JP）'));
     if (kyotoVoiceIndex >= 0) {
       voiceSelect.selectedIndex = kyotoVoiceIndex;
     } else {
@@ -209,6 +208,17 @@
 
       li.appendChild(textDiv);
 
+      // 新增詳細中文與羅馬拼音，預設隱藏
+      const detailDiv = document.createElement("div");
+      detailDiv.className = "detail-text";
+      detailDiv.style.display = "none";
+      detailDiv.innerHTML = `
+        <div><strong>中文：</strong>${sent.zh}</div>
+        <div><strong>羅馬拼音：</strong>${sent.romaji}</div>
+      `;
+      li.appendChild(detailDiv);
+
+      // 播放按鈕不影響點擊事件
       const playBtn = document.createElement("button");
       playBtn.className = "play-btn";
       playBtn.textContent = "播放";
@@ -219,11 +229,8 @@
       li.appendChild(playBtn);
 
       li.onclick = () => {
-        infoArea.innerHTML = `
-          <strong>日文：</strong>${sent.jp} <br/>
-          <strong>中文：</strong>${sent.zh} <br/>
-          <strong>羅馬拼音：</strong>${sent.romaji}
-        `;
+        // 點擊時切換詳細區塊顯示
+        detailDiv.style.display = detailDiv.style.display === "none" ? "block" : "none";
       };
 
       ul.appendChild(li);
