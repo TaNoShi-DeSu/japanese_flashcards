@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>日語句子卡 - 語音優化版</title>
+  <title>日語句子卡 - 互動語音控制</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -15,7 +15,26 @@
     }
     h1 {
       text-align: center;
-      margin-bottom: 25px;
+      margin-bottom: 15px;
+    }
+    .controls {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .control-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.9em;
+      min-width: 180px;
+    }
+    select, input[type="range"] {
+      padding: 5px;
+      font-size: 1em;
     }
     .category {
       margin-bottom: 30px;
@@ -79,17 +98,37 @@
       font-size: 1em;
       color: #222;
     }
+    .label-inline {
+      white-space: nowrap;
+    }
   </style>
 </head>
 <body>
 
   <h1>日語句子卡</h1>
 
+  <div class="controls">
+    <div class="control-group">
+      <label for="voiceSelect" class="label-inline">選擇語音:</label>
+      <select id="voiceSelect"></select>
+    </div>
+    <div class="control-group">
+      <label for="rateRange" class="label-inline">語速:</label>
+      <input type="range" id="rateRange" min="0.5" max="2" step="0.1" value="1" />
+      <span id="rateValue">1.0</span>
+    </div>
+  </div>
+
   <div id="categories-container"></div>
 
   <div class="info-area" id="info-area">點擊任一句子查看中文與羅馬拼音，並可播放語音。</div>
 
 <script>
+  let voices = [];
+  const voiceSelect = document.getElementById('voiceSelect');
+  const rateRange = document.getElementById('rateRange');
+  const rateValue = document.getElementById('rateValue');
+
   const data = [
     {
       category: "問候語",
@@ -120,17 +159,28 @@
   const categoriesContainer = document.getElementById("categories-container");
   const infoArea = document.getElementById("info-area");
 
-  // 先載入語音列表，預先觸發可解決手機瀏覽器延遲或禁止播放問題
-  let voices = [];
   function loadVoices() {
     voices = window.speechSynthesis.getVoices();
-    if (!voices.length) {
-      // iOS Chrome 常見問題，重試
-      setTimeout(loadVoices, 100);
+    voiceSelect.innerHTML = '';
+    voices.forEach((voice, index) => {
+      const option = document.createElement('option');
+      option.value = index;
+      option.textContent = `${voice.name} (${voice.lang})${voice.default ? ' [default]' : ''}`;
+      voiceSelect.appendChild(option);
+    });
+
+    // 預設選擇日文語音，找不到則第一個
+    const jaVoiceIndex = voices.findIndex(v => v.lang.startsWith('ja'));
+    voiceSelect.selectedIndex = jaVoiceIndex >= 0 ? jaVoiceIndex : 0;
+  }
+
+  // 初次載入語音清單
+  if (typeof speechSynthesis !== 'undefined') {
+    loadVoices();
+    if (speechSynthesis.onvoiceschanged !== undefined) {
+      speechSynthesis.onvoiceschanged = loadVoices;
     }
   }
-  loadVoices();
-  window.speechSynthesis.onvoiceschanged = loadVoices;
 
   data.forEach(cat => {
     const catDiv = document.createElement("div");
@@ -188,20 +238,27 @@
       window.speechSynthesis.cancel();
     }
 
-    // 找日文語音
-    let voice = voices.find(v => v.lang.startsWith('ja'));
-    if (!voice && voices.length) {
-      // 若找不到日文語音，用預設第一個語音替代
-      voice = voices[0];
+    const selectedVoice = voices[voiceSelect.value];
+    const utterance = new SpeechSynthesisUtterance(text);
+
+    if (selectedVoice) {
+      utterance.voice = selectedVoice;
+      utterance.lang = selectedVoice.lang;
+    } else {
+      utterance.lang = 'ja-JP';
     }
 
-    const utterance = new SpeechSynthesisUtterance(text);
-    utterance.lang = voice ? voice.lang : 'ja-JP';
-    if (voice) {
-      utterance.voice = voice;
-    }
+    utterance.rate = parseFloat(rateRange.value);
+    utterance.pitch = 1.0;
+    utterance.volume = 1.0;
+
     window.speechSynthesis.speak(utterance);
   }
+
+  // 更新語速顯示值
+  rateRange.addEventListener('input', () => {
+    rateValue.textContent = rateRange.value;
+  });
 </script>
 
 </body>
