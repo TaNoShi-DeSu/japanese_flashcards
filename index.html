@@ -9,299 +9,175 @@
       font-family: Arial, sans-serif;
       max-width: 700px;
       margin: 20px auto;
-      padding: 0 15px;
       background: #f9f9f9;
-      color: #333;
+      padding: 20px;
     }
     h1 {
       text-align: center;
-      margin-bottom: 15px;
-    }
-    .controls {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
       margin-bottom: 20px;
-      flex-wrap: wrap;
-      gap: 10px;
-    }
-    .control-group {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 0.9em;
-      min-width: 180px;
-    }
-    select, input[type="range"] {
-      padding: 5px;
-      font-size: 1em;
     }
     .category {
-      margin-bottom: 15px;
-      border-radius: 6px;
       background: white;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      margin-bottom: 20px;
     }
     .category h2 {
-      background-color: #4a90e2;
+      background: #4a90e2;
       color: white;
-      padding: 12px 15px;
+      padding: 12px 16px;
+      margin: 0;
       font-size: 1.2em;
       cursor: pointer;
       user-select: none;
-      margin: 0;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border-radius: 6px 6px 0 0;
-    }
-    .category h2::after {
-      content: "▼";
-      font-size: 0.8em;
-      transition: transform 0.3s ease;
-    }
-    .category.expanded h2::after {
-      transform: rotate(180deg);
+      border-radius: 8px 8px 0 0;
     }
     .content {
-      max-height: 0;
-      overflow: hidden;
-      transition: max-height 0.4s ease;
-      padding: 0 15px;
+      display: none;
+      padding: 15px;
     }
     .category.expanded .content {
-      max-height: 4000px;
-      padding-top: 12px;
-      padding-bottom: 15px;
-      transition: max-height 0.6s ease;
+      display: block;
     }
     ul {
       list-style: none;
-      padding-left: 0;
       margin: 0;
+      padding: 0;
     }
     li {
-      padding: 10px 0;
       border-bottom: 1px solid #eee;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-    }
-    li:last-child {
-      border-bottom: none;
-    }
-    .text-info {
-      flex-grow: 1;
-      min-width: 0;
+      padding: 12px 0;
     }
     .jp-sentence {
       font-weight: bold;
       font-size: 1.1em;
-      margin-bottom: 6px;
-      word-break: break-word;
+      margin-bottom: 8px;
+      color: #333;
     }
-    .detail-text {
-      width: 100%;
-      font-size: 0.9em;
-      color: #555;
-      padding-left: 5px;
+    .romaji, .zh {
+      font-size: 0.95em;
       margin-bottom: 4px;
-      line-height: 1.3em;
-      display: block;
+      color: #555;
     }
     button.play-btn {
       background-color: #4a90e2;
+      color: #fff;
       border: none;
-      color: white;
-      padding: 7px 12px;
+      padding: 6px 10px;
       border-radius: 4px;
       cursor: pointer;
       font-weight: bold;
       font-size: 0.9em;
-      flex-shrink: 0;
-      height: 36px;
-      white-space: nowrap;
-      margin-left: 15px;
+      margin-top: 6px;
     }
     button.play-btn:hover {
       background-color: #357abd;
     }
-    .label-inline {
-      white-space: nowrap;
-    }
   </style>
 </head>
 <body>
-
   <h1>Japanese Flashcards</h1>
-
-  <div class="controls">
-    <div class="control-group">
-      <label for="voiceSelect" class="label-inline">選擇語音:</label>
-      <select id="voiceSelect"></select>
-    </div>
-    <div class="control-group">
-      <label for="rateRange" class="label-inline">語速:</label>
-      <input type="range" id="rateRange" min="0.5" max="2" step="0.1" value="0.5" />
-      <span id="rateValue">0.5</span>
-    </div>
-  </div>
-
   <div id="categories-container"></div>
 
-<script>
-  let voices = [];
-  const voiceSelect = document.getElementById('voiceSelect');
-  const rateRange = document.getElementById('rateRange');
-  const rateValue = document.getElementById('rateValue');
+  <script>
+    let voices = [];
+    const data = [
+      {
+        category: "基本問候",
+        sentences: [
+          {
+            jp: "こんにちは。",
+            kanji: "今日は。",
+            zh: "你好／午安。",
+            romaji: "Konnichiwa."
+          },
+          {
+            jp: "ありがとうございます。",
+            kanji: "有り難う御座います。",
+            zh: "謝謝您。",
+            romaji: "Arigatou gozaimasu."
+          }
+        ]
+      }
+    ];
 
-  const data = [
-    {
-      category: "旅遊常用句",
-      sentences: [
-        { jp: "こんにちは。", zh: "你好／午安。", romaji: "Konnichiwa." },
-        { jp: "ありがとうございます。", zh: "謝謝您。", romaji: "Arigatou gozaimasu." },
-        { jp: "すみません。", zh: "不好意思／對不起。", romaji: "Sumimasen." },
-        { jp: "おはようございます。", zh: "早安。", romaji: "Ohayou gozaimasu." },
-        { jp: "こんばんは。", zh: "晚上好。", romaji: "Konbanwa." },
-        { jp: "はい。", zh: "是／好的。", romaji: "Hai." },
-        { jp: "いいえ。", zh: "不是／不。", romaji: "Iie." },
-        { jp: "はじめまして。", zh: "初次見面。", romaji: "Hajimemashite." },
-        { jp: "さようなら。", zh: "再見。", romaji: "Sayounara." },
-        { jp: "よろしくお願いします。", zh: "請多指教。", romaji: "Yoroshiku onegaishimasu." },
-        { jp: "英語が話せますか？", zh: "你會講英文嗎？", romaji: "Eigo ga hanasemasu ka?" },
-        { jp: "日本語がわかりません。", zh: "我不懂日文。", romaji: "Nihongo ga wakarimasen." },
-        { jp: "もう一度お願いします。", zh: "請再說一遍。", romaji: "Mou ichido onegaishimasu." },
-        { jp: "わかりました。", zh: "我了解／知道了。", romaji: "Wakarimashita." },
-        { jp: "ゆっくり話してください。", zh: "請說慢一點。", romaji: "Yukkuri hanashite kudasai." },
-        { jp: "トイレはどこですか？", zh: "洗手間在哪裡？", romaji: "Toire wa doko desu ka?" },
-        { jp: "駅はどこですか？", zh: "車站在哪裡？", romaji: "Eki wa doko desu ka?" },
-        { jp: "まっすぐ行ってください。", zh: "請直走。", romaji: "Massugu itte kudasai." },
-        { jp: "右/左に曲がってください。", zh: "請往右／左轉。", romaji: "Migi/Hidari ni magatte kudasai." },
-        { jp: "メニューをください。", zh: "請給我菜單。", romaji: "Menyuu o kudasai." },
-        { jp: "おすすめは何ですか？", zh: "有什麼推薦嗎？", romaji: "Osusume wa nan desu ka?" },
-        { jp: "お水をお願いします。", zh: "請給我水。", romaji: "O-mizu o onegaishimasu." },
-        { jp: "お会計をお願いします。", zh: "請結帳。", romaji: "O-kaikei o onegaishimasu." },
-        { jp: "いくらですか？", zh: "這個多少錢？", romaji: "Ikura desu ka?" },
-        { jp: "安くなりますか？", zh: "可以便宜一點嗎？", romaji: "Yasuku narimasu ka?" },
-        { jp: "試着できますか？", zh: "可以試穿嗎？", romaji: "Shichaku dekimasu ka?" },
-        { jp: "クレジットカードで払えますか？", zh: "可以刷信用卡嗎？", romaji: "Kurejitto kaado de haraemasu ka?" },
-        { jp: "東京へ行きたいです。", zh: "我想去東京。", romaji: "Tokyo e ikitai desu." },
-        { jp: "片道切符をお願いします。", zh: "我要一張單程票。", romaji: "Katamichi kippu o onegaishimasu." },
-        { jp: "救急車を呼んでください。", zh: "請叫救護車。", romaji: "Kyuukyuusha o yonde kudasai." },
-        // ...可再加更多句
-      ]
+    function loadVoices() {
+      voices = window.speechSynthesis.getVoices();
     }
-  ];
 
-  function loadVoices() {
-    voices = window.speechSynthesis.getVoices();
-    voiceSelect.innerHTML = '';
-    voices.forEach((voice, index) => {
-      const option = document.createElement('option');
-      option.value = index;
-      option.textContent = `${voice.name} (${voice.lang})${voice.default ? ' [default]' : ''}`;
-      voiceSelect.appendChild(option);
-    });
-    // 預設選擇 Kyoto
-    const kyotoVoiceIndex = voices.findIndex(v =>
-      v.name.toLowerCase().includes('kyoto') && v.lang.toLowerCase().includes('ja')
-    );
-    if (kyotoVoiceIndex >= 0) {
-      voiceSelect.selectedIndex = kyotoVoiceIndex;
-    } else {
-      const jaVoiceIndex = voices.findIndex(v => v.lang.toLowerCase().includes('ja'));
-      voiceSelect.selectedIndex = jaVoiceIndex >= 0 ? jaVoiceIndex : 0;
+    if (typeof speechSynthesis !== "undefined") {
+      loadVoices();
+      speechSynthesis.onvoiceschanged = loadVoices;
     }
-  }
 
-  if (typeof speechSynthesis !== 'undefined') {
-    loadVoices();
-    speechSynthesis.onvoiceschanged = loadVoices;
-  }
+    const container = document.getElementById("categories-container");
 
-  const container = document.getElementById("categories-container");
+    data.forEach(cat => {
+      const div = document.createElement("div");
+      div.className = "category";
 
-  data.forEach(cat => {
-    const div = document.createElement("div");
-    div.className = "category";
+      const h2 = document.createElement("h2");
+      h2.textContent = cat.category;
+      div.appendChild(h2);
 
-    const h2 = document.createElement("h2");
-    h2.textContent = cat.category;
-    div.appendChild(h2);
+      const contentDiv = document.createElement("div");
+      contentDiv.className = "content";
 
-    const contentDiv = document.createElement("div");
-    contentDiv.className = "content";
+      const ul = document.createElement("ul");
 
-    const ul = document.createElement("ul");
+      cat.sentences.forEach(item => {
+        const li = document.createElement("li");
 
-    cat.sentences.forEach(item => {
-      const li = document.createElement("li");
+        const jpSpan = document.createElement("div");
+        jpSpan.className = "jp-sentence";
+        jpSpan.textContent = item.kanji
+          ? `${item.jp} / ${item.kanji}`
+          : item.jp;
 
-      const textDiv = document.createElement("div");
-      textDiv.className = "text-info";
+        const romajiDiv = document.createElement("div");
+        romajiDiv.className = "romaji";
+        romajiDiv.textContent = `羅馬拼音：${item.romaji}`;
 
-      const jpSpan = document.createElement("div");
-      jpSpan.className = "jp-sentence";
-      jpSpan.textContent = item.jp;
-      textDiv.appendChild(jpSpan);
+        const zhDiv = document.createElement("div");
+        zhDiv.className = "zh";
+        zhDiv.textContent = `繁體中文：${item.zh}`;
 
-      const detailDiv = document.createElement("div");
-      detailDiv.className = "detail-text";
-      detailDiv.innerHTML = `
-        <div><strong>中文：</strong>${item.zh}</div>
-        <div><strong>羅馬拼音：</strong>${item.romaji}</div>`;
-      textDiv.appendChild(detailDiv);
+        const btn = document.createElement("button");
+        btn.className = "play-btn";
+        btn.textContent = "播放";
+        btn.onclick = () => playJapanese(item.jp);
 
-      li.appendChild(textDiv);
+        li.appendChild(jpSpan);
+        li.appendChild(romajiDiv);
+        li.appendChild(zhDiv);
+        li.appendChild(btn);
+        ul.appendChild(li);
+      });
 
-      const playBtn = document.createElement("button");
-      playBtn.className = "play-btn";
-      playBtn.textContent = "播放";
-      playBtn.onclick = () => {
-        playJapanese(item.jp);
-      };
-      li.appendChild(playBtn);
-
-      ul.appendChild(li);
+      contentDiv.appendChild(ul);
+      div.appendChild(contentDiv);
+      container.appendChild(div);
     });
 
-    contentDiv.appendChild(ul);
-    div.appendChild(contentDiv);
-    container.appendChild(div);
-  });
+    document.addEventListener("click", e => {
+      if (e.target.tagName === "H2") {
+        e.target.parentElement.classList.toggle("expanded");
+      }
+    });
 
-  document.addEventListener('click', e => {
-    if (e.target.matches('.category h2')) {
-      e.target.parentElement.classList.toggle('expanded');
+    function playJapanese(text) {
+      if (!("speechSynthesis" in window)) {
+        alert("您的瀏覽器不支援語音。");
+        return;
+      }
+      const utter = new SpeechSynthesisUtterance(text);
+      const jaVoices = voices.filter(v => v.lang.includes("ja"));
+      if (jaVoices.length > 0) {
+        utter.voice = jaVoices[0];
+      }
+      utter.rate = 0.5;
+      speechSynthesis.speak(utter);
     }
-  });
-
-  function playJapanese(text) {
-    if (!('speechSynthesis' in window)) {
-      alert("您的瀏覽器不支援語音。");
-      return;
-    }
-    if (window.speechSynthesis.speaking) {
-      window.speechSynthesis.cancel();
-    }
-    const selectedVoice = voices[voiceSelect.value];
-    const utterance = new SpeechSynthesisUtterance(text);
-    if (selectedVoice) {
-      utterance.voice = selectedVoice;
-      utterance.lang = selectedVoice.lang;
-    } else {
-      utterance.lang = 'ja-JP';
-    }
-    utterance.rate = parseFloat(rateRange.value);
-    window.speechSynthesis.speak(utterance);
-  }
-
-  rateRange.addEventListener('input', () => {
-    rateValue.textContent = rateRange.value;
-  });
-</script>
-
+  </script>
 </body>
 </html>
