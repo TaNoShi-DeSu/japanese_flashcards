@@ -169,8 +169,8 @@
       voiceSelect.appendChild(option);
     });
 
-    // 預設選擇名稱包含 "Kyoto" 的語音，找不到再選日文語音，最後選第一個
-    const kyotoVoiceIndex = voices.findIndex(v => v.name.toLowerCase().includes('kyoto'));
+    // 預設選擇名稱包含 "Kyoko（ja-JP）[default]" 的語音，找不到再選日文語音，最後選第一個
+    const kyotoVoiceIndex = voices.findIndex(v => v.name.toLowerCase().includes('Kyoko（ja-JP）[default]'));
     if (kyotoVoiceIndex >= 0) {
       voiceSelect.selectedIndex = kyotoVoiceIndex;
     } else {
