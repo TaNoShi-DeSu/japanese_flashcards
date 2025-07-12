@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>日語句子卡 - 摺疊分類與語音</title>
+  <title>日語句子卡 - 300句版</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -70,7 +70,7 @@
       padding: 0 15px;
     }
     .category.expanded .content {
-      max-height: 2000px; /* 足夠大以容納內容 */
+      max-height: 4000px; /* 足夠大容納大量句子 */
       padding-top: 12px;
       padding-bottom: 15px;
       transition: max-height 0.6s ease;
@@ -156,32 +156,36 @@
   const rateRange = document.getElementById('rateRange');
   const rateValue = document.getElementById('rateValue');
 
-  const data = [
-    {
-      category: "問候語",
-      sentences: [
-        { jp: "おはようございます。", zh: "早安。", romaji: "Ohayou gozaimasu." },
-        { jp: "こんにちは。", zh: "你好。", romaji: "Konnichiwa." },
-        { jp: "こんばんは。", zh: "晚上好。", romaji: "Konbanwa." },
-      ],
-    },
-    {
-      category: "日常會話",
-      sentences: [
-        { jp: "元気ですか？", zh: "你還好嗎？", romaji: "Genki desu ka?" },
-        { jp: "ありがとう。", zh: "謝謝。", romaji: "Arigatou." },
-        { jp: "すみません。", zh: "不好意思。", romaji: "Sumimasen." },
-      ],
-    },
-    {
-      category: "購物用語",
-      sentences: [
-        { jp: "これをください。", zh: "請給我這個。", romaji: "Kore o kudasai." },
-        { jp: "いくらですか？", zh: "多少錢？", romaji: "Ikura desu ka?" },
-        { jp: "カードで払えますか？", zh: "可以用信用卡付款嗎？", romaji: "Kaado de haraemasu ka?" },
-      ],
-    },
+  // 建立約 300 句的示範資料
+  const data = [];
+
+  // 定義幾個分類名稱
+  const categories = [
+    "問候語",
+    "日常會話",
+    "購物用語",
+    "餐廳用語",
+    "交通用語",
+    "社交場合",
+    "旅遊用語",
+    "緊急情況"
   ];
+
+  // 每分類約填充 40 句
+  for (const category of categories) {
+    const sentences = [];
+    for (let i = 1; i <= 40; i++) {
+      sentences.push({
+        jp: `${category}の例文 ${i}`,
+        zh: `這是${category}的第${i}句例句。`,
+        romaji: `Romaji sample ${i}`
+      });
+    }
+    data.push({
+      category,
+      sentences
+    });
+  }
 
   function loadVoices() {
     voices = window.speechSynthesis.getVoices();
@@ -193,6 +197,7 @@
       voiceSelect.appendChild(option);
     });
 
+    // 預設優先 Kyoto 語音
     const kyotoVoiceIndex = voices.findIndex(v => 
       v.name.toLowerCase().includes('kyoto') && v.lang.toLowerCase().includes('ja')
     );
@@ -264,7 +269,6 @@
     categoriesContainer.appendChild(catDiv);
   });
 
-  // 監聽標題點擊事件，切換展開摺疊
   document.addEventListener('click', e => {
     if (e.target.matches('.category h2')) {
       const categoryDiv = e.target.parentElement;
