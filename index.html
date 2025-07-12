@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>日語句子卡</title>
+  <title>日語句子卡 - 語音優化版</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -54,16 +54,6 @@
       font-size: 1.1em;
       margin-bottom: 4px;
     }
-    .translation {
-      color: #555;
-      font-size: 0.9em;
-      margin-bottom: 2px;
-    }
-    .romaji {
-      font-style: italic;
-      font-size: 0.9em;
-      color: #777;
-    }
     button.play-btn {
       background-color: #4a90e2;
       border: none;
@@ -100,7 +90,6 @@
   <div class="info-area" id="info-area">點擊任一句子查看中文與羅馬拼音，並可播放語音。</div>
 
 <script>
-  // 日語句子資料結構
   const data = [
     {
       category: "問候語",
@@ -128,11 +117,21 @@
     },
   ];
 
-  // 取得 DOM 容器
   const categoriesContainer = document.getElementById("categories-container");
   const infoArea = document.getElementById("info-area");
 
-  // 建立分類與句子列表
+  // 先載入語音列表，預先觸發可解決手機瀏覽器延遲或禁止播放問題
+  let voices = [];
+  function loadVoices() {
+    voices = window.speechSynthesis.getVoices();
+    if (!voices.length) {
+      // iOS Chrome 常見問題，重試
+      setTimeout(loadVoices, 100);
+    }
+  }
+  loadVoices();
+  window.speechSynthesis.onvoiceschanged = loadVoices;
+
   data.forEach(cat => {
     const catDiv = document.createElement("div");
     catDiv.className = "category";
@@ -143,7 +142,7 @@
 
     const ul = document.createElement("ul");
 
-    cat.sentences.forEach((sent, idx) => {
+    cat.sentences.forEach((sent) => {
       const li = document.createElement("li");
 
       const textDiv = document.createElement("div");
@@ -154,7 +153,6 @@
       jpSpan.textContent = sent.jp;
       textDiv.appendChild(jpSpan);
 
-      // 預設不顯示翻譯和羅馬拼音，點擊後顯示在 infoArea
       li.appendChild(textDiv);
 
       const playBtn = document.createElement("button");
@@ -181,15 +179,27 @@
     categoriesContainer.appendChild(catDiv);
   });
 
-  // 播放語音，使用 Web Speech API
   function playJapanese(text) {
     if (!('speechSynthesis' in window)) {
       alert("抱歉，您的瀏覽器不支援語音合成功能。");
       return;
     }
+    if (window.speechSynthesis.speaking) {
+      window.speechSynthesis.cancel();
+    }
+
+    // 找日文語音
+    let voice = voices.find(v => v.lang.startsWith('ja'));
+    if (!voice && voices.length) {
+      // 若找不到日文語音，用預設第一個語音替代
+      voice = voices[0];
+    }
+
     const utterance = new SpeechSynthesisUtterance(text);
-    utterance.lang = "ja-JP";
-    window.speechSynthesis.cancel(); // 取消正在播放的語音
+    utterance.lang = voice ? voice.lang : 'ja-JP';
+    if (voice) {
+      utterance.voice = voice;
+    }
     window.speechSynthesis.speak(utterance);
   }
 </script>
