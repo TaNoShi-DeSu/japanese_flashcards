@@ -56,15 +56,10 @@
       padding: 10px 15px;
       border-radius: 6px;
       box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-      cursor: pointer;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      transition: background-color 0.3s;
       flex-wrap: wrap;
-    }
-    li:hover {
-      background-color: #e6f0ff;
     }
     .text-info {
       flex-grow: 1;
@@ -73,8 +68,16 @@
     .jp-sentence {
       font-weight: bold;
       font-size: 1.1em;
-      margin-bottom: 4px;
+      margin-bottom: 6px;
       word-break: break-word;
+    }
+    .detail-text {
+      width: 100%;
+      font-size: 0.9em;
+      color: #555;
+      padding-left: 5px;
+      margin-bottom: 4px;
+      line-height: 1.3em;
     }
     button.play-btn {
       background-color: #4a90e2;
@@ -85,20 +88,13 @@
       cursor: pointer;
       font-weight: bold;
       font-size: 0.9em;
-      margin-left: 15px;
       flex-shrink: 0;
       height: 36px;
       white-space: nowrap;
+      margin-left: 15px;
     }
     button.play-btn:hover {
       background-color: #357abd;
-    }
-    .detail-text {
-      width: 100%;
-      margin-top: 6px;
-      font-size: 0.9em;
-      color: #555;
-      padding-left: 5px;
     }
     .label-inline {
       white-space: nowrap;
@@ -117,7 +113,7 @@
     <div class="control-group">
       <label for="rateRange" class="label-inline">語速:</label>
       <input type="range" id="rateRange" min="0.5" max="2" step="0.1" value="0.5" />
-      <span id="rateValue">1.0</span>
+      <span id="rateValue">0.5</span>
     </div>
   </div>
 
@@ -168,11 +164,14 @@
       voiceSelect.appendChild(option);
     });
 
-    // 預設選擇名稱包含 "Kyoto" 的語音，找不到再選日文語音，最後選第一個
-    const kyotoVoiceIndex = voices.findIndex(v => v.name.toLowerCase().includes('kyoto（jp-JP）'));
+    // 找名稱包含 "kyoto" 且語言是 ja-JP 的語音優先
+    const kyotoVoiceIndex = voices.findIndex(v => 
+      v.name.toLowerCase().includes('kyoto') && v.lang.toLowerCase() === 'ja-jp'
+    );
     if (kyotoVoiceIndex >= 0) {
       voiceSelect.selectedIndex = kyotoVoiceIndex;
     } else {
+      // 找一般日文語音
       const jaVoiceIndex = voices.findIndex(v => v.lang.startsWith('ja'));
       voiceSelect.selectedIndex = jaVoiceIndex >= 0 ? jaVoiceIndex : 0;
     }
@@ -206,19 +205,17 @@
       jpSpan.textContent = sent.jp;
       textDiv.appendChild(jpSpan);
 
-      li.appendChild(textDiv);
-
-      // 新增詳細中文與羅馬拼音，預設隱藏
+      // 直接顯示中文與羅馬拼音
       const detailDiv = document.createElement("div");
       detailDiv.className = "detail-text";
-      detailDiv.style.display = "none";
       detailDiv.innerHTML = `
         <div><strong>中文：</strong>${sent.zh}</div>
         <div><strong>羅馬拼音：</strong>${sent.romaji}</div>
       `;
-      li.appendChild(detailDiv);
+      textDiv.appendChild(detailDiv);
 
-      // 播放按鈕不影響點擊事件
+      li.appendChild(textDiv);
+
       const playBtn = document.createElement("button");
       playBtn.className = "play-btn";
       playBtn.textContent = "播放";
@@ -227,11 +224,6 @@
         playJapanese(sent.jp);
       };
       li.appendChild(playBtn);
-
-      li.onclick = () => {
-        // 點擊時切換詳細區塊顯示
-        detailDiv.style.display = detailDiv.style.display === "none" ? "block" : "none";
-      };
 
       ul.appendChild(li);
     });
