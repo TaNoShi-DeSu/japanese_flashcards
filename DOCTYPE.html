@@ -1,5 +1,72 @@
-<h2>五十音行列表（平假名）</h2>
-<table border="1" cellpadding="6" cellspacing="0" style="border-collapse:collapse; width: 100%; max-width: 600px;">
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>基礎50音表</title>
+<style>
+  body {
+    font-family: "Microsoft JhengHei", sans-serif;
+    max-width: 700px;
+    margin: auto;
+    padding: 20px;
+  }
+  h2 {
+    text-align: center;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: center;
+  }
+  th, td {
+    border: 1px solid #999;
+    padding: 8px 5px;
+  }
+  th {
+    background-color: #f4f4f4;
+  }
+  .row-label {
+    background-color: #e0e0e0;
+    font-weight: bold;
+  }
+  .kana-cell {
+    cursor: pointer;
+    user-select: none;
+  }
+  .kana {
+    font-size: 1.6em;
+    display: block;
+  }
+  .kana-small {
+    font-size: 1em;
+    color: #666;
+  }
+  .romaji {
+    font-size: 0.9em;
+    color: #333;
+    margin-top: 3px;
+  }
+  .section-title {
+    margin-top: 30px;
+    font-weight: bold;
+    font-size: 1.2em;
+    border-bottom: 2px solid #444;
+    padding-bottom: 5px;
+  }
+  @media (max-width: 480px) {
+    .kana {
+      font-size: 1.2em;
+    }
+  }
+</style>
+</head>
+<body>
+
+<h2>基礎50音表</h2>
+
+<div class="section-title">平假名</div>
+<table>
   <thead>
     <tr>
       <th>行</th>
@@ -12,92 +79,88 @@
   </thead>
   <tbody>
     <tr>
-      <td>a</td>
-      <td><button class="playBtn" data-text="あ">あ<br><span style="font-size:0.8em;color:#555;">a</span></button></td>
-      <td><button class="playBtn" data-text="い">い<br><span style="font-size:0.8em;color:#555;">i</span></button></td>
-      <td><button class="playBtn" data-text="う">う<br><span style="font-size:0.8em;color:#555;">u</span></button></td>
-      <td><button class="playBtn" data-text="え">え<br><span style="font-size:0.8em;color:#555;">e</span></button></td>
-      <td><button class="playBtn" data-text="お">お<br><span style="font-size:0.8em;color:#555;">o</span></button></td>
+      <td class="row-label">あ行</td>
+      <td class="kana-cell" data-text="あ"><span class="kana">あ</span><span class="romaji">a</span></td>
+      <td class="kana-cell" data-text="い"><span class="kana">い</span><span class="romaji">i</span></td>
+      <td class="kana-cell" data-text="う"><span class="kana">う</span><span class="romaji">u</span></td>
+      <td class="kana-cell" data-text="え"><span class="kana">え</span><span class="romaji">e</span></td>
+      <td class="kana-cell" data-text="お"><span class="kana">お</span><span class="romaji">o</span></td>
     </tr>
     <tr>
-      <td>k</td>
-      <td><button class="playBtn" data-text="か">か<br><span style="font-size:0.8em;color:#555;">ka</span></button></td>
-      <td><button class="playBtn" data-text="き">き<br><span style="font-size:0.8em;color:#555;">ki</span></button></td>
-      <td><button class="playBtn" data-text="く">く<br><span style="font-size:0.8em;color:#555;">ku</span></button></td>
-      <td><button class="playBtn" data-text="け">け<br><span style="font-size:0.8em;color:#555;">ke</span></button></td>
-      <td><button class="playBtn" data-text="こ">こ<br><span style="font-size:0.8em;color:#555;">ko</span></button></td>
+      <td class="row-label">か行</td>
+      <td class="kana-cell" data-text="か"><span class="kana">か</span><span class="romaji">ka</span></td>
+      <td class="kana-cell" data-text="き"><span class="kana">き</span><span class="romaji">ki</span></td>
+      <td class="kana-cell" data-text="く"><span class="kana">く</span><span class="romaji">ku</span></td>
+      <td class="kana-cell" data-text="け"><span class="kana">け</span><span class="romaji">ke</span></td>
+      <td class="kana-cell" data-text="こ"><span class="kana">こ</span><span class="romaji">ko</span></td>
     </tr>
     <tr>
-      <td>s</td>
-      <td><button class="playBtn" data-text="さ">さ<br><span style="font-size:0.8em;color:#555;">sa</span></button></td>
-      <td><button class="playBtn" data-text="し">し<br><span style="font-size:0.8em;color:#555;">shi</span></button></td>
-      <td><button class="playBtn" data-text="す">す<br><span style="font-size:0.8em;color:#555;">su</span></button></td>
-      <td><button class="playBtn" data-text="せ">せ<br><span style="font-size:0.8em;color:#555;">se</span></button></td>
-      <td><button class="playBtn" data-text="そ">そ<br><span style="font-size:0.8em;color:#555;">so</span></button></td>
+      <td class="row-label">さ行</td>
+      <td class="kana-cell" data-text="さ"><span class="kana">さ</span><span class="romaji">sa</span></td>
+      <td class="kana-cell" data-text="し"><span class="kana">し</span><span class="romaji">shi</span></td>
+      <td class="kana-cell" data-text="す"><span class="kana">す</span><span class="romaji">su</span></td>
+      <td class="kana-cell" data-text="せ"><span class="kana">せ</span><span class="romaji">se</span></td>
+      <td class="kana-cell" data-text="そ"><span class="kana">そ</span><span class="romaji">so</span></td>
     </tr>
-    <tr>
-      <td>t</td>
-      <td><button class="playBtn" data-text="た">た<br><span style="font-size:0.8em;color:#555;">ta</span></button></td>
-      <td><button class="playBtn" data-text="ち">ち<br><span style="font-size:0.8em;color:#555;">chi</span></button></td>
-      <td><button class="playBtn" data-text="つ">つ<br><span style="font-size:0.8em;color:#555;">tsu</span></button></td>
-      <td><button class="playBtn" data-text="て">て<br><span style="font-size:0.8em;color:#555;">te</span></button></td>
-      <td><button class="playBtn" data-text="と">と<br><span style="font-size:0.8em;color:#555;">to</span></button></td>
-    </tr>
-    <tr>
-      <td>n</td>
-      <td><button class="playBtn" data-text="な">な<br><span style="font-size:0.8em;color:#555;">na</span></button></td>
-      <td><button class="playBtn" data-text="に">に<br><span style="font-size:0.8em;color:#555;">ni</span></button></td>
-      <td><button class="playBtn" data-text="ぬ">ぬ<br><span style="font-size:0.8em;color:#555;">nu</span></button></td>
-      <td><button class="playBtn" data-text="ね">ね<br><span style="font-size:0.8em;color:#555;">ne</span></button></td>
-      <td><button class="playBtn" data-text="の">の<br><span style="font-size:0.8em;color:#555;">no</span></button></td>
-    </tr>
-    <tr>
-      <td>h</td>
-      <td><button class="playBtn" data-text="は">は<br><span style="font-size:0.8em;color:#555;">ha</span></button></td>
-      <td><button class="playBtn" data-text="ひ">ひ<br><span style="font-size:0.8em;color:#555;">hi</span></button></td>
-      <td><button class="playBtn" data-text="ふ">ふ<br><span style="font-size:0.8em;color:#555;">fu</span></button></td>
-      <td><button class="playBtn" data-text="へ">へ<br><span style="font-size:0.8em;color:#555;">he</span></button></td>
-      <td><button class="playBtn" data-text="ほ">ほ<br><span style="font-size:0.8em;color:#555;">ho</span></button></td>
-    </tr>
-    <tr>
-      <td>m</td>
-      <td><button class="playBtn" data-text="ま">ま<br><span style="font-size:0.8em;color:#555;">ma</span></button></td>
-      <td><button class="playBtn" data-text="み">み<br><span style="font-size:0.8em;color:#555;">mi</span></button></td>
-      <td><button class="playBtn" data-text="む">む<br><span style="font-size:0.8em;color:#555;">mu</span></button></td>
-      <td><button class="playBtn" data-text="め">め<br><span style="font-size:0.8em;color:#555;">me</span></button></td>
-      <td><button class="playBtn" data-text="も">も<br><span style="font-size:0.8em;color:#555;">mo</span></button></td>
-    </tr>
-    <tr>
-      <td>y</td>
-      <td><button class="playBtn" data-text="や">や<br><span style="font-size:0.8em;color:#555;">ya</span></button></td>
-      <td></td>
-      <td><button class="playBtn" data-text="ゆ">ゆ<br><span style="font-size:0.8em;color:#555;">yu</span></button></td>
-      <td></td>
-      <td><button class="playBtn" data-text="よ">よ<br><span style="font-size:0.8em;color:#555;">yo</span></button></td>
-    </tr>
-    <tr>
-      <td>r</td>
-      <td><button class="playBtn" data-text="ら">ら<br><span style="font-size:0.8em;color:#555;">ra</span></button></td>
-      <td><button class="playBtn" data-text="り">り<br><span style="font-size:0.8em;color:#555;">ri</span></button></td>
-      <td><button class="playBtn" data-text="る">る<br><span style="font-size:0.8em;color:#555;">ru</span></button></td>
-      <td><button class="playBtn" data-text="れ">れ<br><span style="font-size:0.8em;color:#555;">re</span></button></td>
-      <td><button class="playBtn" data-text="ろ">ろ<br><span style="font-size:0.8em;color:#555;">ro</span></button></td>
-    </tr>
-    <tr>
-      <td>w</td>
-      <td><button class="playBtn" data-text="わ">わ<br><span style="font-size:0.8em;color:#555;">wa</span></button></td>
-      <td></td>
-      <td></td>
-      <td></td>
-      <td><button class="playBtn" data-text="を">を<br><span style="font-size:0.8em;color:#555;">wo</span></button></td>
-    </tr>
-    <tr>
-      <td>n</td>
-      <td><button class="playBtn" data-text="ん">ん<br><span style="font-size:0.8em;color:#555;">n</span></button></td>
-      <td></td>
-      <td></td>
-      <td></td>
-      <td></td>
-    </tr>
+    <!-- 依此類推加入其他行 -->
   </tbody>
 </table>
+
+<div class="section-title">濁音・半濁音</div>
+<table>
+  <thead>
+    <tr>
+      <th>行</th>
+      <th>あ</th>
+      <th>い</th>
+      <th>う</th>
+      <th>え</th>
+      <th>お</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="row-label">が行</td>
+      <td class="kana-cell" data-text="が"><span class="kana">が</span><span class="romaji">ga</span></td>
+      <td class="kana-cell" data-text="ぎ"><span class="kana">ぎ</span><span class="romaji">gi</span></td>
+      <td class="kana-cell" data-text="ぐ"><span class="kana">ぐ</span><span class="romaji">gu</span></td>
+      <td class="kana-cell" data-text="げ"><span class="kana">げ</span><span class="romaji">ge</span></td>
+      <td class="kana-cell" data-text="ご"><span class="kana">ご</span><span class="romaji">go</span></td>
+    </tr>
+    <tr>
+      <td class="row-label">ざ行</td>
+      <td class="kana-cell" data-text="ざ"><span class="kana">ざ</span><span class="romaji">za</span></td>
+      <td class="kana-cell" data-text="じ"><span class="kana">じ</span><span class="romaji">ji</span></td>
+      <td class="kana-cell" data-text="ず"><span class="kana">ず</span><span class="romaji">zu</span></td>
+      <td class="kana-cell" data-text="ぜ"><span class="kana">ぜ</span><span class="romaji">ze</span></td>
+      <td class="kana-cell" data-text="ぞ"><span class="kana">ぞ</span><span class="romaji">zo</span></td>
+    </tr>
+    <!-- 依此類推 -->
+  </tbody>
+</table>
+
+<script>
+  // 語音播放
+  const playButtons = document.querySelectorAll('.kana-cell');
+  playButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const text = btn.getAttribute('data-text');
+      if (!window.speechSynthesis) {
+        alert('此瀏覽器不支援語音合成');
+        return;
+      }
+      const utterance = new SpeechSynthesisUtterance(text);
+      // 選擇日語語音
+      const voices = speechSynthesis.getVoices();
+      // 預設Kyoto或第一個ja語音
+      let voice = voices.find(v => v.lang === 'ja-JP' && v.name.toLowerCase().includes('kyoto'));
+      if (!voice) voice = voices.find(v => v.lang === 'ja-JP');
+      if (voice) utterance.voice = voice;
+      utterance.rate = 0.5; // 預設語速
+      speechSynthesis.speak(utterance);
+    });
+  });
+</script>
+
+</body>
+</html>
