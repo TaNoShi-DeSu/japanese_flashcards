@@ -1,169 +1,139 @@
 <!DOCTYPE html>
-<html lang="ja">
+<html lang="zh-Hant">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Japanese Flashcards with Voice</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>日常用句</title>
   <style>
-    body { font-family: Arial, sans-serif; margin: 20px; line-height: 1.5; }
-    label, select, input, button { margin-right: 10px; font-size: 1rem; }
-    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; vertical-align: middle; }
-    button { padding: 5px 10px; cursor: pointer; }
-    #backButton {
-      margin-bottom: 15px;
-      background-color: #eee;
-      border: 1px solid #ccc;
+    body {
+      font-family: "Microsoft JhengHei", sans-serif;
+      background-color: #f7f9fc;
+      color: #333;
+      padding: 20px;
+      line-height: 1.6;
+    }
+    .back-to-menu {
+      display: inline-block;
+      padding: 8px 16px;
+      margin-bottom: 20px;
+      background-color: #007acc;
+      color: white;
+      text-decoration: none;
+      border-radius: 5px;
+      font-weight: 600;
+      transition: background-color 0.3s ease;
+      font-size: 1em;
+    }
+    .back-to-menu:hover {
+      background-color: #005fa3;
+    }
+    h1 {
+      font-size: 1.8em;
+      color: #007acc;
+      margin-top: 0;
+    }
+    .phrase-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .phrase-card {
+      background: #fff;
+      border-radius: 8px;
+      padding: 16px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      width: calc(50% - 12px);
+    }
+    @media (max-width: 600px) {
+      .phrase-card {
+        width: 100%;
+      }
+    }
+    .jp {
+      font-weight: bold;
+      color: #007acc;
+      font-size: 1.2em;
+    }
+    .roma, .zh {
+      font-size: 1em;
+      margin-top: 4px;
+    }
+    .speak-btn {
+      display: inline-block;
+      margin-top: 8px;
+      padding: 6px 10px;
+      background: #28a745;
+      color: #fff;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 0.9em;
+      transition: background-color 0.3s ease;
+      text-decoration: none;
+    }
+    .speak-btn:hover {
+      background: #1e7e34;
     }
   </style>
 </head>
 <body>
 
-<h1>日常用句 - Japanese Flashcards</h1>
+<a href="index.html" class="back-to-menu">← 回目錄</a>
 
-<button id="backButton" onclick="goBack()">回目錄</button>
+<h1>日常用句</h1>
 
-<div>
-  <label for="voiceSelect">聲線：</label>
-  <select id="voiceSelect"></select>
-
-  <label for="rateRange">語速：</label>
-  <input type="range" id="rateRange" min="0.2" max="2" step="0.1" value="0.5" />
-  <span id="rateValue">0.5</span>
+<div class="phrase-list">
+<div class="phrase-card"><div class="jp">こんにちは</div><div class="roma">Kon'nichiwa</div><div class="zh">你好</div><a class="speak-btn" data-text="こんにちは">🔊 播放</a></div>
+<div class="phrase-card"><div class="jp">ありがとう</div><div class="roma">Arigatou</div><div class="zh">謝謝</div><a class="speak-btn" data-text="ありがとう">🔊 播放</a></div>
+<div class="phrase-card"><div class="jp">はい</div><div class="roma">Hai</div><div class="zh">是的</div><a class="speak-btn" data-text="はい">🔊 播放</a></div>
+<div class="phrase-card"><div class="jp">いいえ</div><div class="roma">Iie</div><div class="zh">不是</div><a class="speak-btn" data-text="いいえ">🔊 播放</a></div>
+<div class="phrase-card"><div class="jp">すみません</div><div class="roma">Sumimasen</div><div class="zh">不好意思</div><a class="speak-btn" data-text="すみません">🔊 播放</a></div>
+<div class="phrase-card"><div class="jp">お願いします</div><div class="roma">Onegaishimasu</div><div class="zh">拜託</div><a class="speak-btn" data-text="お願いします">🔊 播放</a></div>
+<div class="phrase-card"><div class="jp">お元気ですか？</div><div class="roma">Ogenki desu ka?</div><div class="zh">您好嗎？</div><a class="speak-btn" data-text="お元気ですか？">🔊 播放</a></div>
+<div class="phrase-card"><div class="jp">大丈夫です</div><div class="roma">Daijoubu desu</div><div class="zh">沒問題</div><a class="speak-btn" data-text="大丈夫です">🔊 播放</a></div>
+<div class="phrase-card"><div class="jp">わかりました</div><div class="roma">Wakarimashita</div><div class="zh">我了解了</div><a class="speak-btn" data-text="わかりました">🔊 播放</a></div>
+<div class="phrase-card"><div class="jp">わかりません</div><div class="roma">Wakarimasen</div><div class="zh">我不懂</div><a class="speak-btn" data-text="わかりません">🔊 播放</a></div>
+<div class="phrase-card"><div class="jp">いくらですか？</div><div class="roma">Ikura desu ka?</div><div class="zh">多少錢？</div><a class="speak-btn" data-text="いくらですか？">🔊 播放</a></div>
+<div class="phrase-card"><div class="jp">高いです</div><div class="roma">Takai desu</div><div class="zh">很貴</div><a class="speak-btn" data-text="高いです">🔊 播放</a></div>
+<div class="phrase-card"><div class="jp">安いです</div><div class="roma">Yasui desu</div><div class="zh">很便宜</div><a class="speak-btn" data-text="安いです">🔊 播放</a></div>
+<div class="phrase-card"><div class="jp">どこですか？</div><div class="roma">Doko desu ka?</div><div class="zh">在哪裡？</div><a class="speak-btn" data-text="どこですか？">🔊 播放</a></div>
+<div class="phrase-card"><div class="jp">トイレはどこですか？</div><div class="roma">Toire wa doko desu ka?</div><div class="zh">廁所在哪裡？</div><a class="speak-btn" data-text="トイレはどこですか？">🔊 播放</a></div>
+<div class="phrase-card"><div class="jp">助けてください</div><div class="roma">Tasukete kudasai</div><div class="zh">請幫幫我</div><a class="speak-btn" data-text="助けてください">🔊 播放</a></div>
+<div class="phrase-card"><div class="jp">道に迷いました</div><div class="roma">Michi ni mayoimashita</div><div class="zh">我迷路了</div><a class="speak-btn" data-text="道に迷いました">🔊 播放</a></div>
+<div class="phrase-card"><div class="jp">ゆっくり話してください</div><div class="roma">Yukkuri hanashite kudasai</div><div class="zh">請慢慢說</div><a class="speak-btn" data-text="ゆっくり話してください">🔊 播放</a></div>
+<div class="phrase-card"><div class="jp">英語を話せますか？</div><div class="roma">Eigo o hanasemasu ka?</div><div class="zh">你會說英文嗎？</div><a class="speak-btn" data-text="英語を話せますか？">🔊 播放</a></div>
+<div class="phrase-card"><div class="jp">病院はどこですか？</div><div class="roma">Byouin wa doko desu ka?</div><div class="zh">醫院在哪裡？</div><a class="speak-btn" data-text="病院はどこですか？">🔊 播放</a></div>
+<div class="phrase-card"><div class="jp">警察署はどこですか？</div><div class="roma">Keisatsusho wa doko desu ka?</div><div class="zh">警察局在哪裡？</div><a class="speak-btn" data-text="警察署はどこですか？">🔊 播放</a></div>
+<div class="phrase-card"><div class="jp">道を教えてください</div><div class="roma">Michi o oshiete kudasai</div><div class="zh">請告訴我路怎麼走</div><a class="speak-btn" data-text="道を教えてください">🔊 播放</a></div>
+<div class="phrase-card"><div class="jp">これをください</div><div class="roma">Kore o kudasai</div><div class="zh">我要這個</div><a class="speak-btn" data-text="これをください">🔊 播放</a></div>
+<div class="phrase-card"><div class="jp">カードで払えますか？</div><div class="roma">Kaado de haraemasu ka?</div><div class="zh">可以刷卡嗎？</div><a class="speak-btn" data-text="カードで払えますか？">🔊 播放</a></div>
+<div class="phrase-card"><div class="jp">領収書をください</div><div class="roma">Ryoushuusho o kudasai</div><div class="zh">請給我收據</div><a class="speak-btn" data-text="領収書をください">🔊 播放</a></div>
+<div class="phrase-card"><div class="jp">もっと安くなりませんか？</div><div class="roma">Motto yasuku narimasen ka?</div><div class="zh">可以再便宜一點嗎？</div><a class="speak-btn" data-text="もっと安くなりませんか？">🔊 播放</a></div>
+<div class="phrase-card"><div class="jp">チェックインをお願いします</div><div class="roma">Chekkuin o onegaishimasu</div><div class="zh">我要辦理入住</div><a class="speak-btn" data-text="チェックインをお願いします">🔊 播放</a></div>
+<div class="phrase-card"><div class="jp">チェックアウトをお願いします</div><div class="roma">Chekkuauto o onegaishimasu</div><div class="zh">我要辦理退房</div><a class="speak-btn" data-text="チェックアウトをお願いします">🔊 播放</a></div>
+<div class="phrase-card"><div class="jp">Wi-Fiはありますか？</div><div class="roma">Wi-Fi wa arimasu ka?</div><div class="zh">有 Wi-Fi 嗎？</div><a class="speak-btn" data-text="Wi-Fiはありますか？">🔊 播放</a></div>
+<div class="phrase-card"><div class="jp">写真を撮ってもいいですか？</div><div class="roma">Shashin o totte mo ii desu ka?</div><div class="zh">可以拍照嗎？</div><a class="speak-btn" data-text="写真を撮ってもいいですか？">🔊 播放</a></div>
+<div class="phrase-card"><div class="jp">美味しいです</div><div class="roma">Oishii desu</div><div class="zh">很好吃</div><a class="speak-btn" data-text="美味しいです">🔊 播放</a></div>
+<div class="phrase-card"><div class="jp">おすすめは何ですか？</div><div class="roma">Osusume wa nan desu ka?</div><div class="zh">有什麼推薦的嗎？</div><a class="speak-btn" data-text="おすすめは何ですか？">🔊 播放</a></div>
+<div class="phrase-card"><div class="jp">辛いですか？</div><div class="roma">Karai desu ka?</div><div class="zh">會辣嗎？</div><a class="speak-btn" data-text="辛いですか？">🔊 播放</a></div>
+<div class="phrase-card"><div class="jp">お会計お願いします</div><div class="roma">Okaikei onegaishimasu</div><div class="zh">請結帳</div><a class="speak-btn" data-text="お会計お願いします">🔊 播放</a></div>
+<div class="phrase-card"><div class="jp">持ち帰りです</div><div class="roma">Mochikaeri desu</div><div class="zh">我要外帶</div><a class="speak-btn" data-text="持ち帰りです">🔊 播放</a></div>
+<div class="phrase-card"><div class="jp">満席です</div><div class="roma">Manseki desu</div><div class="zh">客滿</div><a class="speak-btn" data-text="満席です">🔊 播放</a></div>
+<div class="phrase-card"><div class="jp">予約しています</div><div class="roma">Yoyaku shiteimasu</div><div class="zh">我有預約</div><a class="speak-btn" data-text="予約しています">🔊 播放</a></div>
 </div>
 
-<table>
-  <thead>
-    <tr>
-      <th>日文</th>
-      <th>羅馬拼音</th>
-      <th>繁體中文</th>
-      <th>播放</th>
-    </tr>
-  </thead>
-  <tbody id="sentenceTable"></tbody>
-</table>
-
 <script>
-  function goBack() {
-    // 請依你網站目錄頁面路徑修改這裡
-    window.location.href = "index.html";
-  }
-
-  const sentences = [
-    { jp: "おはようございます", romaji: "Ohayou gozaimasu", zh: "早安" },
-    { jp: "こんにちは", romaji: "Konnichiwa", zh: "你好" },
-    { jp: "こんばんは", romaji: "Konbanwa", zh: "晚上好" },
-    { jp: "ありがとう", romaji: "Arigatou", zh: "謝謝" },
-    { jp: "すみません", romaji: "Sumimasen", zh: "不好意思" },
-    { jp: "はい", romaji: "Hai", zh: "是的" },
-    { jp: "いいえ", romaji: "Iie", zh: "不是" },
-    { jp: "お願いします", romaji: "Onegaishimasu", zh: "麻煩你" },
-    { jp: "助けてください", romaji: "Tasukete kudasai", zh: "請幫忙" },
-    { jp: "わかりました", romaji: "Wakarimashita", zh: "我明白了" },
-    { jp: "もう一度お願いします", romaji: "Mou ichido onegaishimasu", zh: "請再說一次" },
-    { jp: "ゆっくり話してください", romaji: "Yukkuri hanashite kudasai", zh: "請說慢一點" },
-    { jp: "これはいくらですか？", romaji: "Kore wa ikura desu ka?", zh: "這個多少錢？" },
-    { jp: "どこですか？", romaji: "Doko desu ka?", zh: "在哪裡？" },
-    { jp: "トイレはどこですか？", romaji: "Toire wa doko desu ka?", zh: "廁所在哪裡？" },
-    { jp: "駅はどこですか？", romaji: "Eki wa doko desu ka?", zh: "車站在哪裡？" },
-    { jp: "助けて！", romaji: "Tasukete!", zh: "救命！" },
-    { jp: "医者を呼んでください", romaji: "Isha o yonde kudasai", zh: "請叫醫生" },
-    { jp: "具合が悪いです", romaji: "Guai ga warui desu", zh: "我不舒服" },
-    { jp: "名前は何ですか？", romaji: "Namae wa nan desu ka?", zh: "你叫什麼名字？" },
-    { jp: "日本語が話せますか？", romaji: "Nihongo ga hanasemasu ka?", zh: "你會說日文嗎？" },
-    { jp: "英語が話せますか？", romaji: "Eigo ga hanasemasu ka?", zh: "你會說英文嗎？" },
-    { jp: "助けが必要です", romaji: "Tasuke ga hitsuyou desu", zh: "我需要幫助" },
-    { jp: "道に迷いました", romaji: "Michi ni mayoimashita", zh: "我迷路了" },
-    { jp: "ホテルはどこですか？", romaji: "Hoteru wa doko desu ka?", zh: "飯店在哪裡？" },
-    { jp: "これは何ですか？", romaji: "Kore wa nan desu ka?", zh: "這是什麼？" },
-    { jp: "もう少し安くなりませんか？", romaji: "Mou sukoshi yasuku narimasen ka?", zh: "可以再便宜一點嗎？" },
-    { jp: "お会計お願いします", romaji: "Okaikei onegaishimasu", zh: "請結帳" },
-    { jp: "おすすめは何ですか？", romaji: "Osusume wa nan desu ka?", zh: "有什麼推薦嗎？" },
-    { jp: "写真を撮ってもいいですか？", romaji: "Shashin o totte mo ii desu ka?", zh: "可以拍照嗎？" },
-    { jp: "禁煙ですか？", romaji: "Kin'en desu ka?", zh: "這裡禁菸嗎？" },
-    { jp: "水をください", romaji: "Mizu o kudasai", zh: "請給我水" },
-    { jp: "どこで乗り換えますか？", romaji: "Doko de norikaemasu ka?", zh: "在哪裡換乘？" },
-    { jp: "急いでいます", romaji: "Isoide imasu", zh: "我很急" },
-    { jp: "予約しています", romaji: "Yoyaku shite imasu", zh: "我有預約" },
-    { jp: "お腹が空きました", romaji: "Onaka ga sukimashita", zh: "我餓了" },
-    { jp: "喉が渇きました", romaji: "Nodo ga kawakimashita", zh: "我渴了" },
-    { jp: "今日は暑いですね", romaji: "Kyou wa atsui desu ne", zh: "今天很熱呢" },
-    { jp: "寒いです", romaji: "Samui desu", zh: "好冷" },
-    { jp: "気をつけて", romaji: "Ki o tsukete", zh: "請小心" },
-    { jp: "頑張ってください", romaji: "Ganbatte kudasai", zh: "請加油" },
-    { jp: "お疲れ様です", romaji: "Otsukaresama desu", zh: "辛苦了" },
-    { jp: "さようなら", romaji: "Sayounara", zh: "再見" },
-    { jp: "またね", romaji: "Mata ne", zh: "回頭見" },
-    { jp: "気にしないでください", romaji: "Ki ni shinaide kudasai", zh: "別介意" },
-    { jp: "大丈夫です", romaji: "Daijoubu desu", zh: "沒問題" },
-    { jp: "ありがとうござました", romaji: "Arigatou gozaimashita", zh: "非常感謝" }
-  ];
-
-  const tableBody = document.getElementById("sentenceTable");
-  sentences.forEach(({ jp, romaji, zh }) => {
-    const tr = document.createElement("tr");
-    tr.innerHTML = `
-      <td>${jp}</td>
-      <td>${romaji}</td>
-      <td>${zh}</td>
-      <td><button data-jp="${jp}">播放</button></td>
-    `;
-    tableBody.appendChild(tr);
+  document.querySelectorAll(".speak-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const text = btn.getAttribute("data-text");
+      const utterance = new SpeechSynthesisUtterance(text);
+      const voices = speechSynthesis.getVoices();
+      let voice = voices.find(v => v.lang === 'ja-JP' && v.name.toLowerCase().includes('kyoto'));
+      if (!voice) voice = voices.find(v => v.lang === 'ja-JP');
+      if (voice) utterance.voice = voice;
+      utterance.rate = 0.5;
+      speechSynthesis.speak(utterance);
+    });
   });
-
-  let voices = [];
-  let voiceSelect = document.getElementById("voiceSelect");
-  let initialized = false;
-
-  function populateVoiceList() {
-    voices = speechSynthesis.getVoices().filter(v => v.lang.startsWith("ja"));
-    voiceSelect.innerHTML = "";
-
-    if (voices.length > 0) {
-      voices.forEach((v, i) => {
-        voiceSelect.innerHTML += `<option value="${i}">${v.name}</option>`;
-      });
-      const kyotoIndex = voices.findIndex(v => v.name.toLowerCase().includes("kyoto"));
-      voiceSelect.value = kyotoIndex >= 0 ? kyotoIndex : 0;
-    } else {
-      voiceSelect.innerHTML = `<option>（找不到日文聲線）</option>`;
-    }
-  }
-
-  if ('onvoiceschanged' in speechSynthesis) {
-    speechSynthesis.onvoiceschanged = populateVoiceList;
-  } else {
-    populateVoiceList();
-  }
-
-  document.getElementById("rateRange").addEventListener("input", (e) => {
-    document.getElementById("rateValue").textContent = e.target.value;
-  });
-
-  document.getElementById("sentenceTable").addEventListener("click", (e) => {
-    if (e.target.tagName === "BUTTON") {
-      if (!initialized) {
-        populateVoiceList();
-        initialized = true;
-      }
-      speak(e.target.getAttribute("data-jp"));
-    }
-  });
-
-  function speak(text) {
-    if (!text) return;
-    speechSynthesis.cancel();
-    const utterance = new SpeechSynthesisUtterance(text);
-    utterance.lang = "ja-JP";
-
-    const voiceIndex = voiceSelect.value;
-    if (voices.length > 0 && voices[voiceIndex]) {
-      utterance.voice = voices[voiceIndex];
-    }
-    utterance.rate = parseFloat(document.getElementById("rateRange").value);
-    speechSynthesis.speak(utterance);
-  }
 </script>
 
 </body>
