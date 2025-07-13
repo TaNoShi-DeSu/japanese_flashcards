@@ -1,124 +1,151 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>日常用句</title>
-  <style>
-    body {
-      font-family: "Microsoft JhengHei", sans-serif;
-      background-color: #f7f9fc;
-      color: #333;
-      padding: 20px;
-      line-height: 1.6;
-    }
-    .back-to-menu {
-      display: inline-block;
-      padding: 8px 16px;
-      margin-bottom: 20px;
-      background-color: #007acc;
-      color: white;
-      text-decoration: none;
-      border-radius: 5px;
-      font-weight: 600;
-      transition: background-color 0.3s ease;
-      font-size: 1em;
-    }
-    .back-to-menu:hover {
-      background-color: #005fa3;
-    }
-    h1 {
-      font-size: 1.8em;
-      color: #007acc;
-      margin-top: 0;
-    }
-    .phrase-list {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-    }
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>日常用句</title>
+<style>
+  body {
+    font-family: "Microsoft JhengHei", sans-serif;
+    background: #f7f9fc;
+    color: #333;
+    padding: 20px;
+    line-height: 1.3;
+  }
+  a.back-to-menu {
+    display: inline-block;
+    margin-bottom: 16px;
+    padding: 8px 14px;
+    background: #007acc;
+    color: #fff;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: background-color 0.3s ease;
+  }
+  a.back-to-menu:hover {
+    background: #005fa3;
+  }
+  h1 {
+    color: #007acc;
+    margin-bottom: 18px;
+  }
+  .phrase-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 16px;
+  }
+  .phrase-card {
+    background: #fff;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    border-radius: 6px;
+    padding: 8px 12px;
+    width: calc(50% - 16px);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  @media (max-width: 600px) {
     .phrase-card {
-      background: #fff;
-      border-radius: 8px;
-      padding: 16px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-      width: calc(50% - 12px);
+      width: 100%;
+      font-size: 14px;
+      padding: 8px 10px;
     }
-    @media (max-width: 600px) {
-      .phrase-card {
-        width: 100%;
-      }
-    }
-    .jp {
-      font-weight: bold;
-      color: #007acc;
-      font-size: 1.2em;
-    }
-    .roma, .zh {
-      font-size: 1em;
-      margin-top: 4px;
-    }
-    .speak-btn {
-      display: inline-block;
-      margin-top: 8px;
-      padding: 6px 10px;
-      background: #28a745;
-      color: #fff;
-      border-radius: 4px;
-      cursor: pointer;
-      font-size: 0.9em;
-      transition: background-color 0.3s ease;
-      text-decoration: none;
-    }
-    .speak-btn:hover {
-      background: #1e7e34;
-    }
-  </style>
+  }
+  .text-block {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    flex-wrap: nowrap;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .jp {
+    font-weight: 700;
+    color: #007acc;
+    min-width: 80px;
+  }
+  .zh {
+    color: #555;
+    min-width: 100px;
+  }
+  .roma {
+    font-style: italic;
+    color: #888;
+    min-width: 110px;
+  }
+  button.speak-btn {
+    background: #28a745;
+    border: none;
+    border-radius: 4px;
+    color: white;
+    cursor: pointer;
+    padding: 4px 8px;
+    font-size: 0.85em;
+    transition: background-color 0.3s ease;
+  }
+  button.speak-btn:hover {
+    background: #1e7e34;
+  }
+</style>
 </head>
 <body>
 
 <a href="index.html" class="back-to-menu">← 回目錄</a>
-
-<h1>日常用句</h1>
+<h1>日常用句 (50句)</h1>
 
 <div class="phrase-list">
-<div class="phrase-card"><div class="jp">こんにちは</div><div class="roma">Kon'nichiwa</div><div class="zh">你好</div><a class="speak-btn" data-text="こんにちは">🔊 播放</a></div>
-<div class="phrase-card"><div class="jp">ありがとう</div><div class="roma">Arigatou</div><div class="zh">謝謝</div><a class="speak-btn" data-text="ありがとう">🔊 播放</a></div>
-<div class="phrase-card"><div class="jp">はい</div><div class="roma">Hai</div><div class="zh">是的</div><a class="speak-btn" data-text="はい">🔊 播放</a></div>
-<div class="phrase-card"><div class="jp">いいえ</div><div class="roma">Iie</div><div class="zh">不是</div><a class="speak-btn" data-text="いいえ">🔊 播放</a></div>
-<div class="phrase-card"><div class="jp">すみません</div><div class="roma">Sumimasen</div><div class="zh">不好意思</div><a class="speak-btn" data-text="すみません">🔊 播放</a></div>
-<div class="phrase-card"><div class="jp">お願いします</div><div class="roma">Onegaishimasu</div><div class="zh">拜託</div><a class="speak-btn" data-text="お願いします">🔊 播放</a></div>
-<div class="phrase-card"><div class="jp">お元気ですか？</div><div class="roma">Ogenki desu ka?</div><div class="zh">您好嗎？</div><a class="speak-btn" data-text="お元気ですか？">🔊 播放</a></div>
-<div class="phrase-card"><div class="jp">大丈夫です</div><div class="roma">Daijoubu desu</div><div class="zh">沒問題</div><a class="speak-btn" data-text="大丈夫です">🔊 播放</a></div>
-<div class="phrase-card"><div class="jp">わかりました</div><div class="roma">Wakarimashita</div><div class="zh">我了解了</div><a class="speak-btn" data-text="わかりました">🔊 播放</a></div>
-<div class="phrase-card"><div class="jp">わかりません</div><div class="roma">Wakarimasen</div><div class="zh">我不懂</div><a class="speak-btn" data-text="わかりません">🔊 播放</a></div>
-<div class="phrase-card"><div class="jp">いくらですか？</div><div class="roma">Ikura desu ka?</div><div class="zh">多少錢？</div><a class="speak-btn" data-text="いくらですか？">🔊 播放</a></div>
-<div class="phrase-card"><div class="jp">高いです</div><div class="roma">Takai desu</div><div class="zh">很貴</div><a class="speak-btn" data-text="高いです">🔊 播放</a></div>
-<div class="phrase-card"><div class="jp">安いです</div><div class="roma">Yasui desu</div><div class="zh">很便宜</div><a class="speak-btn" data-text="安いです">🔊 播放</a></div>
-<div class="phrase-card"><div class="jp">どこですか？</div><div class="roma">Doko desu ka?</div><div class="zh">在哪裡？</div><a class="speak-btn" data-text="どこですか？">🔊 播放</a></div>
-<div class="phrase-card"><div class="jp">トイレはどこですか？</div><div class="roma">Toire wa doko desu ka?</div><div class="zh">廁所在哪裡？</div><a class="speak-btn" data-text="トイレはどこですか？">🔊 播放</a></div>
-<div class="phrase-card"><div class="jp">助けてください</div><div class="roma">Tasukete kudasai</div><div class="zh">請幫幫我</div><a class="speak-btn" data-text="助けてください">🔊 播放</a></div>
-<div class="phrase-card"><div class="jp">道に迷いました</div><div class="roma">Michi ni mayoimashita</div><div class="zh">我迷路了</div><a class="speak-btn" data-text="道に迷いました">🔊 播放</a></div>
-<div class="phrase-card"><div class="jp">ゆっくり話してください</div><div class="roma">Yukkuri hanashite kudasai</div><div class="zh">請慢慢說</div><a class="speak-btn" data-text="ゆっくり話してください">🔊 播放</a></div>
-<div class="phrase-card"><div class="jp">英語を話せますか？</div><div class="roma">Eigo o hanasemasu ka?</div><div class="zh">你會說英文嗎？</div><a class="speak-btn" data-text="英語を話せますか？">🔊 播放</a></div>
-<div class="phrase-card"><div class="jp">病院はどこですか？</div><div class="roma">Byouin wa doko desu ka?</div><div class="zh">醫院在哪裡？</div><a class="speak-btn" data-text="病院はどこですか？">🔊 播放</a></div>
-<div class="phrase-card"><div class="jp">警察署はどこですか？</div><div class="roma">Keisatsusho wa doko desu ka?</div><div class="zh">警察局在哪裡？</div><a class="speak-btn" data-text="警察署はどこですか？">🔊 播放</a></div>
-<div class="phrase-card"><div class="jp">道を教えてください</div><div class="roma">Michi o oshiete kudasai</div><div class="zh">請告訴我路怎麼走</div><a class="speak-btn" data-text="道を教えてください">🔊 播放</a></div>
-<div class="phrase-card"><div class="jp">これをください</div><div class="roma">Kore o kudasai</div><div class="zh">我要這個</div><a class="speak-btn" data-text="これをください">🔊 播放</a></div>
-<div class="phrase-card"><div class="jp">カードで払えますか？</div><div class="roma">Kaado de haraemasu ka?</div><div class="zh">可以刷卡嗎？</div><a class="speak-btn" data-text="カードで払えますか？">🔊 播放</a></div>
-<div class="phrase-card"><div class="jp">領収書をください</div><div class="roma">Ryoushuusho o kudasai</div><div class="zh">請給我收據</div><a class="speak-btn" data-text="領収書をください">🔊 播放</a></div>
-<div class="phrase-card"><div class="jp">もっと安くなりませんか？</div><div class="roma">Motto yasuku narimasen ka?</div><div class="zh">可以再便宜一點嗎？</div><a class="speak-btn" data-text="もっと安くなりませんか？">🔊 播放</a></div>
-<div class="phrase-card"><div class="jp">チェックインをお願いします</div><div class="roma">Chekkuin o onegaishimasu</div><div class="zh">我要辦理入住</div><a class="speak-btn" data-text="チェックインをお願いします">🔊 播放</a></div>
-<div class="phrase-card"><div class="jp">チェックアウトをお願いします</div><div class="roma">Chekkuauto o onegaishimasu</div><div class="zh">我要辦理退房</div><a class="speak-btn" data-text="チェックアウトをお願いします">🔊 播放</a></div>
-<div class="phrase-card"><div class="jp">Wi-Fiはありますか？</div><div class="roma">Wi-Fi wa arimasu ka?</div><div class="zh">有 Wi-Fi 嗎？</div><a class="speak-btn" data-text="Wi-Fiはありますか？">🔊 播放</a></div>
-<div class="phrase-card"><div class="jp">写真を撮ってもいいですか？</div><div class="roma">Shashin o totte mo ii desu ka?</div><div class="zh">可以拍照嗎？</div><a class="speak-btn" data-text="写真を撮ってもいいですか？">🔊 播放</a></div>
-<div class="phrase-card"><div class="jp">美味しいです</div><div class="roma">Oishii desu</div><div class="zh">很好吃</div><a class="speak-btn" data-text="美味しいです">🔊 播放</a></div>
-<div class="phrase-card"><div class="jp">おすすめは何ですか？</div><div class="roma">Osusume wa nan desu ka?</div><div class="zh">有什麼推薦的嗎？</div><a class="speak-btn" data-text="おすすめは何ですか？">🔊 播放</a></div>
-<div class="phrase-card"><div class="jp">辛いですか？</div><div class="roma">Karai desu ka?</div><div class="zh">會辣嗎？</div><a class="speak-btn" data-text="辛いですか？">🔊 播放</a></div>
-<div class="phrase-card"><div class="jp">お会計お願いします</div><div class="roma">Okaikei onegaishimasu</div><div class="zh">請結帳</div><a class="speak-btn" data-text="お会計お願いします">🔊 播放</a></div>
-<div class="phrase-card"><div class="jp">持ち帰りです</div><div class="roma">Mochikaeri desu</div><div class="zh">我要外帶</div><a class="speak-btn" data-text="持ち帰りです">🔊 播放</a></div>
-<div class="phrase-card"><div class="jp">満席です</div><div class="roma">Manseki desu</div><div class="zh">客滿</div><a class="speak-btn" data-text="満席です">🔊 播放</a></div>
-<div class="phrase-card"><div class="jp">予約しています</div><div class="roma">Yoyaku shiteimasu</div><div class="zh">我有預約</div><a class="speak-btn" data-text="予約しています">🔊 播放</a></div>
+
+  <!-- 單句範例：
+  <div class="phrase-card">
+    <div class="text-block">
+      <div class="jp">こんにちは</div>
+      <div class="zh">你好</div>
+      <div class="roma">Kon'nichiwa</div>
+    </div>
+    <button class="speak-btn" data-text="こんにちは">🔊</button>
+  </div>
+  -->
+
+  <div class="phrase-card"><div class="text-block"><div class="jp">こんにちは</div><div class="zh">你好</div><div class="roma">Kon'nichiwa</div></div><button class="speak-btn" data-text="こんにちは">🔊</button></div>
+  <div class="phrase-card"><div class="text-block"><div class="jp">ありがとう</div><div class="zh">謝謝</div><div class="roma">Arigatou</div></div><button class="speak-btn" data-text="ありがとう">🔊</button></div>
+  <div class="phrase-card"><div class="text-block"><div class="jp">はい</div><div class="zh">是的</div><div class="roma">Hai</div></div><button class="speak-btn" data-text="はい">🔊</button></div>
+  <div class="phrase-card"><div class="text-block"><div class="jp">いいえ</div><div class="zh">不是</div><div class="roma">Iie</div></div><button class="speak-btn" data-text="いいえ">🔊</button></div>
+  <div class="phrase-card"><div class="text-block"><div class="jp">すみません</div><div class="zh">不好意思</div><div class="roma">Sumimasen</div></div><button class="speak-btn" data-text="すみません">🔊</button></div>
+  <div class="phrase-card"><div class="text-block"><div class="jp">お願いします</div><div class="zh">拜託</div><div class="roma">Onegaishimasu</div></div><button class="speak-btn" data-text="お願いします">🔊</button></div>
+  <div class="phrase-card"><div class="text-block"><div class="jp">お元気ですか？</div><div class="zh">您好嗎？</div><div class="roma">Ogenki desu ka?</div></div><button class="speak-btn" data-text="お元気ですか？">🔊</button></div>
+  <div class="phrase-card"><div class="text-block"><div class="jp">大丈夫です</div><div class="zh">沒問題</div><div class="roma">Daijoubu desu</div></div><button class="speak-btn" data-text="大丈夫です">🔊</button></div>
+  <div class="phrase-card"><div class="text-block"><div class="jp">わかりました</div><div class="zh">我了解了</div><div class="roma">Wakarimashita</div></div><button class="speak-btn" data-text="わかりました">🔊</button></div>
+  <div class="phrase-card"><div class="text-block"><div class="jp">わかりません</div><div class="zh">我不懂</div><div class="roma">Wakarimasen</div></div><button class="speak-btn" data-text="わかりません">🔊</button></div>
+  <div class="phrase-card"><div class="text-block"><div class="jp">いくらですか？</div><div class="zh">多少錢？</div><div class="roma">Ikura desu ka?</div></div><button class="speak-btn" data-text="いくらですか？">🔊</button></div>
+  <div class="phrase-card"><div class="text-block"><div class="jp">高いです</div><div class="zh">很貴</div><div class="roma">Takai desu</div></div><button class="speak-btn" data-text="高いです">🔊</button></div>
+  <div class="phrase-card"><div class="text-block"><div class="jp">安いです</div><div class="zh">很便宜</div><div class="roma">Yasui desu</div></div><button class="speak-btn" data-text="安いです">🔊</button></div>
+  <div class="phrase-card"><div class="text-block"><div class="jp">どこですか？</div><div class="zh">在哪裡？</div><div class="roma">Doko desu ka?</div></div><button class="speak-btn" data-text="どこですか？">🔊</button></div>
+  <div class="phrase-card"><div class="text-block"><div class="jp">トイレはどこですか？</div><div class="zh">廁所在哪裡？</div><div class="roma">Toire wa doko desu ka?</div></div><button class="speak-btn" data-text="トイレはどこですか？">🔊</button></div>
+  <div class="phrase-card"><div class="text-block"><div class="jp">助けてください</div><div class="zh">請幫幫我</div><div class="roma">Tasukete kudasai</div></div><button class="speak-btn" data-text="助けてください">🔊</button></div>
+  <div class="phrase-card"><div class="text-block"><div class="jp">道に迷いました</div><div class="zh">我迷路了</div><div class="roma">Michi ni mayoimashita</div></div><button class="speak-btn" data-text="道に迷いました">🔊</button></div>
+  <div class="phrase-card"><div class="text-block"><div class="jp">ゆっくり話してください</div><div class="zh">請慢慢說</div><div class="roma">Yukkuri hanashite kudasai</div></div><button class="speak-btn" data-text="ゆっくり話してください">🔊</button></div>
+  <div class="phrase-card"><div class="text-block"><div class="jp">英語を話せますか？</div><div class="zh">你會說英文嗎？</div><div class="roma">Eigo o hanasemasu ka?</div></div><button class="speak-btn" data-text="英語を話せますか？">🔊</button></div>
+  <div class="phrase-card"><div class="text-block"><div class="jp">病院はどこですか？</div><div class="zh">醫院在哪裡？</div><div class="roma">Byouin wa doko desu ka?</div></div><button class="speak-btn" data-text="病院はどこですか？">🔊</button></div>
+  <div class="phrase-card"><div class="text-block"><div class="jp">警察署はどこですか？</div><div class="zh">警察局在哪裡？</div><div class="roma">Keisatsusho wa doko desu ka?</div></div><button class="speak-btn" data-text="警察署はどこですか？">🔊</button></div>
+  <div class="phrase-card"><div class="text-block"><div class="jp">道を教えてください</div><div class="zh">請告訴我路怎麼走</div><div class="roma">Michi o oshiete kudasai</div></div><button class="speak-btn" data-text="道を教えてください">🔊</button></div>
+  <div class="phrase-card"><div class="text-block"><div class="jp">これをください</div><div class="zh">我要這個</div><div class="roma">Kore o kudasai</div></div><button class="speak-btn" data-text="これをください">🔊</button></div>
+  <div class="phrase-card"><div class="text-block"><div class="jp">カードで払えますか？</div><div class="zh">可以刷卡嗎？</div><div class="roma">Kaado de haraemasu ka?</div></div><button class="speak-btn" data-text="カードで払えますか？">🔊</button></div>
+  <div class="phrase-card"><div class="text-block"><div class="jp">領収書をください</div><div class="zh">請給我收據</div><div class="roma">Ryoushuusho o kudasai</div></div><button class="speak-btn" data-text="領収書をください">🔊</button></div>
+  <div class="phrase-card"><div class="text-block"><div class="jp">もっと安くなりませんか？</div><div class="zh">可以再便宜一點嗎？</div><div class="roma">Motto yasuku narimasen ka?</div></div><button class="speak-btn" data-text="もっと安くなりませんか？">🔊</button></div>
+  <div class="phrase-card"><div class="text-block"><div class="jp">チェックインをお願いします</div><div class="zh">我要辦理入住</div><div class="roma">Chekkuin o onegaishimasu</div></div><button class="speak-btn" data-text="チェックインをお願いします">🔊</button></div>
+  <div class="phrase-card"><div class="text-block"><div class="jp">チェックアウトをお願いします</div><div class="zh">我要辦理退房</div><div class="roma">Chekkuauto o onegaishimasu</div></div><button class="speak-btn" data-text="チェックアウトをお願いします">🔊</button></div>
+  <div class="phrase-card"><div class="text-block"><div class="jp">Wi-Fiはありますか？</div><div class="zh">有 Wi-Fi 嗎？</div><div class="roma">Wi-Fi wa arimasu ka?</div></div><button class="speak-btn" data-text="Wi-Fiはありますか？">🔊</button></div>
+  <div class="phrase-card"><div class="text-block"><div class="jp">写真を撮ってもいいですか？</div><div class="zh">可以拍照嗎？</div><div class="roma">Shashin o totte mo ii desu ka?</div></div><button class="speak-btn" data-text="写真を撮ってもいいですか？">🔊</button></div>
+  <div class="phrase-card"><div class="text-block"><div class="jp">美味しいです</div><div class="zh">很好吃</div><div class="roma">Oishii desu</div></div><button class="speak-btn" data-text="美味しいです">🔊</button></div>
+  <div class="phrase-card"><div class="text-block"><div class="jp">おすすめは何ですか？</div><div class="zh">有什麼推薦的嗎？</div><div class="roma">Osusume wa nan desu ka?</div></div><button class="speak-btn" data-text="おすすめは何ですか？">🔊</button></div>
+  <div class="phrase-card"><div class="text-block"><div class="jp">辛いですか？</div><div class="zh">會辣嗎？</div><div class="roma">Karai desu ka?</div></div><button class="speak-btn" data-text="辛いですか？">🔊</button></div>
+  <div class="phrase-card"><div class="text-block"><div class="jp">お会計お願いします</div><div class="zh">請結帳</div><div class="roma">Okaikei onegaishimasu</div></div><button class="speak-btn" data-text="お会計お願いします">🔊</button></div>
+  <div class="phrase-card"><div class="text-block"><div class="jp">持ち帰りです</div><div class="zh">我要外帶</div><div class="roma">Mochikaeri desu</div></div><button class="speak-btn" data-text="持ち帰りです">🔊</button></div>
+  <div class="phrase-card"><div class="text-block"><div class="jp">満席です</div><div class="zh">客滿</div><div class="roma">Manseki desu</div></div><button class="speak-btn" data-text="満席です">🔊</button></div>
+  <div class="phrase-card"><div class="text-block"><div class="jp">予約しています</div><div class="zh">我有預約</div><div class="roma">Yoyaku shiteimasu</div></div><button class="speak-btn" data-text="予約しています">🔊</button></div>
+
 </div>
 
 <script>
