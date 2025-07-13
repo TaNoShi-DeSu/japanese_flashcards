@@ -2,23 +2,17 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>日常用句</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Japanese Flashcards with Voice</title>
   <style>
     body {
-      font-family: sans-serif;
+      font-family: Arial, sans-serif;
       margin: 20px;
-      background-color: #f9f9f9;
-      color: #333;
+      line-height: 1.5;
     }
-    a {
-      display: inline-block;
-      margin-bottom: 20px;
-      color: #007bff;
-      text-decoration: none;
-    }
-    h1 {
-      color: #007bff;
+    label, select, input {
+      margin-right: 10px;
+      font-size: 1rem;
     }
     table {
       width: 100%;
@@ -26,151 +20,112 @@
       margin-top: 20px;
     }
     th, td {
-      border: 1px solid #ddd;
+      border: 1px solid #ccc;
       padding: 8px;
       text-align: left;
       vertical-align: middle;
     }
-    th {
-      background-color: #007bff;
-      color: white;
-    }
-    tr:nth-child(even) {
-      background-color: #f2f2f2;
-    }
     button {
-      padding: 4px 8px;
-      font-size: 12px;
+      padding: 5px 10px;
+      font-size: 1rem;
       cursor: pointer;
-    }
-    .random-container {
-      margin: 20px 0;
-      padding: 10px;
-      background: #e9ecef;
-      border-radius: 5px;
     }
   </style>
 </head>
 <body>
-  <a href="index.html">← 回目錄</a>
-  <h1>日常用句</h1>
 
-  <!-- 語音設定 -->
+  <h1>Japanese Flashcards with Voice</h1>
+
   <div>
     <label for="voiceSelect">聲線：</label>
     <select id="voiceSelect"></select>
-    <label for="rateRange">語速：</label>
-    <input type="range" id="rateRange" min="0.2" max="2" step="0.1" value="0.5">
-  </div>
 
-  <!-- 隨機抽一句 -->
-  <div class="random-container">
-    <button onclick="showRandomSentence()">隨機抽一句</button>
-    <div id="randomSentence"></div>
+    <label for="rateRange">語速：</label>
+    <input type="range" id="rateRange" min="0.2" max="2" step="0.1" value="0.5" />
+    <span id="rateValue">0.5</span>
   </div>
 
   <table>
     <thead>
       <tr>
         <th>日文</th>
-        <th>翻譯 (繁體中文)</th>
         <th>羅馬拼音</th>
+        <th>繁體中文</th>
         <th>播放</th>
       </tr>
     </thead>
-    <tbody id="sentenceTable"></tbody>
+    <tbody id="sentenceTable">
+      <!-- 動態生成句子 -->
+    </tbody>
   </table>
 
   <script>
-    const sentencesData = [
-      { jp: "こんにちは", zh: "你好", romaji: "Konnichiwa" },
-      { jp: "おはようございます", zh: "早安", romaji: "Ohayou gozaimasu" },
-      { jp: "こんばんは", zh: "晚安", romaji: "Konbanwa" },
-      { jp: "はじめまして", zh: "初次見面", romaji: "Hajimemashite" },
-      { jp: "お元気ですか？", zh: "你好嗎？", romaji: "Ogenki desu ka?" },
-      { jp: "元気です", zh: "我很好", romaji: "Genki desu" },
-      { jp: "ありがとうございます", zh: "謝謝", romaji: "Arigatou gozaimasu" },
-      { jp: "どういたしまして", zh: "不客氣", romaji: "Dou itashimashite" },
-      { jp: "すみません", zh: "不好意思", romaji: "Sumimasen" },
-      { jp: "ごめんなさい", zh: "對不起", romaji: "Gomen nasai" },
-      { jp: "はい", zh: "是", romaji: "Hai" },
-      { jp: "いいえ", zh: "不是", romaji: "Iie" },
-      { jp: "わかります", zh: "我懂", romaji: "Wakarimasu" },
-      { jp: "わかりません", zh: "我不懂", romaji: "Wakarimasen" },
-      { jp: "もう一度言ってください", zh: "請再說一次", romaji: "Mou ichido itte kudasai" },
-      { jp: "ゆっくり話してください", zh: "請說慢一點", romaji: "Yukkuri hanashite kudasai" },
-      { jp: "名前は何ですか？", zh: "你叫什麼名字？", romaji: "Namae wa nan desu ka?" },
-      { jp: "私は〇〇です", zh: "我是〇〇", romaji: "Watashi wa 〇〇 desu" },
-      { jp: "どこですか？", zh: "在哪裡？", romaji: "Doko desu ka?" },
-      { jp: "トイレはどこですか？", zh: "廁所在哪裡？", romaji: "Toire wa doko desu ka?" },
-      { jp: "いくらですか？", zh: "多少錢？", romaji: "Ikura desu ka?" },
-      { jp: "これをください", zh: "請給我這個", romaji: "Kore o kudasai" },
-      { jp: "助けてください！", zh: "請幫幫我！", romaji: "Tasukete kudasai!" },
-      { jp: "警察を呼んでください！", zh: "請叫警察！", romaji: "Keisatsu o yonde kudasai!" },
-      { jp: "大丈夫ですか？", zh: "你沒事吧？", romaji: "Daijoubu desu ka?" },
-      { jp: "大丈夫です", zh: "沒事", romaji: "Daijoubu desu" },
-      { jp: "はい、わかりました", zh: "好，我了解了", romaji: "Hai, wakarimashita" },
-      { jp: "少々お待ちください", zh: "請稍等一下", romaji: "Shou shou omachi kudasai" },
-      { jp: "お疲れ様です", zh: "辛苦了", romaji: "Otsukaresama desu" },
-      { jp: "行ってきます", zh: "我出門了", romaji: "Ittekimasu" },
-      { jp: "行ってらっしゃい", zh: "慢走", romaji: "Itterasshai" },
-      { jp: "ただいま", zh: "我回來了", romaji: "Tadaima" },
-      { jp: "おかえりなさい", zh: "歡迎回來", romaji: "Okaerinasai" },
-      { jp: "お先に失礼します", zh: "我先告辭了", romaji: "Osaki ni shitsurei shimasu" },
-      { jp: "失礼します", zh: "失禮了", romaji: "Shitsurei shimasu" },
-      { jp: "よろしくお願いします", zh: "請多多指教", romaji: "Yoroshiku onegaishimasu" },
-      { jp: "こちらこそ", zh: "彼此彼此", romaji: "Kochira koso" },
-      { jp: "美味しいです", zh: "好吃", romaji: "Oishii desu" },
-      { jp: "わかりました", zh: "我知道了", romaji: "Wakarimashita" },
-      { jp: "疲れました", zh: "我累了", romaji: "Tsukaremashita" },
-      { jp: "頑張ってください", zh: "請加油", romaji: "Ganbatte kudasai" },
-      { jp: "どちら様ですか？", zh: "您是哪位？", romaji: "Dochira sama desu ka?" },
-      { jp: "どうぞお入りください", zh: "請進", romaji: "Douzo ohairi kudasai" },
-      { jp: "お待たせしました", zh: "讓您久等了", romaji: "Omatase shimashita" },
-      { jp: "少し待ってください", zh: "請稍等一下", romaji: "Sukoshi matte kudasai" },
-      { jp: "お久しぶりです", zh: "好久不見", romaji: "Ohisashiburi desu" },
-      { jp: "ゆっくりしていってください", zh: "請慢慢待著", romaji: "Yukkuri shite itte kudasai" }
+    const sentences = [
+      { jp: "おはようございます", romaji: "Ohayou gozaimasu", zh: "早安" },
+      { jp: "こんにちは", romaji: "Konnichiwa", zh: "你好" },
+      { jp: "こんばんは", romaji: "Konbanwa", zh: "晚上好" },
+      { jp: "ありがとう", romaji: "Arigatou", zh: "謝謝" },
+      { jp: "すみません", romaji: "Sumimasen", zh: "不好意思" },
+      // 你可以依需求擴充更多句子
     ];
 
     const tableBody = document.getElementById("sentenceTable");
-    sentencesData.forEach((s, index) => {
-      const row = document.createElement("tr");
-      row.innerHTML = `
-        <td>${s.jp}</td>
-        <td>${s.zh}</td>
-        <td>${s.romaji}</td>
-        <td><button onclick="speak('${s.jp}')">播放</button></td>
+    sentences.forEach(({ jp, romaji, zh }) => {
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+        <td>${jp}</td>
+        <td>${romaji}</td>
+        <td>${zh}</td>
+        <td><button onclick="speak('${jp}')">播放</button></td>
       `;
-      tableBody.appendChild(row);
+      tableBody.appendChild(tr);
     });
 
-    function showRandomSentence() {
-      const random = sentencesData[Math.floor(Math.random() * sentencesData.length)];
-      document.getElementById("randomSentence").innerHTML = `
-        <strong>${random.jp}</strong> - ${random.zh} / ${random.romaji}
-        <button onclick="speak('${random.jp}')">播放</button>
-      `;
-    }
-
     let voices = [];
-    window.speechSynthesis.onvoiceschanged = () => {
-      voices = window.speechSynthesis.getVoices().filter(v => v.lang === "ja-JP");
+
+    function populateVoiceList() {
+      voices = speechSynthesis.getVoices().filter(v => v.lang === "ja-JP");
       const voiceSelect = document.getElementById("voiceSelect");
       voiceSelect.innerHTML = "";
-      voices.forEach((v, i) => {
-        voiceSelect.innerHTML += `<option value="${i}">${v.name}</option>`;
-      });
-    };
+
+      if (voices.length > 0) {
+        voices.forEach((voice, i) => {
+          voiceSelect.innerHTML += `<option value="${i}">${voice.name}</option>`;
+        });
+        // 預設選 Kyoto
+        const kyotoIndex = voices.findIndex(v => v.name.toLowerCase().includes("kyoto"));
+        voiceSelect.value = kyotoIndex >= 0 ? kyotoIndex : 0;
+      } else {
+        voiceSelect.innerHTML = `<option>（找不到日文聲線）</option>`;
+      }
+    }
+
+    if (speechSynthesis.onvoiceschanged !== undefined) {
+      speechSynthesis.onvoiceschanged = populateVoiceList;
+    } else {
+      // 若 onvoiceschanged 不支援，直接呼叫一次
+      populateVoiceList();
+    }
+
+    document.getElementById("rateRange").addEventListener("input", (e) => {
+      document.getElementById("rateValue").textContent = e.target.value;
+    });
 
     function speak(text) {
-      const utter = new SpeechSynthesisUtterance(text);
+      if (!text) return;
+      speechSynthesis.cancel();
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = "ja-JP";
+
       const voiceIndex = document.getElementById("voiceSelect").value;
-      if (voices[voiceIndex]) {
-        utter.voice = voices[voiceIndex];
+      if (voices.length > 0 && voices[voiceIndex]) {
+        utterance.voice = voices[voiceIndex];
       }
-      utter.rate = parseFloat(document.getElementById("rateRange").value);
-      window.speechSynthesis.speak(utter);
+
+      utterance.rate = parseFloat(document.getElementById("rateRange").value);
+      speechSynthesis.speak(utterance);
     }
   </script>
+
 </body>
 </html>
