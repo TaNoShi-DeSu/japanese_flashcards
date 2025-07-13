@@ -1,13 +1,169 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>單字學習</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>日語單字學習 - Japanese Vocabulary</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; line-height: 1.5; }
+    label, select, input, button { margin-right: 10px; font-size: 1rem; }
+    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; vertical-align: middle; }
+    button { padding: 5px 10px; cursor: pointer; }
+    #backButton {
+      margin-bottom: 15px;
+      background-color: #eee;
+      border: 1px solid #ccc;
+    }
+  </style>
 </head>
 <body>
-  <a href="index.html">← 回目錄</a>
-  <h1>單字學習</h1>
-  <p>這裡可以放單字清單、播放語音等功能。</p>
+
+<h1>日語單字學習</h1>
+
+<button id="backButton" onclick="goBack()">返回目錄</button>
+
+<div>
+  <label for="voiceSelect">聲線：</label>
+  <select id="voiceSelect"></select>
+
+  <label for="rateRange">語速：</label>
+  <input type="range" id="rateRange" min="0.2" max="2" step="0.1" value="0.5" />
+  <span id="rateValue">0.5</span>
+</div>
+
+<table>
+  <thead>
+    <tr>
+      <th>日文</th>
+      <th>羅馬拼音</th>
+      <th>繁體中文</th>
+      <th>播放</th>
+    </tr>
+  </thead>
+  <tbody id="vocabTable"></tbody>
+</table>
+
+<script>
+  function goBack() {
+    window.location.href = "index.html";  // 修改成你的目錄頁路徑
+  }
+
+  const vocabulary = [
+    { jp: "犬", romaji: "Inu", zh: "狗" },
+    { jp: "猫", romaji: "Neko", zh: "貓" },
+    { jp: "水", romaji: "Mizu", zh: "水" },
+    { jp: "火", romaji: "Hi", zh: "火" },
+    { jp: "木", romaji: "Ki", zh: "樹" },
+    { jp: "山", romaji: "Yama", zh: "山" },
+    { jp: "川", romaji: "Kawa", zh: "河" },
+    { jp: "空", romaji: "Sora", zh: "天空" },
+    { jp: "雨", romaji: "Ame", zh: "雨" },
+    { jp: "風", romaji: "Kaze", zh: "風" },
+    { jp: "車", romaji: "Kuruma", zh: "車" },
+    { jp: "電車", romaji: "Densha", zh: "電車" },
+    { jp: "駅", romaji: "Eki", zh: "車站" },
+    { jp: "学校", romaji: "Gakkou", zh: "學校" },
+    { jp: "先生", romaji: "Sensei", zh: "老師" },
+    { jp: "友達", romaji: "Tomodachi", zh: "朋友" },
+    { jp: "家", romaji: "Ie", zh: "家" },
+    { jp: "本", romaji: "Hon", zh: "書" },
+    { jp: "新聞", romaji: "Shinbun", zh: "報紙" },
+    { jp: "電話", romaji: "Denwa", zh: "電話" },
+    { jp: "時計", romaji: "Tokei", zh: "鐘錶" },
+    { jp: "花", romaji: "Hana", zh: "花" },
+    { jp: "鳥", romaji: "Tori", zh: "鳥" },
+    { jp: "魚", romaji: "Sakana", zh: "魚" },
+    { jp: "食べ物", romaji: "Tabemono", zh: "食物" },
+    { jp: "飲み物", romaji: "Nomimono", zh: "飲料" },
+    { jp: "朝", romaji: "Asa", zh: "早晨" },
+    { jp: "夜", romaji: "Yoru", zh: "夜晚" },
+    { jp: "今日", romaji: "Kyou", zh: "今天" },
+    { jp: "明日", romaji: "Ashita", zh: "明天" },
+    { jp: "昨日", romaji: "Kinou", zh: "昨天" },
+    { jp: "時間", romaji: "Jikan", zh: "時間" },
+    { jp: "場所", romaji: "Basho", zh: "場所" },
+    { jp: "仕事", romaji: "Shigoto", zh: "工作" },
+    { jp: "電話番号", romaji: "Denwa bangou", zh: "電話號碼" },
+    { jp: "空港", romaji: "Kuukou", zh: "機場" },
+    { jp: "ホテル", romaji: "Hoteru", zh: "飯店" },
+    { jp: "病院", romaji: "Byouin", zh: "醫院" },
+    { jp: "薬", romaji: "Kusuri", zh: "藥" },
+    { jp: "買い物", romaji: "Kaimono", zh: "購物" },
+    { jp: "銀行", romaji: "Ginkou", zh: "銀行" },
+    { jp: "郵便局", romaji: "Yuubinkyoku", zh: "郵局" },
+    { jp: "道", romaji: "Michi", zh: "道路" },
+    { jp: "店", romaji: "Mise", zh: "店" },
+    { jp: "公園", romaji: "Kouen", zh: "公園" },
+    { jp: "映画", romaji: "Eiga", zh: "電影" },
+    { jp: "音楽", romaji: "Ongaku", zh: "音樂" }
+  ];
+
+  const tableBody = document.getElementById("vocabTable");
+  vocabulary.forEach(({ jp, romaji, zh }) => {
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td>${jp}</td>
+      <td>${romaji}</td>
+      <td>${zh}</td>
+      <td><button data-jp="${jp}">播放</button></td>
+    `;
+    tableBody.appendChild(tr);
+  });
+
+  let voices = [];
+  let voiceSelect = document.getElementById("voiceSelect");
+  let initialized = false;
+
+  function populateVoiceList() {
+    voices = speechSynthesis.getVoices().filter(v => v.lang.startsWith("ja"));
+    voiceSelect.innerHTML = "";
+
+    if (voices.length > 0) {
+      voices.forEach((v, i) => {
+        voiceSelect.innerHTML += `<option value="${i}">${v.name}</option>`;
+      });
+      const kyotoIndex = voices.findIndex(v => v.name.toLowerCase().includes("kyoto"));
+      voiceSelect.value = kyotoIndex >= 0 ? kyotoIndex : 0;
+    } else {
+      voiceSelect.innerHTML = `<option>（找不到日文聲線）</option>`;
+    }
+  }
+
+  if ('onvoiceschanged' in speechSynthesis) {
+    speechSynthesis.onvoiceschanged = populateVoiceList;
+  } else {
+    populateVoiceList();
+  }
+
+  document.getElementById("rateRange").addEventListener("input", (e) => {
+    document.getElementById("rateValue").textContent = e.target.value;
+  });
+
+  document.getElementById("vocabTable").addEventListener("click", (e) => {
+    if (e.target.tagName === "BUTTON") {
+      if (!initialized) {
+        populateVoiceList();
+        initialized = true;
+      }
+      speak(e.target.getAttribute("data-jp"));
+    }
+  });
+
+  function speak(text) {
+    if (!text) return;
+    speechSynthesis.cancel();
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = "ja-JP";
+
+    const voiceIndex = voiceSelect.value;
+    if (voices.length > 0 && voices[voiceIndex]) {
+      utterance.voice = voices[voiceIndex];
+    }
+    utterance.rate = parseFloat(document.getElementById("rateRange").value);
+    speechSynthesis.speak(utterance);
+  }
+</script>
+
 </body>
 </html>
