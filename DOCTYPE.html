@@ -1,307 +1,152 @@
 <!DOCTYPE html>
-<button id="backButton" onclick="goBack()">回目錄</button>
 <html lang="zh-Hant">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>基礎50音表（完整）</title>
-<style>
-  body {
-    font-family: "Microsoft JhengHei", sans-serif;
-    max-width: 700px;
-    margin: auto;
-    padding: 20px;
-  }
-  h2 {
-    text-align: center;
-  }
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    text-align: center;
-    margin-bottom: 30px;
-  }
-  th, td {
-    border: 1px solid #999;
-    padding: 8px 5px;
-  }
-  th {
-    background-color: #f4f4f4;
-  }
-  .row-label {
-    background-color: #e0e0e0;
-    font-weight: bold;
-  }
-  .kana-cell {
-    cursor: pointer;
-    user-select: none;
-  }
-  .kana {
-    font-size: 1.6em;
-    display: block;
-  }
-  .kana-small {
-    font-size: 1em;
-    color: #666;
-  }
-  .romaji {
-    font-size: 0.9em;
-    color: #333;
-    margin-top: 3px;
-  }
-  .section-title {
-    margin-top: 30px;
-    font-weight: bold;
-    font-size: 1.2em;
-    border-bottom: 2px solid #444;
-    padding-bottom: 5px;
-  }
-  @media (max-width: 480px) {
-    .kana {
-      font-size: 1.2em;
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>基礎50音表</title>
+  <style>
+    body {
+      font-family: "Microsoft JhengHei", sans-serif;
+      max-width: 900px;
+      margin: auto;
+      padding: 20px;
     }
-  }
-</style>
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 30px;
+    }
+    th, td {
+      border: 1px solid #999;
+      padding: 10px;
+      text-align: center;
+    }
+    th {
+      background-color: #f4f4f4;
+    }
+    .row-label {
+      background-color: #e0e0e0;
+      font-weight: bold;
+    }
+    .kana-cell {
+      cursor: pointer;
+      user-select: none;
+    }
+    .kana {
+      font-size: 1.5em;
+      display: block;
+    }
+    .romaji {
+      font-size: 0.9em;
+      color: #333;
+      margin-top: 4px;
+    }
+    .section-title {
+      margin-top: 30px;
+      font-weight: bold;
+      font-size: 1.2em;
+      border-bottom: 2px solid #444;
+      padding-bottom: 5px;
+    }
+    .back-to-menu {
+      display: inline-block;
+      padding: 8px 16px;
+      margin-bottom: 20px;
+      background-color: #007acc;
+      color: white;
+      text-decoration: none;
+      border-radius: 5px;
+      font-weight: 600;
+      transition: background-color 0.3s ease;
+      font-size: 1em;
+    }
+    .back-to-menu:hover {
+      background-color: #005fa3;
+    }
+    @media (max-width: 600px) {
+      .kana {
+        font-size: 1.2em;
+      }
+    }
+  </style>
 </head>
 <body>
+  <nav>
+    <a href="index.html" class="back-to-menu">← 回目錄</a>
+  </nav>
 
-<h2>基礎50音表（完整）</h2>
+  <h2>基礎50音表</h2>
 
-<div class="section-title">平假名 / 片假名</div>
-<table>
-  <thead>
-    <tr>
-      <th>行</th>
-      <th>あ</th>
-      <th>い</th>
-      <th>う</th>
-      <th>え</th>
-      <th>お</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td class="row-label">あ行</td>
-      <td class="kana-cell" data-text="あ"><span class="kana">あ / ア</span><span class="romaji">a</span></td>
-      <td class="kana-cell" data-text="い"><span class="kana">い / イ</span><span class="romaji">i</span></td>
-      <td class="kana-cell" data-text="う"><span class="kana">う / ウ</span><span class="romaji">u</span></td>
-      <td class="kana-cell" data-text="え"><span class="kana">え / エ</span><span class="romaji">e</span></td>
-      <td class="kana-cell" data-text="お"><span class="kana">お / オ</span><span class="romaji">o</span></td>
-    </tr>
-    <tr>
-      <td class="row-label">か行</td>
-      <td class="kana-cell" data-text="か"><span class="kana">か / カ</span><span class="romaji">ka</span></td>
-      <td class="kana-cell" data-text="き"><span class="kana">き / キ</span><span class="romaji">ki</span></td>
-      <td class="kana-cell" data-text="く"><span class="kana">く / ク</span><span class="romaji">ku</span></td>
-      <td class="kana-cell" data-text="け"><span class="kana">け / ケ</span><span class="romaji">ke</span></td>
-      <td class="kana-cell" data-text="こ"><span class="kana">こ / コ</span><span class="romaji">ko</span></td>
-    </tr>
-    <tr>
-      <td class="row-label">さ行</td>
-      <td class="kana-cell" data-text="さ"><span class="kana">さ / サ</span><span class="romaji">sa</span></td>
-      <td class="kana-cell" data-text="し"><span class="kana">し / シ</span><span class="romaji">shi</span></td>
-      <td class="kana-cell" data-text="す"><span class="kana">す / ス</span><span class="romaji">su</span></td>
-      <td class="kana-cell" data-text="せ"><span class="kana">せ / セ</span><span class="romaji">se</span></td>
-      <td class="kana-cell" data-text="そ"><span class="kana">そ / ソ</span><span class="romaji">so</span></td>
-    </tr>
-    <tr>
-      <td class="row-label">た行</td>
-      <td class="kana-cell" data-text="た"><span class="kana">た / タ</span><span class="romaji">ta</span></td>
-      <td class="kana-cell" data-text="ち"><span class="kana">ち / チ</span><span class="romaji">chi</span></td>
-      <td class="kana-cell" data-text="つ"><span class="kana">つ / ツ</span><span class="romaji">tsu</span></td>
-      <td class="kana-cell" data-text="て"><span class="kana">て / テ</span><span class="romaji">te</span></td>
-      <td class="kana-cell" data-text="と"><span class="kana">と / ト</span><span class="romaji">to</span></td>
-    </tr>
-    <tr>
-      <td class="row-label">な行</td>
-      <td class="kana-cell" data-text="な"><span class="kana">な / ナ</span><span class="romaji">na</span></td>
-      <td class="kana-cell" data-text="に"><span class="kana">に / ニ</span><span class="romaji">ni</span></td>
-      <td class="kana-cell" data-text="ぬ"><span class="kana">ぬ / ヌ</span><span class="romaji">nu</span></td>
-      <td class="kana-cell" data-text="ね"><span class="kana">ね / ネ</span><span class="romaji">ne</span></td>
-      <td class="kana-cell" data-text="の"><span class="kana">の / ノ</span><span class="romaji">no</span></td>
-    </tr>
-    <tr>
-      <td class="row-label">は行</td>
-      <td class="kana-cell" data-text="は"><span class="kana">は / ハ</span><span class="romaji">ha</span></td>
-      <td class="kana-cell" data-text="ひ"><span class="kana">ひ / ヒ</span><span class="romaji">hi</span></td>
-      <td class="kana-cell" data-text="ふ"><span class="kana">ふ / フ</span><span class="romaji">fu</span></td>
-      <td class="kana-cell" data-text="へ"><span class="kana">へ / ヘ</span><span class="romaji">he</span></td>
-      <td class="kana-cell" data-text="ほ"><span class="kana">ほ / ホ</span><span class="romaji">ho</span></td>
-    </tr>
-    <tr>
-      <td class="row-label">ま行</td>
-      <td class="kana-cell" data-text="ま"><span class="kana">ま / マ</span><span class="romaji">ma</span></td>
-      <td class="kana-cell" data-text="み"><span class="kana">み / ミ</span><span class="romaji">mi</span></td>
-      <td class="kana-cell" data-text="む"><span class="kana">む / ム</span><span class="romaji">mu</span></td>
-      <td class="kana-cell" data-text="め"><span class="kana">め / メ</span><span class="romaji">me</span></td>
-      <td class="kana-cell" data-text="も"><span class="kana">も / モ</span><span class="romaji">mo</span></td>
-    </tr>
-    <tr>
-      <td class="row-label">や行</td>
-      <td class="kana-cell" data-text="や"><span class="kana">や / ヤ</span><span class="romaji">ya</span></td>
-      <td></td>
-      <td class="kana-cell" data-text="ゆ"><span class="kana">ゆ / ユ</span><span class="romaji">yu</span></td>
-      <td></td>
-      <td class="kana-cell" data-text="よ"><span class="kana">よ / ヨ</span><span class="romaji">yo</span></td>
-    </tr>
-    <tr>
-      <td class="row-label">ら行</td>
-      <td class="kana-cell" data-text="ら"><span class="kana">ら / ラ</span><span class="romaji">ra</span></td>
-      <td class="kana-cell" data-text="り"><span class="kana">り / リ</span><span class="romaji">ri</span></td>
-      <td class="kana-cell" data-text="る"><span class="kana">る / ル</span><span class="romaji">ru</span></td>
-      <td class="kana-cell" data-text="れ"><span class="kana">れ / レ</span><span class="romaji">re</span></td>
-      <td class="kana-cell" data-text="ろ"><span class="kana">ろ / ロ</span><span class="romaji">ro</span></td>
-    </tr>
-    <tr>
-      <td class="row-label">わ行</td>
-      <td class="kana-cell" data-text="わ"><span class="kana">わ / ワ</span><span class="romaji">wa</span></td>
-      <td></td>
-      <td></td>
-      <td></td>
-      <td class="kana-cell" data-text="を"><span class="kana">を / ヲ</span><span class="romaji">wo</span></td>
-    </tr>
-    <tr>
-      <td class="row-label">ん</td>
-      <td class="kana-cell" data-text="ん"><span class="kana">ん / ン</span><span class="romaji">n</span></td>
-      <td></td>
-      <td></td>
-      <td></td>
-      <td></td>
-    </tr>
-  </tbody>
-</table>
-
-<div class="section-title">濁音・半濁音</div>
-<table>
-  <thead>
-    <tr>
-      <th>行</th>
-      <th>あ</th>
-      <th>い</th>
-      <th>う</th>
-      <th>え</th>
-      <th>お</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td class="row-label">が行</td>
-      <td class="kana-cell" data-text="が"><span class="kana">が / ガ</span><span class="romaji">ga</span></td>
-      <td class="kana-cell" data-text="ぎ"><span class="kana">ぎ / ギ</span><span class="romaji">gi</span></td>
-      <td class="kana-cell" data-text="ぐ"><span class="kana">ぐ / グ</span><span class="romaji">gu</span></td>
-      <td class="kana-cell" data-text="げ"><span class="kana">げ / ゲ</span><span class="romaji">ge</span></td>
-      <td class="kana-cell" data-text="ご"><span class="kana">ご / ゴ</span><span class="romaji">go</span></td>
-    </tr>
-    <tr>
-      <td class="row-label">ざ行</td>
-      <td class="kana-cell" data-text="ざ"><span class="kana">ざ / ザ</span><span class="romaji">za</span></td>
-      <td class="kana-cell" data-text="じ"><span class="kana">じ / ジ</span><span class="romaji">ji</span></td>
-      <td class="kana-cell" data-text="ず"><span class="kana">ず / ズ</span><span class="romaji">zu</span></td>
-      <td class="kana-cell" data-text="ぜ"><span class="kana">ぜ / ゼ</span><span class="romaji">ze</span></td>
-      <td class="kana-cell" data-text="ぞ"><span class="kana">ぞ / ゾ</span><span class="romaji">zo</span></td>
-    </tr>
-    <tr>
-      <td class="row-label">だ行</td>
-      <td class="kana-cell" data-text="だ"><span class="kana">だ / ダ</span><span class="romaji">da</span></td>
-      <td class="kana-cell" data-text="ぢ"><span class="kana">ぢ / ヂ</span><span class="romaji">ji</span></td>
-      <td class="kana-cell" data-text="づ"><span class="kana">づ / ヅ</span><span class="romaji">zu</span></td>
-      <td class="kana-cell" data-text="で"><span class="kana">で / デ</span><span class="romaji">de</span></td>
-      <td class="kana-cell" data-text="ど"><span class="kana">ど / ド</span><span class="romaji">do</span></td>
-    </tr>
-    <tr>
-      <td class="row-label">ば行</td>
-      <td class="kana-cell" data-text="ば"><span class="kana">ば / バ</span><span class="romaji">ba</span></td>
-      <td class="kana-cell" data-text="び"><span class="kana">び / ビ</span><span class="romaji">bi</span></td>
-      <td class="kana-cell" data-text="ぶ"><span class="kana">ぶ / ブ</span><span class="romaji">bu</span></td>
-      <td class="kana-cell" data-text="べ"><span class="kana">べ / ベ</span><span class="romaji">be</span></td>
-      <td class="kana-cell" data-text="ぼ"><span class="kana">ぼ / ボ</span><span class="romaji">bo</span></td>
-    </tr>
-    <tr>
-      <td class="row-label">ぱ行</td>
-      <td class="kana-cell" data-text="ぱ"><span class="kana">ぱ / パ</span><span class="romaji">pa</span></td>
-      <td class="kana-cell" data-text="ぴ"><span class="kana">ぴ / ピ</span><span class="romaji">pi</span></td>
-      <td class="kana-cell" data-text="ぷ"><span class="kana">ぷ / プ</span><span class="romaji">pu</span></td>
-      <td class="kana-cell" data-text="ぺ"><span class="kana">ぺ / ペ</span><span class="romaji">pe</span></td>
-      <td class="kana-cell" data-text="ぽ"><span class="kana">ぽ / ポ</span><span class="romaji">po</span></td>
-    </tr>
-  </tbody>
-</table>
-
-<div class="section-title">拗音（平假名）</div>
-<table>
-  <thead>
-    <tr>
-      <th>行</th>
-      <th>や</th>
-      <th>ゆ</th>
-      <th>よ</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td class="row-label">きゃ行</td>
-      <td class="kana-cell" data-text="きゃ"><span class="kana">きゃ</span><span class="romaji">kya</span></td>
-      <td class="kana-cell" data-text="きゅ"><span class="kana">きゅ</span><span class="romaji">kyu</span></td>
-      <td class="kana-cell" data-text="きょ"><span class="kana">きょ</span><span class="romaji">kyo</span></td>
-    </tr>
-    <tr>
-      <td class="row-label">しゃ行</td>
-      <td class="kana-cell" data-text="しゃ"><span class="kana">しゃ</span><span class="romaji">sha</span></td>
-      <td class="kana-cell" data-text="しゅ"><span class="kana">しゅ</span><span class="romaji">shu</span></td>
-      <td class="kana-cell" data-text="しょ"><span class="kana">しょ</span><span class="romaji">sho</span></td>
-    </tr>
-    <tr>
-      <td class="row-label">ちゃ行</td>
-      <td class="kana-cell" data-text="ちゃ"><span class="kana">ちゃ</span><span class="romaji">cha</span></td>
-      <td class="kana-cell" data-text="ちゅ"><span class="kana">ちゅ</span><span class="romaji">chu</span></td>
-      <td class="kana-cell" data-text="ちょ"><span class="kana">ちょ</span><span class="romaji">cho</span></td>
-    </tr>
-    <tr>
-      <td class="row-label">にゃ行</td>
-      <td class="kana-cell" data-text="にゃ"><span class="kana">にゃ</span><span class="romaji">nya</span></td>
-      <td class="kana-cell" data-text="にゅ"><span class="kana">にゅ</span><span class="romaji">nyu</span></td>
-      <td class="kana-cell" data-text="にょ"><span class="kana">にょ</span><span class="romaji">nyo</span></td>
-    </tr>
-    <tr>
-      <td class="row-label">ひゃ行</td>
-      <td class="kana-cell" data-text="ひゃ"><span class="kana">ひゃ</span><span class="romaji">hya</span></td>
-      <td class="kana-cell" data-text="ひゅ"><span class="kana">ひゅ</span><span class="romaji">hyu</span></td>
-      <td class="kana-cell" data-text="ひょ"><span class="kana">ひょ</span><span class="romaji">hyo</span></td>
-    </tr>
-    <tr>
-      <td class="row-label">みゃ行</td>
-      <td class="kana-cell" data-text="みゃ"><span class="kana">みゃ</span><span class="romaji">mya</span></td>
-      <td class="kana-cell" data-text="みゅ"><span class="kana">みゅ</span><span class="romaji">myu</span></td>
-      <td class="kana-cell" data-text="みょ"><span class="kana">みょ</span><span class="romaji">myo</span></td>
-    </tr>
-    <tr>
-      <td class="row-label">りゃ行</td>
-      <td class="kana-cell" data-text="りゃ"><span class="kana">りゃ</span><span class="romaji">rya</span></td>
-      <td class="kana-cell" data-text="りゅ"><span class="kana">りゅ</span><span class="romaji">ryu</span></td>
-      <td class="kana-cell" data-text="りょ"><span class="kana">りょ</span><span class="romaji">ryo</span></td>
-    </tr>
-  </tbody>
-</table>
-
-<script>
-  // 語音播放功能
-  document.querySelectorAll('.kana-cell').forEach(cell => {
-    cell.addEventListener('click', () => {
-      const text = cell.getAttribute('data-text');
-      if (!window.speechSynthesis) {
-        alert('此瀏覽器不支援語音合成');
-        return;
-      }
-      const utterance = new SpeechSynthesisUtterance(text);
-      const voices = speechSynthesis.getVoices();
-      let voice = voices.find(v => v.lang === 'ja-JP' && v.name.toLowerCase().includes('kyoto'));
-      if (!voice) voice = voices.find(v => v.lang === 'ja-JP');
-      if (voice) utterance.voice = voice;
-      utterance.rate = 0.5;
-      speechSynthesis.speak(utterance);
-    });
-  });
-</script>
-
-</body>
-</html>
+  <div class="section-title">平假名 / 片假名</div>
+  <table>
+    <thead>
+      <tr>
+        <th>行</th>
+        <th>あ</th>
+        <th>い</th>
+        <th>う</th>
+        <th>え</th>
+        <th>お</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="row-label">あ行</td>
+        <td class="kana-cell" data-text="あ">あ / ア<br><span class="romaji">a</span></td>
+        <td class="kana-cell" data-text="い">い / イ<br><span class="romaji">i</span></td>
+        <td class="kana-cell" data-text="う">う / ウ<br><span class="romaji">u</span></td>
+        <td class="kana-cell" data-text="え">え / エ<br><span class="romaji">e</span></td>
+        <td class="kana-cell" data-text="お">お / オ<br><span class="romaji">o</span></td>
+      </tr>
+      <tr>
+        <td class="row-label">か行</td>
+        <td class="kana-cell" data-text="か">か / カ<br><span class="romaji">ka</span></td>
+        <td class="kana-cell" data-text="き">き / キ<br><span class="romaji">ki</span></td>
+        <td class="kana-cell" data-text="く">く / ク<br><span class="romaji">ku</span></td>
+        <td class="kana-cell" data-text="け">け / ケ<br><span class="romaji">ke</span></td>
+        <td class="kana-cell" data-text="こ">こ / コ<br><span class="romaji">ko</span></td>
+      </tr>
+      <tr>
+        <td class="row-label">さ行</td>
+        <td class="kana-cell" data-text="さ">さ / サ<br><span class="romaji">sa</span></td>
+        <td class="kana-cell" data-text="し">し / シ<br><span class="romaji">shi</span></td>
+        <td class="kana-cell" data-text="す">す / ス<br><span class="romaji">su</span></td>
+        <td class="kana-cell" data-text="せ">せ / セ<br><span class="romaji">se</span></td>
+        <td class="kana-cell" data-text="そ">そ / ソ<br><span class="romaji">so</span></td>
+      </tr>
+      <tr>
+        <td class="row-label">た行</td>
+        <td class="kana-cell" data-text="た">た / タ<br><span class="romaji">ta</span></td>
+        <td class="kana-cell" data-text="ち">ち / チ<br><span class="romaji">chi</span></td>
+        <td class="kana-cell" data-text="つ">つ / ツ<br><span class="romaji">tsu</span></td>
+        <td class="kana-cell" data-text="て">て / テ<br><span class="romaji">te</span></td>
+        <td class="kana-cell" data-text="と">と / ト<br><span class="romaji">to</span></td>
+      </tr>
+      <tr>
+        <td class="row-label">な行</td>
+        <td class="kana-cell" data-text="な">な / ナ<br><span class="romaji">na</span></td>
+        <td class="kana-cell" data-text="に">に / ニ<br><span class="romaji">ni</span></td>
+        <td class="kana-cell" data-text="ぬ">ぬ / ヌ<br><span class="romaji">nu</span></td>
+        <td class="kana-cell" data-text="ね">ね / ネ<br><span class="romaji">ne</span></td>
+        <td class="kana-cell" data-text="の">の / ノ<br><span class="romaji">no</span></td>
+      </tr>
+      <tr>
+        <td class="row-label">は行</td>
+        <td class="kana-cell" data-text="は">は / ハ<br><span class="romaji">ha</span></td>
+        <td class="kana-cell" data-text="ひ">ひ / ヒ<br><span class="romaji">hi</span></td>
+        <td class="kana-cell" data-text="ふ">ふ / フ<br><span class="romaji">fu</span></td>
+        <td class="kana-cell" data-text="へ">へ / ヘ<br><span class="romaji">he</span></td>
+        <td class="kana-cell" data-text="ほ">ほ / ホ<br><span class="romaji">ho</span></td>
+      </tr>
+      <tr>
+        <td class="row-label">ま行</td>
+        <td class="kana-cell" data-text="ま">ま / マ<br><span class="romaji">ma</span></td>
+        <td class="kana-cell" data-text="み">み / ミ<br><span class="romaji">mi</span></td>
+        <td class="kana-cell" data-text="む">む / ム<br><span class="romaji">mu</span></td>
+        <td class="kana-cell" data-text="め">め / メ<br><span class="romaji">me</span></td>
+        <td class="kana-cell" data-text="も">も / モ<br><span class="romaji">mo</span></td>
+      </tr>
