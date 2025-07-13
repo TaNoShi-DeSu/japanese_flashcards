@@ -1,169 +1,251 @@
 <!DOCTYPE html>
-<html lang="ja">
+<html lang="zh-Hant">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>日語單字學習 - Japanese Vocabulary</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>單字學習</title>
   <style>
-    body { font-family: Arial, sans-serif; margin: 20px; line-height: 1.5; }
-    label, select, input, button { margin-right: 10px; font-size: 1rem; }
-    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; vertical-align: middle; }
-    button { padding: 5px 10px; cursor: pointer; }
-    #backButton {
-      margin-bottom: 15px;
-      background-color: #eee;
-      border: 1px solid #ccc;
+    body {
+      font-family: sans-serif;
+      margin: 20px;
+      background: #f9f9f9;
+    }
+    .controls {
+      margin-bottom: 20px;
+    }
+    .category {
+      margin-bottom: 10px;
+      background: #fff;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      overflow: hidden;
+    }
+    summary {
+      cursor: pointer;
+      background: #eee;
+      padding: 10px;
+      font-weight: bold;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    td, th {
+      padding: 8px;
+      border-bottom: 1px solid #ddd;
+    }
+    .pagination {
+      margin-top: 20px;
+      text-align: center;
+    }
+    .pagination button {
+      margin: 0 5px;
+      padding: 5px 10px;
+      font-size: 16px;
+    }
+    #backBtn {
+      display: inline-block;
+      margin-top: 30px;
+      padding: 10px 15px;
+      background: #007bff;
+      color: #fff;
+      text-decoration: none;
+      border-radius: 5px;
+    }
+    #backBtn:hover {
+      background: #0056b3;
     }
   </style>
 </head>
 <body>
 
-<h1>日語單字學習</h1>
+  <h1>單字學習</h1>
 
-<button id="backButton" onclick="goBack()">回目錄</button>
+  <div class="controls">
+    <label for="voiceSelect">聲線:</label>
+    <select id="voiceSelect"></select>
 
-<div>
-  <label for="voiceSelect">聲線：</label>
-  <select id="voiceSelect"></select>
+    <label for="rateRange">語速:</label>
+    <input type="range" id="rateRange" min="0.1" max="2" step="0.1" value="1" />
+    <span id="rateLabel">1.0</span>
+  </div>
 
-  <label for="rateRange">語速：</label>
-  <input type="range" id="rateRange" min="0.2" max="2" step="0.1" value="0.5" />
-  <span id="rateValue">0.5</span>
-</div>
+  <div id="categories"></div>
 
-<table>
-  <thead>
-    <tr>
-      <th>日文</th>
-      <th>羅馬拼音</th>
-      <th>繁體中文</th>
-      <th>播放</th>
-    </tr>
-  </thead>
-  <tbody id="vocabTable"></tbody>
-</table>
+  <div class="pagination">
+    <button id="prevPage">上一頁</button>
+    <span id="pageInfo"></span>
+    <button id="nextPage">下一頁</button>
+  </div>
 
-<script>
-  function goBack() {
-    window.location.href = "index.html";  // 修改成你的目錄頁路徑
-  }
+  <a id="backBtn" href="index.html">回目錄</a>
 
-  const vocabulary = [
-    { jp: "犬", romaji: "Inu", zh: "狗" },
-    { jp: "猫", romaji: "Neko", zh: "貓" },
-    { jp: "水", romaji: "Mizu", zh: "水" },
-    { jp: "火", romaji: "Hi", zh: "火" },
-    { jp: "木", romaji: "Ki", zh: "樹" },
-    { jp: "山", romaji: "Yama", zh: "山" },
-    { jp: "川", romaji: "Kawa", zh: "河" },
-    { jp: "空", romaji: "Sora", zh: "天空" },
-    { jp: "雨", romaji: "Ame", zh: "雨" },
-    { jp: "風", romaji: "Kaze", zh: "風" },
-    { jp: "車", romaji: "Kuruma", zh: "車" },
-    { jp: "電車", romaji: "Densha", zh: "電車" },
-    { jp: "駅", romaji: "Eki", zh: "車站" },
-    { jp: "学校", romaji: "Gakkou", zh: "學校" },
-    { jp: "先生", romaji: "Sensei", zh: "老師" },
-    { jp: "友達", romaji: "Tomodachi", zh: "朋友" },
-    { jp: "家", romaji: "Ie", zh: "家" },
-    { jp: "本", romaji: "Hon", zh: "書" },
-    { jp: "新聞", romaji: "Shinbun", zh: "報紙" },
-    { jp: "電話", romaji: "Denwa", zh: "電話" },
-    { jp: "時計", romaji: "Tokei", zh: "鐘錶" },
-    { jp: "花", romaji: "Hana", zh: "花" },
-    { jp: "鳥", romaji: "Tori", zh: "鳥" },
-    { jp: "魚", romaji: "Sakana", zh: "魚" },
-    { jp: "食べ物", romaji: "Tabemono", zh: "食物" },
-    { jp: "飲み物", romaji: "Nomimono", zh: "飲料" },
-    { jp: "朝", romaji: "Asa", zh: "早晨" },
-    { jp: "夜", romaji: "Yoru", zh: "夜晚" },
-    { jp: "今日", romaji: "Kyou", zh: "今天" },
-    { jp: "明日", romaji: "Ashita", zh: "明天" },
-    { jp: "昨日", romaji: "Kinou", zh: "昨天" },
-    { jp: "時間", romaji: "Jikan", zh: "時間" },
-    { jp: "場所", romaji: "Basho", zh: "場所" },
-    { jp: "仕事", romaji: "Shigoto", zh: "工作" },
-    { jp: "電話番号", romaji: "Denwa bangou", zh: "電話號碼" },
-    { jp: "空港", romaji: "Kuukou", zh: "機場" },
-    { jp: "ホテル", romaji: "Hoteru", zh: "飯店" },
-    { jp: "病院", romaji: "Byouin", zh: "醫院" },
-    { jp: "薬", romaji: "Kusuri", zh: "藥" },
-    { jp: "買い物", romaji: "Kaimono", zh: "購物" },
-    { jp: "銀行", romaji: "Ginkou", zh: "銀行" },
-    { jp: "郵便局", romaji: "Yuubinkyoku", zh: "郵局" },
-    { jp: "道", romaji: "Michi", zh: "道路" },
-    { jp: "店", romaji: "Mise", zh: "店" },
-    { jp: "公園", romaji: "Kouen", zh: "公園" },
-    { jp: "映画", romaji: "Eiga", zh: "電影" },
-    { jp: "音楽", romaji: "Ongaku", zh: "音樂" }
-  ];
+  <script>
+    // 模擬你的單字資料 (10個分類 × 每類3個單字)
+    const data = {
+      "打招呼": [
+        { jp: "こんにちは", roma: "Konnichiwa", zh: "你好" },
+        { jp: "おはよう", roma: "Ohayou", zh: "早安" },
+        { jp: "こんばんは", roma: "Konbanwa", zh: "晚安" }
+      ],
+      "動詞": [
+        { jp: "行く", roma: "Iku", zh: "去" },
+        { jp: "来る", roma: "Kuru", zh: "來" },
+        { jp: "見る", roma: "Miru", zh: "看" }
+      ],
+      "形容詞": [
+        { jp: "高い", roma: "Takai", zh: "高、貴" },
+        { jp: "安い", roma: "Yasui", zh: "便宜" },
+        { jp: "新しい", roma: "Atarashii", zh: "新" }
+      ],
+      "食物": [
+        { jp: "りんご", roma: "Ringo", zh: "蘋果" },
+        { jp: "みそ", roma: "Miso", zh: "味噌" },
+        { jp: "パン", roma: "Pan", zh: "麵包" }
+      ],
+      "地點": [
+        { jp: "駅", roma: "Eki", zh: "車站" },
+        { jp: "空港", roma: "Kuukou", zh: "機場" },
+        { jp: "ホテル", roma: "Hoteru", zh: "飯店" }
+      ],
+      "人際關係": [
+        { jp: "友達", roma: "Tomodachi", zh: "朋友" },
+        { jp: "家族", roma: "Kazoku", zh: "家人" },
+        { jp: "恋人", roma: "Koibito", zh: "戀人" }
+      ],
+      "天氣": [
+        { jp: "晴れ", roma: "Hare", zh: "晴天" },
+        { jp: "雨", roma: "Ame", zh: "雨" },
+        { jp: "雪", roma: "Yuki", zh: "雪" }
+      ],
+      "數字": [
+        { jp: "一", roma: "Ichi", zh: "一" },
+        { jp: "二", roma: "Ni", zh: "二" },
+        { jp: "三", roma: "San", zh: "三" }
+      ],
+      "時間": [
+        { jp: "今", roma: "Ima", zh: "現在" },
+        { jp: "今日", roma: "Kyou", zh: "今天" },
+        { jp: "明日", roma: "Ashita", zh: "明天" }
+      ],
+      "情緒": [
+        { jp: "嬉しい", roma: "Ureshii", zh: "開心" },
+        { jp: "悲しい", roma: "Kanashii", zh: "難過" },
+        { jp: "疲れた", roma: "Tsukareta", zh: "累了" }
+      ]
+    };
 
-  const tableBody = document.getElementById("vocabTable");
-  vocabulary.forEach(({ jp, romaji, zh }) => {
-    const tr = document.createElement("tr");
-    tr.innerHTML = `
-      <td>${jp}</td>
-      <td>${romaji}</td>
-      <td>${zh}</td>
-      <td><button data-jp="${jp}">播放</button></td>
-    `;
-    tableBody.appendChild(tr);
-  });
+    const allCategories = Object.keys(data);
+    const pageSize = 5;
+    let currentPage = 1;
 
-  let voices = [];
-  let voiceSelect = document.getElementById("voiceSelect");
-  let initialized = false;
+    const categoriesDiv = document.getElementById("categories");
+    const pageInfo = document.getElementById("pageInfo");
+    const prevBtn = document.getElementById("prevPage");
+    const nextBtn = document.getElementById("nextPage");
 
-  function populateVoiceList() {
-    voices = speechSynthesis.getVoices().filter(v => v.lang.startsWith("ja"));
-    voiceSelect.innerHTML = "";
+    function renderPage(page) {
+      categoriesDiv.innerHTML = "";
+      const start = (page - 1) * pageSize;
+      const end = start + pageSize;
+      const pageCategories = allCategories.slice(start, end);
 
-    if (voices.length > 0) {
-      voices.forEach((v, i) => {
-        voiceSelect.innerHTML += `<option value="${i}">${v.name}</option>`;
+      pageCategories.forEach(category => {
+        const details = document.createElement("details");
+        details.className = "category";
+
+        const summary = document.createElement("summary");
+        summary.textContent = category;
+        details.appendChild(summary);
+
+        const table = document.createElement("table");
+        data[category].forEach(item => {
+          const row = document.createElement("tr");
+          const jpTd = document.createElement("td");
+          jpTd.textContent = item.jp;
+          const romaTd = document.createElement("td");
+          romaTd.textContent = item.roma;
+          const zhTd = document.createElement("td");
+          zhTd.textContent = item.zh;
+
+          const speakBtn = document.createElement("button");
+          speakBtn.textContent = "🔊";
+          speakBtn.onclick = () => speak(item.jp);
+
+          row.appendChild(jpTd);
+          row.appendChild(romaTd);
+          row.appendChild(zhTd);
+          row.appendChild(speakBtn);
+          table.appendChild(row);
+        });
+
+        details.appendChild(table);
+        categoriesDiv.appendChild(details);
       });
-      const kyotoIndex = voices.findIndex(v => v.name.toLowerCase().includes("kyoto"));
-      voiceSelect.value = kyotoIndex >= 0 ? kyotoIndex : 0;
-    } else {
-      voiceSelect.innerHTML = `<option>（找不到日文聲線）</option>`;
+
+      pageInfo.textContent = `第 ${page} 頁 / 共 ${Math.ceil(allCategories.length / pageSize)} 頁`;
+      prevBtn.disabled = page === 1;
+      nextBtn.disabled = end >= allCategories.length;
     }
-  }
 
-  if ('onvoiceschanged' in speechSynthesis) {
-    speechSynthesis.onvoiceschanged = populateVoiceList;
-  } else {
-    populateVoiceList();
-  }
-
-  document.getElementById("rateRange").addEventListener("input", (e) => {
-    document.getElementById("rateValue").textContent = e.target.value;
-  });
-
-  document.getElementById("vocabTable").addEventListener("click", (e) => {
-    if (e.target.tagName === "BUTTON") {
-      if (!initialized) {
-        populateVoiceList();
-        initialized = true;
+    prevBtn.onclick = () => {
+      if (currentPage > 1) {
+        currentPage--;
+        renderPage(currentPage);
       }
-      speak(e.target.getAttribute("data-jp"));
-    }
-  });
+    };
 
-  function speak(text) {
-    if (!text) return;
-    speechSynthesis.cancel();
-    const utterance = new SpeechSynthesisUtterance(text);
-    utterance.lang = "ja-JP";
+    nextBtn.onclick = () => {
+      if (currentPage * pageSize < allCategories.length) {
+        currentPage++;
+        renderPage(currentPage);
+      }
+    };
 
-    const voiceIndex = voiceSelect.value;
-    if (voices.length > 0 && voices[voiceIndex]) {
-      utterance.voice = voices[voiceIndex];
+    // 語音
+    let voices = [];
+    let currentVoice;
+    const voiceSelect = document.getElementById("voiceSelect");
+    const rateRange = document.getElementById("rateRange");
+    const rateLabel = document.getElementById("rateLabel");
+
+    function populateVoices() {
+      voices = speechSynthesis.getVoices().filter(v => v.lang.startsWith("ja"));
+      voiceSelect.innerHTML = "";
+      voices.forEach(v => {
+        const option = document.createElement("option");
+        option.value = v.name;
+        option.textContent = `${v.name} (${v.lang})`;
+        voiceSelect.appendChild(option);
+      });
+      if (voices.length > 0) {
+        currentVoice = voices[0];
+      }
     }
-    utterance.rate = parseFloat(document.getElementById("rateRange").value);
-    speechSynthesis.speak(utterance);
-  }
-</script>
+
+    voiceSelect.onchange = () => {
+      currentVoice = voices.find(v => v.name === voiceSelect.value);
+    };
+
+    rateRange.oninput = () => {
+      rateLabel.textContent = rateRange.value;
+    };
+
+    function speak(text) {
+      const utter = new SpeechSynthesisUtterance(text);
+      utter.lang = "ja-JP";
+      utter.rate = parseFloat(rateRange.value);
+      if (currentVoice) utter.voice = currentVoice;
+      speechSynthesis.speak(utter);
+    }
+
+    if (speechSynthesis.onvoiceschanged !== undefined) {
+      speechSynthesis.onvoiceschanged = populateVoices;
+    }
+    populateVoices();
+
+    renderPage(currentPage);
+  </script>
 
 </body>
 </html>
