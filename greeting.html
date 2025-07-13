@@ -8,7 +8,7 @@
     body {
       font-family: sans-serif;
       margin: 20px;
-      background-color: #f5f5f5;
+      background-color: #f9f9f9;
       color: #333;
     }
     a {
@@ -20,27 +20,32 @@
     h1 {
       color: #007bff;
     }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+    th, td {
+      border: 1px solid #ddd;
+      padding: 8px;
+      text-align: left;
+      vertical-align: middle;
+    }
+    th {
+      background-color: #007bff;
+      color: white;
+    }
+    tr:nth-child(even) {
+      background-color: #f2f2f2;
+    }
     button {
-      margin: 5px;
-      padding: 8px 12px;
-      font-size: 14px;
+      padding: 4px 8px;
+      font-size: 12px;
       cursor: pointer;
-    }
-    .sentence {
-      background: #fff;
-      border-radius: 5px;
-      padding: 10px;
-      margin-bottom: 10px;
-      box-shadow: 0 0 5px rgba(0,0,0,0.1);
-    }
-    .answer {
-      display: none;
-      margin-top: 5px;
-      color: #555;
     }
     .random-container {
       margin: 20px 0;
-      padding: 15px;
+      padding: 10px;
       background: #e9ecef;
       border-radius: 5px;
     }
@@ -64,8 +69,17 @@
     <div id="randomSentence"></div>
   </div>
 
-  <h2>全部句子</h2>
-  <div id="sentences"></div>
+  <table>
+    <thead>
+      <tr>
+        <th>日文</th>
+        <th>翻譯 (繁體中文)</th>
+        <th>羅馬拼音</th>
+        <th>播放</th>
+      </tr>
+    </thead>
+    <tbody id="sentenceTable"></tbody>
+  </table>
 
   <script>
     const sentencesData = [
@@ -118,31 +132,23 @@
       { jp: "ゆっくりしていってください", zh: "請慢慢待著", romaji: "Yukkuri shite itte kudasai" }
     ];
 
-    const container = document.getElementById("sentences");
+    const tableBody = document.getElementById("sentenceTable");
     sentencesData.forEach((s, index) => {
-      const div = document.createElement("div");
-      div.className = "sentence";
-      div.innerHTML = `
-        <strong>${s.jp}</strong>
-        <button onclick="toggleAnswer(${index})">顯示答案</button>
-        <button onclick="speak('${s.jp}')">播放語音</button>
-        <div class="answer" id="ans-${index}">${s.zh} / ${s.romaji}</div>
+      const row = document.createElement("tr");
+      row.innerHTML = `
+        <td>${s.jp}</td>
+        <td>${s.zh}</td>
+        <td>${s.romaji}</td>
+        <td><button onclick="speak('${s.jp}')">播放</button></td>
       `;
-      container.appendChild(div);
+      tableBody.appendChild(row);
     });
-
-    function toggleAnswer(index) {
-      const ans = document.getElementById(`ans-${index}`);
-      ans.style.display = ans.style.display === "block" ? "none" : "block";
-    }
 
     function showRandomSentence() {
       const random = sentencesData[Math.floor(Math.random() * sentencesData.length)];
       document.getElementById("randomSentence").innerHTML = `
-        <strong>${random.jp}</strong><br>
-        <button onclick="document.getElementById('randomAnswer').style.display='block'">顯示答案</button>
-        <button onclick="speak('${random.jp}')">播放語音</button>
-        <div id="randomAnswer" style="display:none">${random.zh} / ${random.romaji}</div>
+        <strong>${random.jp}</strong> - ${random.zh} / ${random.romaji}
+        <button onclick="speak('${random.jp}')">播放</button>
       `;
     }
 
