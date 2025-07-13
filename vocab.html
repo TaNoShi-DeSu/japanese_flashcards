@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>單字學習</title>
+  <title>單字學習 - N5</title>
   <style>
     body {
       font-family: sans-serif;
@@ -56,10 +56,30 @@
       background: #0056b3;
     }
   </style>
+  #backBtn {
+  display: block;
+  width: 100%;
+  max-width: 300px;
+  margin: 30px auto 0;
+  padding: 12px;
+  background: #007bff;
+  color: #fff;
+  text-decoration: none;
+  text-align: center;
+  font-size: 18px;
+  font-weight: bold;
+  border-radius: 8px;
+  transition: background 0.3s;
+}
+
+#backBtn:hover {
+  background: #0056b3;
+}
+
 </head>
 <body>
 
-  <h1>單字學習</h1>
+  <h1>單字學習 - JLPT N5</h1>
 
   <div class="controls">
     <label for="voiceSelect">聲線:</label>
@@ -81,57 +101,126 @@
   <a id="backBtn" href="index.html">回目錄</a>
 
   <script>
-    // 模擬你的單字資料 (10個分類 × 每類3個單字)
     const data = {
       "打招呼": [
         { jp: "こんにちは", roma: "Konnichiwa", zh: "你好" },
         { jp: "おはよう", roma: "Ohayou", zh: "早安" },
-        { jp: "こんばんは", roma: "Konbanwa", zh: "晚安" }
+        { jp: "こんばんは", roma: "Konbanwa", zh: "晚上好" },
+        { jp: "おやすみ", roma: "Oyasumi", zh: "晚安（睡前）" },
+        { jp: "ありがとう", roma: "Arigatou", zh: "謝謝" },
+        { jp: "すみません", roma: "Sumimasen", zh: "不好意思" },
+        { jp: "はい", roma: "Hai", zh: "是" },
+        { jp: "いいえ", roma: "Iie", zh: "不是" },
+        { jp: "はじめまして", roma: "Hajimemashite", zh: "初次見面" },
+        { jp: "どうぞ", roma: "Douzo", zh: "請" }
       ],
       "動詞": [
         { jp: "行く", roma: "Iku", zh: "去" },
         { jp: "来る", roma: "Kuru", zh: "來" },
-        { jp: "見る", roma: "Miru", zh: "看" }
+        { jp: "見る", roma: "Miru", zh: "看" },
+        { jp: "食べる", roma: "Taberu", zh: "吃" },
+        { jp: "飲む", roma: "Nomu", zh: "喝" },
+        { jp: "聞く", roma: "Kiku", zh: "聽/問" },
+        { jp: "書く", roma: "Kaku", zh: "寫" },
+        { jp: "話す", roma: "Hanasu", zh: "說" },
+        { jp: "読む", roma: "Yomu", zh: "讀" },
+        { jp: "買う", roma: "Kau", zh: "買" }
       ],
       "形容詞": [
-        { jp: "高い", roma: "Takai", zh: "高、貴" },
+        { jp: "大きい", roma: "Ookii", zh: "大" },
+        { jp: "小さい", roma: "Chiisai", zh: "小" },
+        { jp: "新しい", roma: "Atarashii", zh: "新" },
+        { jp: "古い", roma: "Furui", zh: "舊" },
+        { jp: "高い", roma: "Takai", zh: "高/貴" },
         { jp: "安い", roma: "Yasui", zh: "便宜" },
-        { jp: "新しい", roma: "Atarashii", zh: "新" }
+        { jp: "早い", roma: "Hayai", zh: "快/早" },
+        { jp: "遅い", roma: "Osoi", zh: "慢/晚" },
+        { jp: "美しい", roma: "Utsukushii", zh: "美麗" },
+        { jp: "楽しい", roma: "Tanoshii", zh: "快樂" }
       ],
-      "食物": [
-        { jp: "りんご", roma: "Ringo", zh: "蘋果" },
-        { jp: "みそ", roma: "Miso", zh: "味噌" },
-        { jp: "パン", roma: "Pan", zh: "麵包" }
+      "名詞": [
+        { jp: "人", roma: "Hito", zh: "人" },
+        { jp: "先生", roma: "Sensei", zh: "老師" },
+        { jp: "学生", roma: "Gakusei", zh: "學生" },
+        { jp: "友達", roma: "Tomodachi", zh: "朋友" },
+        { jp: "家族", roma: "Kazoku", zh: "家族" },
+        { jp: "猫", roma: "Neko", zh: "貓" },
+        { jp: "犬", roma: "Inu", zh: "狗" },
+        { jp: "水", roma: "Mizu", zh: "水" },
+        { jp: "本", roma: "Hon", zh: "書" },
+        { jp: "学校", roma: "Gakkou", zh: "學校" }
       ],
-      "地點": [
+      "場所": [
         { jp: "駅", roma: "Eki", zh: "車站" },
         { jp: "空港", roma: "Kuukou", zh: "機場" },
-        { jp: "ホテル", roma: "Hoteru", zh: "飯店" }
-      ],
-      "人際關係": [
-        { jp: "友達", roma: "Tomodachi", zh: "朋友" },
-        { jp: "家族", roma: "Kazoku", zh: "家人" },
-        { jp: "恋人", roma: "Koibito", zh: "戀人" }
-      ],
-      "天氣": [
-        { jp: "晴れ", roma: "Hare", zh: "晴天" },
-        { jp: "雨", roma: "Ame", zh: "雨" },
-        { jp: "雪", roma: "Yuki", zh: "雪" }
-      ],
-      "數字": [
-        { jp: "一", roma: "Ichi", zh: "一" },
-        { jp: "二", roma: "Ni", zh: "二" },
-        { jp: "三", roma: "San", zh: "三" }
+        { jp: "学校", roma: "Gakkou", zh: "學校" },
+        { jp: "病院", roma: "Byouin", zh: "醫院" },
+        { jp: "店", roma: "Mise", zh: "店" },
+        { jp: "家", roma: "Ie", zh: "家" },
+        { jp: "図書館", roma: "Toshokan", zh: "圖書館" },
+        { jp: "公園", roma: "Kouen", zh: "公園" },
+        { jp: "ホテル", roma: "Hoteru", zh: "飯店" },
+        { jp: "郵便局", roma: "Yuubinkyoku", zh: "郵局" }
       ],
       "時間": [
         { jp: "今", roma: "Ima", zh: "現在" },
         { jp: "今日", roma: "Kyou", zh: "今天" },
-        { jp: "明日", roma: "Ashita", zh: "明天" }
+        { jp: "明日", roma: "Ashita", zh: "明天" },
+        { jp: "昨日", roma: "Kinou", zh: "昨天" },
+        { jp: "週末", roma: "Shuumatsu", zh: "週末" },
+        { jp: "朝", roma: "Asa", zh: "早上" },
+        { jp: "昼", roma: "Hiru", zh: "中午" },
+        { jp: "夜", roma: "Yoru", zh: "晚上" },
+        { jp: "時間", roma: "Jikan", zh: "時間" },
+        { jp: "分", roma: "Fun", zh: "分鐘" }
       ],
-      "情緒": [
+      "數字": [
+        { jp: "一", roma: "Ichi", zh: "一" },
+        { jp: "二", roma: "Ni", zh: "二" },
+        { jp: "三", roma: "San", zh: "三" },
+        { jp: "四", roma: "Shi / Yon", zh: "四" },
+        { jp: "五", roma: "Go", zh: "五" },
+        { jp: "六", roma: "Roku", zh: "六" },
+        { jp: "七", roma: "Shichi / Nana", zh: "七" },
+        { jp: "八", roma: "Hachi", zh: "八" },
+        { jp: "九", roma: "Kyuu", zh: "九" },
+        { jp: "十", roma: "Juu", zh: "十" }
+      ],
+      "顏色": [
+        { jp: "赤", roma: "Aka", zh: "紅色" },
+        { jp: "青", roma: "Ao", zh: "藍色" },
+        { jp: "白", roma: "Shiro", zh: "白色" },
+        { jp: "黒", roma: "Kuro", zh: "黑色" },
+        { jp: "黄色", roma: "Kiiro", zh: "黃色" },
+        { jp: "緑", roma: "Midori", zh: "綠色" },
+        { jp: "茶色", roma: "Chairo", zh: "棕色" },
+        { jp: "紫", roma: "Murasaki", zh: "紫色" },
+        { jp: "灰色", roma: "Haiiro", zh: "灰色" },
+        { jp: "桃色", roma: "Momoiro", zh: "粉紅色" }
+      ],
+      "情感": [
         { jp: "嬉しい", roma: "Ureshii", zh: "開心" },
         { jp: "悲しい", roma: "Kanashii", zh: "難過" },
-        { jp: "疲れた", roma: "Tsukareta", zh: "累了" }
+        { jp: "楽しい", roma: "Tanoshii", zh: "快樂" },
+        { jp: "寂しい", roma: "Sabishii", zh: "寂寞" },
+        { jp: "疲れた", roma: "Tsukareta", zh: "累了" },
+        { jp: "怖い", roma: "Kowai", zh: "可怕" },
+        { jp: "うれしい", roma: "Ureshii", zh: "高興" },
+        { jp: "恥ずかしい", roma: "Hazukashii", zh: "害羞" },
+        { jp: "怒る", roma: "Okoru", zh: "生氣" },
+        { jp: "安心", roma: "Anshin", zh: "放心" }
+      ],
+      "自然": [
+        { jp: "山", roma: "Yama", zh: "山" },
+        { jp: "川", roma: "Kawa", zh: "河川" },
+        { jp: "海", roma: "Umi", zh: "海" },
+        { jp: "空", roma: "Sora", zh: "天空" },
+        { jp: "星", roma: "Hoshi", zh: "星星" },
+        { jp: "月", roma: "Tsuki", zh: "月亮" },
+        { jp: "太陽", roma: "Taiyou", zh: "太陽" },
+        { jp: "花", roma: "Hana", zh: "花" },
+        { jp: "木", roma: "Ki", zh: "樹木" },
+        { jp: "葉", roma: "Ha", zh: "葉子" }
       ]
     };
 
