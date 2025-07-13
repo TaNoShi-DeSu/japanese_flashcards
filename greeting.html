@@ -6,15 +6,22 @@
   <title>Japanese Flashcards with Voice</title>
   <style>
     body { font-family: Arial, sans-serif; margin: 20px; line-height: 1.5; }
-    label, select, input { margin-right: 10px; font-size: 1rem; }
+    label, select, input, button { margin-right: 10px; font-size: 1rem; }
     table { width: 100%; border-collapse: collapse; margin-top: 20px; }
     th, td { border: 1px solid #ccc; padding: 8px; text-align: left; vertical-align: middle; }
-    button { padding: 5px 10px; font-size: 1rem; cursor: pointer; }
+    button { padding: 5px 10px; cursor: pointer; }
+    #backButton {
+      margin-bottom: 15px;
+      background-color: #eee;
+      border: 1px solid #ccc;
+    }
   </style>
 </head>
 <body>
 
-<h1>Japanese Flashcards with Voice</h1>
+<h1>日常用句 - Japanese Flashcards</h1>
+
+<button id="backButton" onclick="goBack()">回目錄</button>
 
 <div>
   <label for="voiceSelect">聲線：</label>
@@ -38,12 +45,59 @@
 </table>
 
 <script>
+  function goBack() {
+    // 請依你網站目錄頁面路徑修改這裡
+    window.location.href = "index.html";
+  }
+
   const sentences = [
     { jp: "おはようございます", romaji: "Ohayou gozaimasu", zh: "早安" },
     { jp: "こんにちは", romaji: "Konnichiwa", zh: "你好" },
     { jp: "こんばんは", romaji: "Konbanwa", zh: "晚上好" },
     { jp: "ありがとう", romaji: "Arigatou", zh: "謝謝" },
-    { jp: "すみません", romaji: "Sumimasen", zh: "不好意思" }
+    { jp: "すみません", romaji: "Sumimasen", zh: "不好意思" },
+    { jp: "はい", romaji: "Hai", zh: "是的" },
+    { jp: "いいえ", romaji: "Iie", zh: "不是" },
+    { jp: "お願いします", romaji: "Onegaishimasu", zh: "麻煩你" },
+    { jp: "助けてください", romaji: "Tasukete kudasai", zh: "請幫忙" },
+    { jp: "わかりました", romaji: "Wakarimashita", zh: "我明白了" },
+    { jp: "もう一度お願いします", romaji: "Mou ichido onegaishimasu", zh: "請再說一次" },
+    { jp: "ゆっくり話してください", romaji: "Yukkuri hanashite kudasai", zh: "請說慢一點" },
+    { jp: "これはいくらですか？", romaji: "Kore wa ikura desu ka?", zh: "這個多少錢？" },
+    { jp: "どこですか？", romaji: "Doko desu ka?", zh: "在哪裡？" },
+    { jp: "トイレはどこですか？", romaji: "Toire wa doko desu ka?", zh: "廁所在哪裡？" },
+    { jp: "駅はどこですか？", romaji: "Eki wa doko desu ka?", zh: "車站在哪裡？" },
+    { jp: "助けて！", romaji: "Tasukete!", zh: "救命！" },
+    { jp: "医者を呼んでください", romaji: "Isha o yonde kudasai", zh: "請叫醫生" },
+    { jp: "具合が悪いです", romaji: "Guai ga warui desu", zh: "我不舒服" },
+    { jp: "名前は何ですか？", romaji: "Namae wa nan desu ka?", zh: "你叫什麼名字？" },
+    { jp: "日本語が話せますか？", romaji: "Nihongo ga hanasemasu ka?", zh: "你會說日文嗎？" },
+    { jp: "英語が話せますか？", romaji: "Eigo ga hanasemasu ka?", zh: "你會說英文嗎？" },
+    { jp: "助けが必要です", romaji: "Tasuke ga hitsuyou desu", zh: "我需要幫助" },
+    { jp: "道に迷いました", romaji: "Michi ni mayoimashita", zh: "我迷路了" },
+    { jp: "ホテルはどこですか？", romaji: "Hoteru wa doko desu ka?", zh: "飯店在哪裡？" },
+    { jp: "これは何ですか？", romaji: "Kore wa nan desu ka?", zh: "這是什麼？" },
+    { jp: "もう少し安くなりませんか？", romaji: "Mou sukoshi yasuku narimasen ka?", zh: "可以再便宜一點嗎？" },
+    { jp: "お会計お願いします", romaji: "Okaikei onegaishimasu", zh: "請結帳" },
+    { jp: "おすすめは何ですか？", romaji: "Osusume wa nan desu ka?", zh: "有什麼推薦嗎？" },
+    { jp: "写真を撮ってもいいですか？", romaji: "Shashin o totte mo ii desu ka?", zh: "可以拍照嗎？" },
+    { jp: "禁煙ですか？", romaji: "Kin'en desu ka?", zh: "這裡禁菸嗎？" },
+    { jp: "水をください", romaji: "Mizu o kudasai", zh: "請給我水" },
+    { jp: "どこで乗り換えますか？", romaji: "Doko de norikaemasu ka?", zh: "在哪裡換乘？" },
+    { jp: "急いでいます", romaji: "Isoide imasu", zh: "我很急" },
+    { jp: "予約しています", romaji: "Yoyaku shite imasu", zh: "我有預約" },
+    { jp: "お腹が空きました", romaji: "Onaka ga sukimashita", zh: "我餓了" },
+    { jp: "喉が渇きました", romaji: "Nodo ga kawakimashita", zh: "我渴了" },
+    { jp: "今日は暑いですね", romaji: "Kyou wa atsui desu ne", zh: "今天很熱呢" },
+    { jp: "寒いです", romaji: "Samui desu", zh: "好冷" },
+    { jp: "気をつけて", romaji: "Ki o tsukete", zh: "請小心" },
+    { jp: "頑張ってください", romaji: "Ganbatte kudasai", zh: "請加油" },
+    { jp: "お疲れ様です", romaji: "Otsukaresama desu", zh: "辛苦了" },
+    { jp: "さようなら", romaji: "Sayounara", zh: "再見" },
+    { jp: "またね", romaji: "Mata ne", zh: "回頭見" },
+    { jp: "気にしないでください", romaji: "Ki ni shinaide kudasai", zh: "別介意" },
+    { jp: "大丈夫です", romaji: "Daijoubu desu", zh: "沒問題" },
+    { jp: "ありがとうござました", romaji: "Arigatou gozaimashita", zh: "非常感謝" }
   ];
 
   const tableBody = document.getElementById("sentenceTable");
@@ -70,7 +124,6 @@
       voices.forEach((v, i) => {
         voiceSelect.innerHTML += `<option value="${i}">${v.name}</option>`;
       });
-      // 預設選 Kyoto
       const kyotoIndex = voices.findIndex(v => v.name.toLowerCase().includes("kyoto"));
       voiceSelect.value = kyotoIndex >= 0 ? kyotoIndex : 0;
     } else {
@@ -88,7 +141,6 @@
     document.getElementById("rateValue").textContent = e.target.value;
   });
 
-  // 確保用戶點擊時才執行 TTS，避免自動播放被攔截
   document.getElementById("sentenceTable").addEventListener("click", (e) => {
     if (e.target.tagName === "BUTTON") {
       if (!initialized) {
