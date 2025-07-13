@@ -2,12 +2,119 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>日常用句</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      margin: 20px;
+    }
+    button {
+      margin: 5px 0;
+      padding: 8px 12px;
+      font-size: 14px;
+      cursor: pointer;
+    }
+    .sentence {
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      padding: 10px;
+      margin-bottom: 10px;
+    }
+    .answer {
+      display: none;
+      margin-top: 5px;
+      color: #333;
+    }
+    .random-container {
+      margin: 20px 0;
+      padding: 10px;
+      border: 1px solid #aaa;
+      border-radius: 5px;
+      background-color: #f9f9f9;
+    }
+  </style>
 </head>
 <body>
   <a href="index.html">← 回目錄</a>
   <h1>日常用句</h1>
-  <p>你好/午安 → こんにちは。</p>
+
+  <!-- 語音設定 -->
+  <div>
+    <label for="voiceSelect">聲線：</label>
+    <select id="voiceSelect"></select>
+    <label for="rateRange">語速：</label>
+    <input type="range" id="rateRange" min="0.2" max="2" step="0.1" value="0.5">
+  </div>
+
+  <!-- 隨機抽一句 -->
+  <div class="random-container">
+    <button onclick="showRandomSentence()">隨機抽一句</button>
+    <div id="randomSentence"></div>
+  </div>
+
+  <h2>全部句子</h2>
+
+  <div id="sentences"></div>
+
+  <script>
+    const sentencesData = [
+      { jp: "こんにちは", zh: "你好/午安", romaji: "Konnichiwa" },
+      { jp: "おはようございます", zh: "早安", romaji: "Ohayou gozaimasu" },
+      { jp: "ありがとうございます", zh: "謝謝", romaji: "Arigatou gozaimasu" },
+      { jp: "すみません", zh: "不好意思", romaji: "Sumimasen" }
+    ];
+
+    // 載入所有句子
+    const container = document.getElementById("sentences");
+    sentencesData.forEach((s, index) => {
+      const div = document.createElement("div");
+      div.className = "sentence";
+      div.innerHTML = `
+        <strong>${s.jp}</strong>
+        <button onclick="toggleAnswer(${index})">顯示答案</button>
+        <button onclick="speak('${s.jp}')">播放語音</button>
+        <div class="answer" id="ans-${index}">${s.zh} / ${s.romaji}</div>
+      `;
+      container.appendChild(div);
+    });
+
+    function toggleAnswer(index) {
+      const ans = document.getElementById(`ans-${index}`);
+      ans.style.display = ans.style.display === "block" ? "none" : "block";
+    }
+
+    // 隨機抽一句
+    function showRandomSentence() {
+      const random = sentencesData[Math.floor(Math.random() * sentencesData.length)];
+      document.getElementById("randomSentence").innerHTML = `
+        <p><strong>${random.jp}</strong></p>
+        <button onclick="document.getElementById('randomAnswer').style.display='block'">顯示答案</button>
+        <button onclick="speak('${random.jp}')">播放語音</button>
+        <div id="randomAnswer" style="display:none">${random.zh} / ${random.romaji}</div>
+      `;
+    }
+
+    // 語音播放
+    let voices = [];
+    window.speechSynthesis.onvoiceschanged = () => {
+      voices = window.speechSynthesis.getVoices().filter(v => v.lang === "ja-JP");
+      const voiceSelect = document.getElementById("voiceSelect");
+      voiceSelect.innerHTML = "";
+      voices.forEach((v, i) => {
+        voiceSelect.innerHTML += `<option value="${i}">${v.name}</option>`;
+      });
+    };
+
+    function speak(text) {
+      const utter = new SpeechSynthesisUtterance(text);
+      const voiceIndex = document.getElementById("voiceSelect").value;
+      if (voices[voiceIndex]) {
+        utter.voice = voices[voiceIndex];
+      }
+      utter.rate = parseFloat(document.getElementById("rateRange").value);
+      window.speechSynthesis.speak(utter);
+    }
+  </script>
 </body>
 </html>
-Commit new file
