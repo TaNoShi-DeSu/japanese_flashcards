@@ -5,127 +5,114 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Japanese Flashcards with Voice</title>
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 20px;
-      line-height: 1.5;
-    }
-    label, select, input {
-      margin-right: 10px;
-      font-size: 1rem;
-    }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 20px;
-    }
-    th, td {
-      border: 1px solid #ccc;
-      padding: 8px;
-      text-align: left;
-      vertical-align: middle;
-    }
-    button {
-      padding: 5px 10px;
-      font-size: 1rem;
-      cursor: pointer;
-    }
+    body { font-family: Arial, sans-serif; margin: 20px; line-height: 1.5; }
+    label, select, input { margin-right: 10px; font-size: 1rem; }
+    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; vertical-align: middle; }
+    button { padding: 5px 10px; font-size: 1rem; cursor: pointer; }
   </style>
 </head>
 <body>
 
-  <h1>Japanese Flashcards with Voice</h1>
+<h1>Japanese Flashcards with Voice</h1>
 
-  <div>
-    <label for="voiceSelect">聲線：</label>
-    <select id="voiceSelect"></select>
+<div>
+  <label for="voiceSelect">聲線：</label>
+  <select id="voiceSelect"></select>
 
-    <label for="rateRange">語速：</label>
-    <input type="range" id="rateRange" min="0.2" max="2" step="0.1" value="0.5" />
-    <span id="rateValue">0.5</span>
-  </div>
+  <label for="rateRange">語速：</label>
+  <input type="range" id="rateRange" min="0.2" max="2" step="0.1" value="0.5" />
+  <span id="rateValue">0.5</span>
+</div>
 
-  <table>
-    <thead>
-      <tr>
-        <th>日文</th>
-        <th>羅馬拼音</th>
-        <th>繁體中文</th>
-        <th>播放</th>
-      </tr>
-    </thead>
-    <tbody id="sentenceTable">
-      <!-- 動態生成句子 -->
-    </tbody>
-  </table>
+<table>
+  <thead>
+    <tr>
+      <th>日文</th>
+      <th>羅馬拼音</th>
+      <th>繁體中文</th>
+      <th>播放</th>
+    </tr>
+  </thead>
+  <tbody id="sentenceTable"></tbody>
+</table>
 
-  <script>
-    const sentences = [
-      { jp: "おはようございます", romaji: "Ohayou gozaimasu", zh: "早安" },
-      { jp: "こんにちは", romaji: "Konnichiwa", zh: "你好" },
-      { jp: "こんばんは", romaji: "Konbanwa", zh: "晚上好" },
-      { jp: "ありがとう", romaji: "Arigatou", zh: "謝謝" },
-      { jp: "すみません", romaji: "Sumimasen", zh: "不好意思" },
-      // 你可以依需求擴充更多句子
-    ];
+<script>
+  const sentences = [
+    { jp: "おはようございます", romaji: "Ohayou gozaimasu", zh: "早安" },
+    { jp: "こんにちは", romaji: "Konnichiwa", zh: "你好" },
+    { jp: "こんばんは", romaji: "Konbanwa", zh: "晚上好" },
+    { jp: "ありがとう", romaji: "Arigatou", zh: "謝謝" },
+    { jp: "すみません", romaji: "Sumimasen", zh: "不好意思" }
+  ];
 
-    const tableBody = document.getElementById("sentenceTable");
-    sentences.forEach(({ jp, romaji, zh }) => {
-      const tr = document.createElement("tr");
-      tr.innerHTML = `
-        <td>${jp}</td>
-        <td>${romaji}</td>
-        <td>${zh}</td>
-        <td><button onclick="speak('${jp}')">播放</button></td>
-      `;
-      tableBody.appendChild(tr);
-    });
+  const tableBody = document.getElementById("sentenceTable");
+  sentences.forEach(({ jp, romaji, zh }) => {
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td>${jp}</td>
+      <td>${romaji}</td>
+      <td>${zh}</td>
+      <td><button data-jp="${jp}">播放</button></td>
+    `;
+    tableBody.appendChild(tr);
+  });
 
-    let voices = [];
+  let voices = [];
+  let voiceSelect = document.getElementById("voiceSelect");
+  let initialized = false;
 
-    function populateVoiceList() {
-      voices = speechSynthesis.getVoices().filter(v => v.lang === "ja-JP");
-      const voiceSelect = document.getElementById("voiceSelect");
-      voiceSelect.innerHTML = "";
+  function populateVoiceList() {
+    voices = speechSynthesis.getVoices().filter(v => v.lang.startsWith("ja"));
+    voiceSelect.innerHTML = "";
 
-      if (voices.length > 0) {
-        voices.forEach((voice, i) => {
-          voiceSelect.innerHTML += `<option value="${i}">${voice.name}</option>`;
-        });
-        // 預設選 Kyoto
-        const kyotoIndex = voices.findIndex(v => v.name.toLowerCase().includes("kyoto"));
-        voiceSelect.value = kyotoIndex >= 0 ? kyotoIndex : 0;
-      } else {
-        voiceSelect.innerHTML = `<option>（找不到日文聲線）</option>`;
-      }
-    }
-
-    if (speechSynthesis.onvoiceschanged !== undefined) {
-      speechSynthesis.onvoiceschanged = populateVoiceList;
+    if (voices.length > 0) {
+      voices.forEach((v, i) => {
+        voiceSelect.innerHTML += `<option value="${i}">${v.name}</option>`;
+      });
+      // 預設選 Kyoto
+      const kyotoIndex = voices.findIndex(v => v.name.toLowerCase().includes("kyoto"));
+      voiceSelect.value = kyotoIndex >= 0 ? kyotoIndex : 0;
     } else {
-      // 若 onvoiceschanged 不支援，直接呼叫一次
-      populateVoiceList();
+      voiceSelect.innerHTML = `<option>（找不到日文聲線）</option>`;
     }
+  }
 
-    document.getElementById("rateRange").addEventListener("input", (e) => {
-      document.getElementById("rateValue").textContent = e.target.value;
-    });
+  if ('onvoiceschanged' in speechSynthesis) {
+    speechSynthesis.onvoiceschanged = populateVoiceList;
+  } else {
+    populateVoiceList();
+  }
 
-    function speak(text) {
-      if (!text) return;
-      speechSynthesis.cancel();
-      const utterance = new SpeechSynthesisUtterance(text);
-      utterance.lang = "ja-JP";
+  document.getElementById("rateRange").addEventListener("input", (e) => {
+    document.getElementById("rateValue").textContent = e.target.value;
+  });
 
-      const voiceIndex = document.getElementById("voiceSelect").value;
-      if (voices.length > 0 && voices[voiceIndex]) {
-        utterance.voice = voices[voiceIndex];
+  // 確保用戶點擊時才執行 TTS，避免自動播放被攔截
+  document.getElementById("sentenceTable").addEventListener("click", (e) => {
+    if (e.target.tagName === "BUTTON") {
+      if (!initialized) {
+        populateVoiceList();
+        initialized = true;
       }
-
-      utterance.rate = parseFloat(document.getElementById("rateRange").value);
-      speechSynthesis.speak(utterance);
+      speak(e.target.getAttribute("data-jp"));
     }
-  </script>
+  });
+
+  function speak(text) {
+    if (!text) return;
+    speechSynthesis.cancel();
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = "ja-JP";
+
+    const voiceIndex = voiceSelect.value;
+    if (voices.length > 0 && voices[voiceIndex]) {
+      utterance.voice = voices[voiceIndex];
+    }
+    utterance.rate = parseFloat(document.getElementById("rateRange").value);
+    speechSynthesis.speak(utterance);
+  }
+</script>
 
 </body>
 </html>
