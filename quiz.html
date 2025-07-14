@@ -1,13 +1,218 @@
 <!DOCTYPE html>
-<html lang="ja">
+<html lang="zh-Hant">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>測驗題</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>日文單字測驗</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      margin: 20px;
+      background: #f9f9f9;
+    }
+    h1 {
+      text-align: center;
+    }
+    .controls {
+      margin: 20px auto;
+      text-align: center;
+    }
+    .controls label {
+      margin-right: 8px;
+      font-weight: bold;
+    }
+    #question {
+      background: #fff;
+      padding: 20px;
+      margin: 20px auto;
+      max-width: 600px;
+      border-radius: 8px;
+      border: 1px solid #ddd;
+      text-align: center;
+    }
+    .choices {
+      margin-top: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      align-items: center;
+    }
+    .choices button {
+      padding: 10px 20px;
+      font-size: 18px;
+      width: 80%;
+      max-width: 300px;
+      cursor: pointer;
+    }
+    #result {
+      margin-top: 20px;
+      font-size: 18px;
+      font-weight: bold;
+    }
+    #nextBtn {
+      display: none;
+      margin-top: 20px;
+      padding: 10px 20px;
+      font-size: 18px;
+      background: #007bff;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    #nextBtn:hover {
+      background: #0056b3;
+    }
+    #backBtn {
+      display: block;
+      width: 100%;
+      max-width: 300px;
+      margin: 40px auto 0;
+      padding: 12px;
+      background: #007bff;
+      color: #fff;
+      text-decoration: none;
+      text-align: center;
+      font-size: 18px;
+      font-weight: bold;
+      border-radius: 8px;
+      transition: background 0.3s;
+    }
+    #backBtn:hover {
+      background: #0056b3;
+    }
+  </style>
 </head>
 <body>
-  <a href="index.html">← 回目錄</a>
-  <h1>測驗題</h1>
-  <p>之後放入互動式測驗內容。</p>
+
+<h1>日文單字測驗</h1>
+
+<div class="controls">
+  <label for="voiceSelect">聲線:</label>
+  <select id="voiceSelect"></select>
+
+  <label for="rateRange" style="margin-left:20px;">語速:</label>
+  <input type="range" id="rateRange" min="0.1" max="2" step="0.1" value="1" />
+  <span id="rateLabel">1.0</span>
+</div>
+
+<div id="question">
+  <div id="quizText"></div>
+  <div class="choices" id="choices"></div>
+  <div id="result"></div>
+  <button id="nextBtn">下一題</button>
+</div>
+
+<a id="backBtn" href="index.html">回目錄</a>
+
+<script>
+  const wordData = [
+    { jp: "学校", roma: "Gakkou", zh: "學校" },
+    { jp: "人", roma: "Hito", zh: "人" },
+    { jp: "友達", roma: "Tomodachi", zh: "朋友" },
+    { jp: "先生", roma: "Sensei", zh: "老師" },
+    { jp: "駅", roma: "Eki", zh: "車站" },
+    { jp: "海", roma: "Umi", zh: "海" },
+    { jp: "水", roma: "Mizu", zh: "水" },
+    { jp: "本", roma: "Hon", zh: "書" },
+    { jp: "犬", roma: "Inu", zh: "狗" },
+    { jp: "猫", roma: "Neko", zh: "貓" }
+    // 可繼續擴充到數百或數千個單字
+  ];
+
+  let voices = [];
+  let currentVoice;
+  const voiceSelect = document.getElementById("voiceSelect");
+  const rateRange = document.getElementById("rateRange");
+  const rateLabel = document.getElementById("rateLabel");
+
+  function populateVoices() {
+    voices = speechSynthesis.getVoices().filter(v => v.lang.startsWith("ja"));
+    voiceSelect.innerHTML = "";
+    voices.forEach(v => {
+      const option = document.createElement("option");
+      option.value = v.name;
+      option.textContent = `${v.name} (${v.lang})`;
+      voiceSelect.appendChild(option);
+    });
+    if (voices.length > 0) {
+      currentVoice = voices[0];
+      voiceSelect.value = currentVoice.name;
+    }
+  }
+
+  voiceSelect.onchange = () => {
+    currentVoice = voices.find(v => v.name === voiceSelect.value);
+  };
+
+  rateRange.oninput = () => {
+    rateLabel.textContent = rateRange.value;
+  };
+
+  function speak(text) {
+    if (!text) return;
+    const utter = new SpeechSynthesisUtterance(text);
+    utter.lang = "ja-JP";
+    utter.rate = parseFloat(rateRange.value);
+    if (currentVoice) utter.voice = currentVoice;
+    speechSynthesis.speak(utter);
+  }
+
+  if (speechSynthesis.onvoiceschanged !== undefined) {
+    speechSynthesis.onvoiceschanged = populateVoices;
+  }
+  populateVoices();
+
+  // 測驗邏輯
+  let currentQuestion;
+
+  function nextQuestion() {
+    document.getElementById("result").textContent = "";
+    document.getElementById("nextBtn").style.display = "none";
+    document.getElementById("choices").innerHTML = "";
+
+    currentQuestion = wordData[Math.floor(Math.random() * wordData.length)];
+
+    document.getElementById("quizText").innerHTML = 
+      `<strong>${currentQuestion.jp}</strong> 
+      <button onclick="speak('${currentQuestion.jp}')">🔊</button>`;
+
+    // 隨機取出其他選項
+    let options = [currentQuestion];
+    while (options.length < 4) {
+      const rand = wordData[Math.floor(Math.random() * wordData.length)];
+      if (!options.find(w => w.zh === rand.zh)) {
+        options.push(rand);
+      }
+    }
+
+    // 洗牌
+    options = options.sort(() => Math.random() - 0.5);
+
+    options.forEach(opt => {
+      const btn = document.createElement("button");
+      btn.textContent = opt.zh;
+      btn.onclick = () => checkAnswer(opt);
+      document.getElementById("choices").appendChild(btn);
+    });
+  }
+
+  function checkAnswer(selected) {
+    const result = document.getElementById("result");
+    if (selected.zh === currentQuestion.zh) {
+      result.textContent = `✔ 正確！【${currentQuestion.jp}】(${currentQuestion.roma}) = ${currentQuestion.zh}`;
+      result.style.color = "green";
+    } else {
+      result.textContent = `✘ 錯誤！ 正解是【${currentQuestion.jp}】(${currentQuestion.roma}) = ${currentQuestion.zh}`;
+      result.style.color = "red";
+    }
+    document.getElementById("nextBtn").style.display = "inline-block";
+  }
+
+  document.getElementById("nextBtn").onclick = nextQuestion;
+
+  nextQuestion();
+</script>
+
 </body>
 </html>
