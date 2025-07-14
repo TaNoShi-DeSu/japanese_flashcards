@@ -165,12 +165,11 @@
 
   // 抽 50 題隨機
   const quizQuestions = [];
-  while (quizQuestions.length < 50) {
-    const q = data[Math.floor(Math.random() * data.length)];
-    if (!quizQuestions.find(x => x.jp === q.jp)) {
-      quizQuestions.push(q);
-    }
-  }
+  const quizQuestions = [];
+for (let i = 0; i < 50; i++) {
+  const q = data[Math.floor(Math.random() * data.length)];
+  quizQuestions.push(q);
+}
 
   function loadQuestion() {
     if (questionIndex >= quizQuestions.length) {
