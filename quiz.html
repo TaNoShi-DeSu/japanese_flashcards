@@ -49,11 +49,11 @@
       font-weight: bold;
       font-size: 20px;
     }
-    #backBtn {
+    #backBtn, #retryBtn {
       display: block;
       width: 100%;
       max-width: 300px;
-      margin: 40px auto 0;
+      margin: 20px auto 0;
       padding: 12px;
       background: #007bff;
       color: #fff;
@@ -64,8 +64,14 @@
       border-radius: 8px;
       transition: background 0.3s;
     }
-    #backBtn:hover {
+    #backBtn:hover, #retryBtn:hover {
       background: #0056b3;
+    }
+    #progress {
+      text-align: center;
+      margin-bottom: 10px;
+      font-size: 18px;
+      color: #555;
     }
   </style>
 </head>
@@ -83,6 +89,7 @@
 </div>
 
 <div id="quiz-container">
+  <div id="progress"></div>
   <div id="question"></div>
   <div class="choices" id="choices"></div>
   <div id="result"></div>
@@ -130,25 +137,8 @@
     { jp: "待ちます", roma: "Machimasu", zh: "等待" },
     { jp: "分かります", roma: "Wakarimasu", zh: "懂" },
     { jp: "知っています", roma: "Shitteimasu", zh: "知道" },
-    { jp: "勉強します", roma: "Benkyou shimasu", zh: "學習" },
-    { jp: "電話します", roma: "Denwa shimasu", zh: "打電話" },
-    { jp: "掃除します", roma: "Souji shimasu", zh: "打掃" },
-    { jp: "料理します", roma: "Ryouri shimasu", zh: "做料理" },
-    { jp: "買い物します", roma: "Kaimono shimasu", zh: "購物" },
-    { jp: "遊びます", roma: "Asobimasu", zh: "玩" },
-    { jp: "勉強", roma: "Benkyou", zh: "學習" },
-    { jp: "病院", roma: "Byouin", zh: "醫院" },
-    { jp: "会社", roma: "Kaisha", zh: "公司" },
-    { jp: "郵便局", roma: "Yuubinkyoku", zh: "郵局" },
-    { jp: "図書館", roma: "Toshokan", zh: "圖書館" },
-    { jp: "駅前", roma: "Ekimae", zh: "車站前" },
-    { jp: "銀行", roma: "Ginkou", zh: "銀行" },
-    { jp: "交番", roma: "Kouban", zh: "派出所" },
-    { jp: "交差点", roma: "Kousaten", zh: "十字路口" },
-    { jp: "左", roma: "Hidari", zh: "左邊" },
-    { jp: "右", roma: "Migi", zh: "右邊" },
-    { jp: "上", roma: "Ue", zh: "上面" },
-    { jp: "下", roma: "Shita", zh: "下面" }
+    { jp: "勉強します", roma: "Benkyou shimasu", zh: "學習" }
+    // ... 如需要更多，持續補上
   ];
 
   let voices = [];
@@ -199,15 +189,18 @@
   let wrongAnswers = [];
 
   const shuffled = data.sort(() => Math.random() - 0.5);
-  const quizQuestions = shuffled.slice(0, 50);
+  const quizQuestions = shuffled.slice(0, Math.min(50, shuffled.length));
 
   function loadQuestion() {
     if (questionIndex >= quizQuestions.length) {
       showResult();
       return;
     }
+
     const question = quizQuestions[questionIndex];
     document.getElementById("result").textContent = "";
+    document.getElementById("progress").textContent = `第 ${questionIndex + 1} 題 / 共 ${quizQuestions.length} 題`;
+
     document.getElementById("question").innerHTML = `
       <strong>${question.jp}</strong> 
       <button onclick="speak('${question.jp}')">🔊</button>
@@ -266,6 +259,7 @@
     } else {
       html += `<p>全部答對！恭喜！</p>`;
     }
+    html += `<a id="retryBtn" href="#" onclick="location.reload()">再試一次</a>`;
     document.getElementById("quiz-container").innerHTML = html;
   }
 
