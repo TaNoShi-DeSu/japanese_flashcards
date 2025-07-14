@@ -44,38 +44,24 @@
       font-size: 16px;
     }
     #backBtn {
-      display: inline-block;
-      margin-top: 30px;
-      padding: 10px 15px;
+      display: block;
+      width: 100%;
+      max-width: 300px;
+      margin: 30px auto 0;
+      padding: 12px;
       background: #007bff;
       color: #fff;
       text-decoration: none;
-      border-radius: 5px;
+      text-align: center;
+      font-size: 18px;
+      font-weight: bold;
+      border-radius: 8px;
+      transition: background 0.3s;
     }
     #backBtn:hover {
       background: #0056b3;
     }
   </style>
-  #backBtn {
-  display: block;
-  width: 100%;
-  max-width: 300px;
-  margin: 30px auto 0;
-  padding: 12px;
-  background: #007bff;
-  color: #fff;
-  text-decoration: none;
-  text-align: center;
-  font-size: 18px;
-  font-weight: bold;
-  border-radius: 8px;
-  transition: background 0.3s;
-}
-
-#backBtn:hover {
-  background: #0056b3;
-}
-
 </head>
 <body>
 
@@ -198,143 +184,3 @@
         { jp: "灰色", roma: "Haiiro", zh: "灰色" },
         { jp: "桃色", roma: "Momoiro", zh: "粉紅色" }
       ],
-      "情感": [
-        { jp: "嬉しい", roma: "Ureshii", zh: "開心" },
-        { jp: "悲しい", roma: "Kanashii", zh: "難過" },
-        { jp: "楽しい", roma: "Tanoshii", zh: "快樂" },
-        { jp: "寂しい", roma: "Sabishii", zh: "寂寞" },
-        { jp: "疲れた", roma: "Tsukareta", zh: "累了" },
-        { jp: "怖い", roma: "Kowai", zh: "可怕" },
-        { jp: "うれしい", roma: "Ureshii", zh: "高興" },
-        { jp: "恥ずかしい", roma: "Hazukashii", zh: "害羞" },
-        { jp: "怒る", roma: "Okoru", zh: "生氣" },
-        { jp: "安心", roma: "Anshin", zh: "放心" }
-      ],
-      "自然": [
-        { jp: "山", roma: "Yama", zh: "山" },
-        { jp: "川", roma: "Kawa", zh: "河川" },
-        { jp: "海", roma: "Umi", zh: "海" },
-        { jp: "空", roma: "Sora", zh: "天空" },
-        { jp: "星", roma: "Hoshi", zh: "星星" },
-        { jp: "月", roma: "Tsuki", zh: "月亮" },
-        { jp: "太陽", roma: "Taiyou", zh: "太陽" },
-        { jp: "花", roma: "Hana", zh: "花" },
-        { jp: "木", roma: "Ki", zh: "樹木" },
-        { jp: "葉", roma: "Ha", zh: "葉子" }
-      ]
-    };
-
-    const allCategories = Object.keys(data);
-    const pageSize = 5;
-    let currentPage = 1;
-
-    const categoriesDiv = document.getElementById("categories");
-    const pageInfo = document.getElementById("pageInfo");
-    const prevBtn = document.getElementById("prevPage");
-    const nextBtn = document.getElementById("nextPage");
-
-    function renderPage(page) {
-      categoriesDiv.innerHTML = "";
-      const start = (page - 1) * pageSize;
-      const end = start + pageSize;
-      const pageCategories = allCategories.slice(start, end);
-
-      pageCategories.forEach(category => {
-        const details = document.createElement("details");
-        details.className = "category";
-
-        const summary = document.createElement("summary");
-        summary.textContent = category;
-        details.appendChild(summary);
-
-        const table = document.createElement("table");
-        data[category].forEach(item => {
-          const row = document.createElement("tr");
-          const jpTd = document.createElement("td");
-          jpTd.textContent = item.jp;
-          const romaTd = document.createElement("td");
-          romaTd.textContent = item.roma;
-          const zhTd = document.createElement("td");
-          zhTd.textContent = item.zh;
-
-          const speakBtn = document.createElement("button");
-          speakBtn.textContent = "🔊";
-          speakBtn.onclick = () => speak(item.jp);
-
-          row.appendChild(jpTd);
-          row.appendChild(romaTd);
-          row.appendChild(zhTd);
-          row.appendChild(speakBtn);
-          table.appendChild(row);
-        });
-
-        details.appendChild(table);
-        categoriesDiv.appendChild(details);
-      });
-
-      pageInfo.textContent = `第 ${page} 頁 / 共 ${Math.ceil(allCategories.length / pageSize)} 頁`;
-      prevBtn.disabled = page === 1;
-      nextBtn.disabled = end >= allCategories.length;
-    }
-
-    prevBtn.onclick = () => {
-      if (currentPage > 1) {
-        currentPage--;
-        renderPage(currentPage);
-      }
-    };
-
-    nextBtn.onclick = () => {
-      if (currentPage * pageSize < allCategories.length) {
-        currentPage++;
-        renderPage(currentPage);
-      }
-    };
-
-    // 語音
-    let voices = [];
-    let currentVoice;
-    const voiceSelect = document.getElementById("voiceSelect");
-    const rateRange = document.getElementById("rateRange");
-    const rateLabel = document.getElementById("rateLabel");
-
-    function populateVoices() {
-      voices = speechSynthesis.getVoices().filter(v => v.lang.startsWith("ja"));
-      voiceSelect.innerHTML = "";
-      voices.forEach(v => {
-        const option = document.createElement("option");
-        option.value = v.name;
-        option.textContent = `${v.name} (${v.lang})`;
-        voiceSelect.appendChild(option);
-      });
-      if (voices.length > 0) {
-        currentVoice = voices[0];
-      }
-    }
-
-    voiceSelect.onchange = () => {
-      currentVoice = voices.find(v => v.name === voiceSelect.value);
-    };
-
-    rateRange.oninput = () => {
-      rateLabel.textContent = rateRange.value;
-    };
-
-    function speak(text) {
-      const utter = new SpeechSynthesisUtterance(text);
-      utter.lang = "ja-JP";
-      utter.rate = parseFloat(rateRange.value);
-      if (currentVoice) utter.voice = currentVoice;
-      speechSynthesis.speak(utter);
-    }
-
-    if (speechSynthesis.onvoiceschanged !== undefined) {
-      speechSynthesis.onvoiceschanged = populateVoices;
-    }
-    populateVoices();
-
-    renderPage(currentPage);
-  </script>
-
-</body>
-</html>
