@@ -2,66 +2,52 @@
 <html lang="zh-Hant">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>日文單字測驗</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>N5 日語測驗</title>
   <style>
     body {
       font-family: sans-serif;
       margin: 20px;
       background: #f9f9f9;
     }
-    h1 {
+    h1, h2 {
       text-align: center;
     }
     .controls {
-      margin: 20px auto;
       text-align: center;
+      margin: 20px 0;
     }
-    .controls label {
-      margin-right: 8px;
-      font-weight: bold;
+    #quiz-container {
+      background: #fff;
+      border: 1px solid #ddd;
+      padding: 20px;
+      border-radius: 8px;
+      max-width: 700px;
+      margin: 0 auto;
     }
     #question {
-      background: #fff;
-      padding: 20px;
-      margin: 20px auto;
-      max-width: 600px;
-      border-radius: 8px;
-      border: 1px solid #ddd;
+      font-size: 24px;
+      margin-bottom: 20px;
       text-align: center;
     }
     .choices {
-      margin-top: 20px;
       display: flex;
       flex-direction: column;
-      gap: 10px;
+      gap: 12px;
       align-items: center;
     }
     .choices button {
       padding: 10px 20px;
       font-size: 18px;
-      width: 80%;
-      max-width: 300px;
       cursor: pointer;
+      max-width: 300px;
+      width: 80%;
     }
     #result {
-      margin-top: 20px;
-      font-size: 18px;
+      text-align: center;
+      margin: 20px 0;
       font-weight: bold;
-    }
-    #nextBtn {
-      display: none;
-      margin-top: 20px;
-      padding: 10px 20px;
-      font-size: 18px;
-      background: #007bff;
-      color: #fff;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-    #nextBtn:hover {
-      background: #0056b3;
+      font-size: 20px;
     }
     #backBtn {
       display: block;
@@ -85,7 +71,7 @@
 </head>
 <body>
 
-<h1>日文單字測驗</h1>
+<h1>N5 日語測驗</h1>
 
 <div class="controls">
   <label for="voiceSelect">聲線:</label>
@@ -96,19 +82,18 @@
   <span id="rateLabel">1.0</span>
 </div>
 
-<div id="question">
-  <div id="quizText"></div>
+<div id="quiz-container">
+  <div id="question"></div>
   <div class="choices" id="choices"></div>
   <div id="result"></div>
-  <button id="nextBtn">下一題</button>
 </div>
 
 <a id="backBtn" href="index.html">回目錄</a>
 
 <script>
-  const wordData = [
+  // N5 單字、短句範例資料
+  const data = [
     { jp: "学校", roma: "Gakkou", zh: "學校" },
-    { jp: "人", roma: "Hito", zh: "人" },
     { jp: "友達", roma: "Tomodachi", zh: "朋友" },
     { jp: "先生", roma: "Sensei", zh: "老師" },
     { jp: "駅", roma: "Eki", zh: "車站" },
@@ -116,8 +101,19 @@
     { jp: "水", roma: "Mizu", zh: "水" },
     { jp: "本", roma: "Hon", zh: "書" },
     { jp: "犬", roma: "Inu", zh: "狗" },
-    { jp: "猫", roma: "Neko", zh: "貓" }
-    // 可繼續擴充到數百或數千個單字
+    { jp: "猫", roma: "Neko", zh: "貓" },
+    { jp: "花", roma: "Hana", zh: "花" },
+    { jp: "こんにちは", roma: "Konnichiwa", zh: "你好" },
+    { jp: "さようなら", roma: "Sayounara", zh: "再見" },
+    { jp: "ありがとうございます", roma: "Arigatou gozaimasu", zh: "謝謝" },
+    { jp: "おはよう", roma: "Ohayou", zh: "早安" },
+    { jp: "こんばんは", roma: "Konbanwa", zh: "晚上好" },
+    { jp: "すみません", roma: "Sumimasen", zh: "不好意思" },
+    { jp: "はい", roma: "Hai", zh: "是" },
+    { jp: "いいえ", roma: "Iie", zh: "不是" },
+    { jp: "お名前は？", roma: "Onamae wa?", zh: "請問您叫什麼名字？" },
+    { jp: "どこですか？", roma: "Doko desu ka?", zh: "在哪裡？" }
+    // 可再擴充更多 N5 常考字詞或句子
   ];
 
   let voices = [];
@@ -163,55 +159,89 @@
   }
   populateVoices();
 
-  // 測驗邏輯
-  let currentQuestion;
+  let questionIndex = 0;
+  let score = 0;
+  let wrongAnswers = [];
 
-  function nextQuestion() {
+  // 抽 50 題隨機
+  const quizQuestions = [];
+  while (quizQuestions.length < 50) {
+    const q = data[Math.floor(Math.random() * data.length)];
+    if (!quizQuestions.find(x => x.jp === q.jp)) {
+      quizQuestions.push(q);
+    }
+  }
+
+  function loadQuestion() {
+    if (questionIndex >= quizQuestions.length) {
+      showResult();
+      return;
+    }
+    const question = quizQuestions[questionIndex];
     document.getElementById("result").textContent = "";
-    document.getElementById("nextBtn").style.display = "none";
-    document.getElementById("choices").innerHTML = "";
+    document.getElementById("question").innerHTML = `
+      <strong>${question.jp}</strong> 
+      <button onclick="speak('${question.jp}')">🔊</button>
+    `;
 
-    currentQuestion = wordData[Math.floor(Math.random() * wordData.length)];
-
-    document.getElementById("quizText").innerHTML = 
-      `<strong>${currentQuestion.jp}</strong> 
-      <button onclick="speak('${currentQuestion.jp}')">🔊</button>`;
-
-    // 隨機取出其他選項
-    let options = [currentQuestion];
+    // 產生選項
+    let options = [question];
     while (options.length < 4) {
-      const rand = wordData[Math.floor(Math.random() * wordData.length)];
-      if (!options.find(w => w.zh === rand.zh)) {
+      const rand = data[Math.floor(Math.random() * data.length)];
+      if (!options.find(o => o.zh === rand.zh)) {
         options.push(rand);
       }
     }
-
-    // 洗牌
     options = options.sort(() => Math.random() - 0.5);
 
+    const choicesContainer = document.getElementById("choices");
+    choicesContainer.innerHTML = "";
     options.forEach(opt => {
       const btn = document.createElement("button");
       btn.textContent = opt.zh;
-      btn.onclick = () => checkAnswer(opt);
-      document.getElementById("choices").appendChild(btn);
+      btn.onclick = () => checkAnswer(opt, question);
+      choicesContainer.appendChild(btn);
     });
   }
 
-  function checkAnswer(selected) {
-    const result = document.getElementById("result");
-    if (selected.zh === currentQuestion.zh) {
-      result.textContent = `✔ 正確！【${currentQuestion.jp}】(${currentQuestion.roma}) = ${currentQuestion.zh}`;
-      result.style.color = "green";
+  function checkAnswer(selected, correct) {
+    if (selected.zh === correct.zh) {
+      score++;
+      document.getElementById("result").textContent = "✔ 正確！";
+      document.getElementById("result").style.color = "green";
     } else {
-      result.textContent = `✘ 錯誤！ 正解是【${currentQuestion.jp}】(${currentQuestion.roma}) = ${currentQuestion.zh}`;
-      result.style.color = "red";
+      document.getElementById("result").textContent = `✘ 錯誤！正解是 ${correct.jp} (${correct.roma}) = ${correct.zh}`;
+      document.getElementById("result").style.color = "red";
+      wrongAnswers.push({
+        jp: correct.jp,
+        roma: correct.roma,
+        zh: correct.zh,
+        yourAnswer: selected.zh
+      });
     }
-    document.getElementById("nextBtn").style.display = "inline-block";
+    questionIndex++;
+    setTimeout(loadQuestion, 1000);
   }
 
-  document.getElementById("nextBtn").onclick = nextQuestion;
+  function showResult() {
+    let html = `<h2>測驗結束</h2>`;
+    html += `<p>總分: ${score} / ${quizQuestions.length}</p>`;
+    if (wrongAnswers.length > 0) {
+      html += `<h3>答錯題目</h3><ul>`;
+      wrongAnswers.forEach(item => {
+        html += `<li>
+          <strong>${item.jp}</strong> (${item.roma}) = ${item.zh} 
+          <br>你的答案: ${item.yourAnswer}
+        </li>`;
+      });
+      html += `</ul>`;
+    } else {
+      html += `<p>全部答對！恭喜！</p>`;
+    }
+    document.getElementById("quiz-container").innerHTML = html;
+  }
 
-  nextQuestion();
+  loadQuestion();
 </script>
 
 </body>
