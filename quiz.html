@@ -91,7 +91,6 @@
 <a id="backBtn" href="index.html">回目錄</a>
 
 <script>
-  // N5 單字、短句範例資料
   const data = [
     { jp: "学校", roma: "Gakkou", zh: "學校" },
     { jp: "友達", roma: "Tomodachi", zh: "朋友" },
@@ -112,8 +111,44 @@
     { jp: "はい", roma: "Hai", zh: "是" },
     { jp: "いいえ", roma: "Iie", zh: "不是" },
     { jp: "お名前は？", roma: "Onamae wa?", zh: "請問您叫什麼名字？" },
-    { jp: "どこですか？", roma: "Doko desu ka?", zh: "在哪裡？" }
-    // 可再擴充更多 N5 常考字詞或句子
+    { jp: "どこですか？", roma: "Doko desu ka?", zh: "在哪裡？" },
+    { jp: "大丈夫", roma: "Daijoubu", zh: "沒關係" },
+    { jp: "行きます", roma: "Ikimasu", zh: "去" },
+    { jp: "来ます", roma: "Kimasu", zh: "來" },
+    { jp: "食べます", roma: "Tabemasu", zh: "吃" },
+    { jp: "飲みます", roma: "Nomimasu", zh: "喝" },
+    { jp: "買います", roma: "Kaimasu", zh: "買" },
+    { jp: "見ます", roma: "Mimasu", zh: "看" },
+    { jp: "聞きます", roma: "Kikimasu", zh: "聽" },
+    { jp: "話します", roma: "Hanashimasu", zh: "說" },
+    { jp: "書きます", roma: "Kakimasu", zh: "寫" },
+    { jp: "読みます", roma: "Yomimasu", zh: "讀" },
+    { jp: "走ります", roma: "Hashirimasu", zh: "跑" },
+    { jp: "歩きます", roma: "Arukimasu", zh: "走路" },
+    { jp: "住みます", roma: "Sumimasu", zh: "住" },
+    { jp: "働きます", roma: "Hatarakimasu", zh: "工作" },
+    { jp: "待ちます", roma: "Machimasu", zh: "等待" },
+    { jp: "分かります", roma: "Wakarimasu", zh: "懂" },
+    { jp: "知っています", roma: "Shitteimasu", zh: "知道" },
+    { jp: "勉強します", roma: "Benkyou shimasu", zh: "學習" },
+    { jp: "電話します", roma: "Denwa shimasu", zh: "打電話" },
+    { jp: "掃除します", roma: "Souji shimasu", zh: "打掃" },
+    { jp: "料理します", roma: "Ryouri shimasu", zh: "做料理" },
+    { jp: "買い物します", roma: "Kaimono shimasu", zh: "購物" },
+    { jp: "遊びます", roma: "Asobimasu", zh: "玩" },
+    { jp: "勉強", roma: "Benkyou", zh: "學習" },
+    { jp: "病院", roma: "Byouin", zh: "醫院" },
+    { jp: "会社", roma: "Kaisha", zh: "公司" },
+    { jp: "郵便局", roma: "Yuubinkyoku", zh: "郵局" },
+    { jp: "図書館", roma: "Toshokan", zh: "圖書館" },
+    { jp: "駅前", roma: "Ekimae", zh: "車站前" },
+    { jp: "銀行", roma: "Ginkou", zh: "銀行" },
+    { jp: "交番", roma: "Kouban", zh: "派出所" },
+    { jp: "交差点", roma: "Kousaten", zh: "十字路口" },
+    { jp: "左", roma: "Hidari", zh: "左邊" },
+    { jp: "右", roma: "Migi", zh: "右邊" },
+    { jp: "上", roma: "Ue", zh: "上面" },
+    { jp: "下", roma: "Shita", zh: "下面" }
   ];
 
   let voices = [];
@@ -163,13 +198,8 @@
   let score = 0;
   let wrongAnswers = [];
 
-  // 抽 50 題隨機
-  const quizQuestions = [];
-  const quizQuestions = [];
-for (let i = 0; i < 50; i++) {
-  const q = data[Math.floor(Math.random() * data.length)];
-  quizQuestions.push(q);
-}
+  const shuffled = data.sort(() => Math.random() - 0.5);
+  const quizQuestions = shuffled.slice(0, 50);
 
   function loadQuestion() {
     if (questionIndex >= quizQuestions.length) {
@@ -183,7 +213,6 @@ for (let i = 0; i < 50; i++) {
       <button onclick="speak('${question.jp}')">🔊</button>
     `;
 
-    // 產生選項
     let options = [question];
     while (options.length < 4) {
       const rand = data[Math.floor(Math.random() * data.length)];
