@@ -8,17 +8,24 @@
 </head>
 <body>
   <div class="container">
-
     <div class="back">
       <a href="index.html">← 回目錄</a>
     </div>
 
     <h1>日常用句學習</h1>
 
+    <div class="controls">
+      <label for="voiceSelect">聲線選擇：</label>
+      <select id="voiceSelect"></select>
+
+      <label for="rateRange">語速：</label>
+      <input type="range" id="rateRange" min="0.3" max="1.5" step="0.1" value="0.5" />
+      <span id="rateValue">0.5</span>
+    </div>
+
     <div class="sentence-list" id="sentence-list">
       <!-- 句子動態載入 -->
     </div>
-
   </div>
 
   <button id="btn-top" title="回到頂端" onclick="window.scrollTo({top:0,behavior:'smooth'})">▲</button>
@@ -30,22 +37,92 @@
       { jp: "こんばんは", roma: "konbanwa", zh: "晚上好" },
       { jp: "ありがとうございます", roma: "arigatou gozaimasu", zh: "謝謝" },
       { jp: "すみません", roma: "sumimasen", zh: "對不起／不好意思" },
-      // 依此類推，至少 50 句，請自行補充或之後整合
+      // 可補充至少50句
     ];
 
-    const container = document.getElementById("sentence-list");
+    const sentenceList = document.getElementById("sentence-list");
+    const voiceSelect = document.getElementById("voiceSelect");
+    const rateRange = document.getElementById("rateRange");
+    const rateValue = document.getElementById("rateValue");
 
-    sentences.forEach(item => {
+    let voices = [];
+    let selectedVoice = null;
+    let speechRate = parseFloat(rateRange.value);
+
+    function populateVoices() {
+      voices = window.speechSynthesis.getVoices();
+      voiceSelect.innerHTML = "";
+
+      // 優先嘗試挑選手機常見的 'Kyoto' 或相近日語聲線
+      let defaultIndex = 0;
+      voices.forEach((voice, index) => {
+        if (voice.lang.startsWith("ja") && voice.name.toLowerCase().includes("kyoto")) {
+          defaultIndex = index;
+        }
+      });
+
+      voices.forEach((voice, index) => {
+        const option = document.createElement("option");
+        option.value = index;
+        option.textContent = `${voice.name} (${voice.lang})`;
+        voiceSelect.appendChild(option);
+      });
+
+      voiceSelect.selectedIndex = defaultIndex;
+      selectedVoice = voices[defaultIndex];
+    }
+
+    function speak(text) {
+      if (!window.speechSynthesis) {
+        alert("抱歉，您的瀏覽器不支援語音合成功能。");
+        return;
+      }
+      window.speechSynthesis.cancel();
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.voice = selectedVoice;
+      utterance.rate = speechRate;
+      window.speechSynthesis.speak(utterance);
+    }
+
+    voiceSelect.addEventListener("change", () => {
+      selectedVoice = voices[voiceSelect.value];
+    });
+
+    rateRange.addEventListener("input", () => {
+      speechRate = parseFloat(rateRange.value);
+      rateValue.textContent = speechRate.toFixed(1);
+    });
+
+    // 初始化語音列表，部分瀏覽器需要在用戶互動後才會取得 voices
+    function initVoices() {
+      populateVoices();
+      if (speechSynthesis.onvoiceschanged !== undefined) {
+        speechSynthesis.onvoiceschanged = populateVoices;
+      }
+    }
+
+    function createSentenceItem(item) {
       const div = document.createElement("div");
       div.className = "sentence-item";
 
       div.innerHTML = `
         <div class="jp">${item.jp}</div>
         <div class="roma-zh">${item.roma} / ${item.zh}</div>
+        <button class="play-btn" aria-label="播放語音">▶ 播放</button>
       `;
 
-      container.appendChild(div);
+      const playBtn = div.querySelector(".play-btn");
+      playBtn.addEventListener("click", () => speak(item.jp));
+
+      return div;
+    }
+
+    sentences.forEach(item => {
+      const el = createSentenceItem(item);
+      sentenceList.appendChild(el);
     });
+
+    initVoices();
   </script>
 </body>
 </html>
