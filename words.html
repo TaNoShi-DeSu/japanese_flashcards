@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>單字學習</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="data.js" defer></script>
+  <script src="js/common.js" defer></script>
+</head>
+<body>
+  <div class="container">
+    <h1>單字學習</h1>
+
+    <div class="controls">
+      <label for="voiceSelect">聲線：</label>
+      <select id="voiceSelect"></select>
+
+      <label for="rateRange">語速：</label>
+      <input type="range" id="rateRange" min="0.3" max="2" step="0.1" value="1">
+      <span id="rateValue">1</span>
+
+      <button id="shuffleBtn">隨機模式</button>
+    </div>
+
+    <div id="wordsContainer"></div>
+
+    <div class="back">
+      <a href="index.html">← 回目錄</a>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const container = document.getElementById("wordsContainer");
+      const shuffleBtn = document.getElementById("shuffleBtn");
+
+      let words = [...DATA.words];
+
+      function render(list) {
+        container.innerHTML = "";
+        list.forEach(item => {
+          const block = document.createElement("div");
+          block.className = "card";
+          block.innerHTML = `
+            <div class="jp">
+              <strong>${item.jp}</strong>
+              <button class="play" data-text="${item.jp}">🔊</button>
+            </div>
+            <div class="roma">${item.roma}</div>
+            <div class="zh">${item.zh}</div>
+          `;
+          container.appendChild(block);
+        });
+      }
+
+      render(words);
+
+      shuffleBtn.addEventListener("click", () => {
+        const shuffled = words.sort(() => Math.random() - 0.5);
+        render(shuffled);
+      });
+
+      document.body.addEventListener("click", e => {
+        if (e.target.classList.contains("play")) {
+          const txt = e.target.dataset.text;
+          speakText(txt);
+        }
+      });
+
+      const rateRange = document.getElementById("rateRange");
+      const rateValue = document.getElementById("rateValue");
+      rateRange.addEventListener("input", () => {
+        rateValue.textContent = rateRange.value;
+      });
+    });
+  </script>
+</body>
+</html>
