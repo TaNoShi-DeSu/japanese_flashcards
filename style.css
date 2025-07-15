@@ -121,3 +121,9 @@ button:hover {
   padding: 10px;
   text-align: left;
 }
+
+.back.top {
+  text-align: left;
+  margin-bottom: 20px;
+}
+
