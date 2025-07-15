@@ -2,84 +2,127 @@
 <html lang="zh-Hant">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>單字學習</title>
   <link rel="stylesheet" href="style.css" />
-  <script src="data.js" defer></script>
-  <script src="js/common.js" defer></script>
 </head>
 <body>
-  <body onclick="speechSynthesis.resume()">
   <div class="container">
+
+    <div class="back">
+      <a href="index.html">← 回目錄</a>
+    </div>
+
     <h1>單字學習</h1>
 
     <div class="controls">
-      <label for="voiceSelect">聲線：</label>
+      <label for="voiceSelect">聲線選擇：</label>
       <select id="voiceSelect"></select>
 
       <label for="rateRange">語速：</label>
-      <input type="range" id="rateRange" min="0.3" max="2" step="0.1" value="1">
-      <span id="rateValue">1</span>
-
-      <button id="shuffleBtn">隨機模式</button>
+      <input type="range" id="rateRange" min="0.3" max="1.5" step="0.1" value="0.5" />
+      <span id="rateValue">0.5</span>
     </div>
 
-    <div id="wordsContainer"></div>
-
-    <div class="back top">
-      <a href="index.html">← 回目錄</a>
+    <div class="sentence-list" id="word-list">
+      <!-- 單字動態載入 -->
     </div>
+
   </div>
 
+  <button id="btn-top" title="回到頂端" onclick="window.scrollTo({top:0,behavior:'smooth'})">▲</button>
+
   <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      const container = document.getElementById("wordsContainer");
-      const shuffleBtn = document.getElementById("shuffleBtn");
+    const words = [
+      { jp: "水", roma: "mizu", zh: "水" },
+      { jp: "火", roma: "hi", zh: "火" },
+      { jp: "木", roma: "ki", zh: "木頭" },
+      { jp: "金", roma: "kin", zh: "金" },
+      { jp: "土", roma: "tsuchi", zh: "土" },
+      // 可補充 N5 單字至少100筆
+    ];
 
-      let words = [...DATA.words];
+    const wordList = document.getElementById("word-list");
+    const voiceSelect = document.getElementById("voiceSelect");
+    const rateRange = document.getElementById("rateRange");
+    const rateValue = document.getElementById("rateValue");
 
-      function render(list) {
-        container.innerHTML = "";
-        list.forEach(item => {
-          const block = document.createElement("div");
-          block.className = "card";
-          block.innerHTML = `
-            <div class="jp">
-              <strong>${item.jp}</strong>
-              <button class="play" data-text="${item.jp}">🔊</button>
-            </div>
-            <div class="roma">${item.roma}</div>
-            <div class="zh">${item.zh}</div>
-          `;
-          container.appendChild(block);
-        });
-      }
+    let voices = [];
+    let selectedVoice = null;
+    let speechRate = parseFloat(rateRange.value);
 
-      render(words);
+    function populateVoices() {
+      voices = window.speechSynthesis.getVoices();
+      voiceSelect.innerHTML = "";
 
-      shuffleBtn.addEventListener("click", () => {
-        const shuffled = words.sort(() => Math.random() - 0.5);
-        render(shuffled);
-      });
-
-      document.body.addEventListener("click", e => {
-        if (e.target.classList.contains("play")) {
-          const txt = e.target.dataset.text;
-          speakText(txt);
+      let defaultIndex = 0;
+      voices.forEach((voice, index) => {
+        if (voice.lang.startsWith("ja") && voice.name.toLowerCase().includes("kyoto")) {
+          defaultIndex = index;
         }
       });
 
-      const rateRange = document.getElementById("rateRange");
-      const rateValue = document.getElementById("rateValue");
-      rateRange.addEventListener("input", () => {
-        rateValue.textContent = rateRange.value;
+      voices.forEach((voice, index) => {
+        const option = document.createElement("option");
+        option.value = index;
+        option.textContent = `${voice.name} (${voice.lang})`;
+        voiceSelect.appendChild(option);
       });
+
+      voiceSelect.selectedIndex = defaultIndex;
+      selectedVoice = voices[defaultIndex];
+    }
+
+    function speak(text) {
+      if (!window.speechSynthesis) {
+        alert("抱歉，您的瀏覽器不支援語音合成功能。");
+        return;
+      }
+      window.speechSynthesis.cancel();
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.voice = selectedVoice;
+      utterance.rate = speechRate;
+      window.speechSynthesis.speak(utterance);
+    }
+
+    voiceSelect.addEventListener("change", () => {
+      selectedVoice = voices[voiceSelect.value];
     });
+
+    rateRange.addEventListener("input", () => {
+      speechRate = parseFloat(rateRange.value);
+      rateValue.textContent = speechRate.toFixed(1);
+    });
+
+    function createWordItem(item) {
+      const div = document.createElement("div");
+      div.className = "sentence-item";
+
+      div.innerHTML = `
+        <div class="jp">${item.jp}</div>
+        <div class="roma-zh">${item.roma} / ${item.zh}</div>
+        <button class="play-btn" aria-label="播放語音">▶ 播放</button>
+      `;
+
+      const playBtn = div.querySelector(".play-btn");
+      playBtn.addEventListener("click", () => speak(item.jp));
+
+      return div;
+    }
+
+    words.forEach(item => {
+      const el = createWordItem(item);
+      wordList.appendChild(el);
+    });
+
+    initVoices();
+    
+    function initVoices() {
+      populateVoices();
+      if (speechSynthesis.onvoiceschanged !== undefined) {
+        speechSynthesis.onvoiceschanged = populateVoices;
+      }
+    }
   </script>
-  <div class="back">
-    <a href="index.html">← 回目錄</a>
-    <a href="#">▲ TOP</a>
-  </div>
 </body>
 </html>
-
