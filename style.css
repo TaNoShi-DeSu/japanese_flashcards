@@ -1,3 +1,4 @@
+/* 整體字體與背景 */
 body {
   font-family: "Noto Sans TC", "Hiragino Kaku Gothic ProN", sans-serif;
   margin: 0;
@@ -6,6 +7,7 @@ body {
   color: #333;
 }
 
+/* 內容容器 */
 .container {
   max-width: 800px;
   margin: 40px auto;
@@ -15,11 +17,35 @@ body {
   box-shadow: 0 4px 10px rgba(0,0,0,0.08);
 }
 
-h1, h2 {
+/* 回目錄按鈕區 */
+.back {
+  margin: 30px 0;
   text-align: center;
-  color: #444;
 }
 
+/* 回目錄按鈕上方版（用 class="back top"） */
+.back.top {
+  text-align: left;
+  margin-bottom: 20px;
+}
+
+/* 回目錄按鈕樣式 */
+.back a {
+  display: inline-block;
+  background: #eee;
+  padding: 8px 16px;
+  border-radius: 6px;
+  text-decoration: none;
+  color: #333;
+  transition: background 0.3s;
+  margin: 5px;
+}
+
+.back a:hover {
+  background: #ddd;
+}
+
+/* Kana 表格樣式 */
 .kana-table {
   width: 100%;
   border-collapse: collapse;
@@ -43,6 +69,7 @@ h1, h2 {
   color: #666;
 }
 
+/* 按鈕通用 */
 button {
   padding: 6px 10px;
   font-size: 14px;
@@ -58,6 +85,7 @@ button:hover {
   background: #005fa3;
 }
 
+/* 控制區域 */
 .controls {
   display: flex;
   align-items: center;
@@ -67,25 +95,7 @@ button:hover {
   gap: 10px;
 }
 
-.back {
-  margin-top: 30px;
-  text-align: center;
-}
-
-.back a {
-  display: inline-block;
-  background: #eee;
-  padding: 8px 16px;
-  border-radius: 6px;
-  text-decoration: none;
-  color: #333;
-  transition: background 0.3s;
-}
-
-.back a:hover {
-  background: #ddd;
-}
-
+/* 問題區 */
 .question-box {
   margin: 20px 0;
 }
@@ -96,6 +106,7 @@ button:hover {
   margin-bottom: 10px;
 }
 
+/* 答案按鈕 */
 .choices button {
   display: block;
   width: 100%;
@@ -103,17 +114,14 @@ button:hover {
   text-align: left;
 }
 
+/* 狀態提示 */
 .status {
   font-size: 16px;
   color: #888;
   margin-bottom: 5px;
 }
 
-.result {
-  text-align: center;
-  margin-top: 30px;
-}
-
+/* 答案錯誤標示 */
 .wrong-item {
   background: #f9f9f9;
   border-left: 4px solid #e74c3c;
@@ -122,8 +130,24 @@ button:hover {
   text-align: left;
 }
 
-.back.top {
-  text-align: left;
-  margin-bottom: 20px;
+/* TOP 按鈕：固定在右下，帶陰影與圓角 */
+#btn-top {
+  position: fixed;
+  bottom: 40px;
+  right: 30px;
+  display: inline-block;
+  background: #007acc;
+  color: white;
+  padding: 12px 16px;
+  border-radius: 50%;
+  font-size: 22px;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+  transition: background 0.3s;
+  z-index: 1000;
+  border: none;
 }
 
+#btn-top:hover {
+  background: #005fa3;
+}
