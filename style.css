@@ -57,8 +57,6 @@ body {
   background: #005fa3;
 }
 
-/* 以下範例針對句子列表排版 */
-
 .sentence-list {
   display: flex;
   flex-wrap: wrap;
@@ -73,6 +71,7 @@ body {
   box-sizing: border-box;
   cursor: pointer;
   transition: background 0.2s;
+  user-select: none;
 }
 
 .sentence-item:hover {
@@ -90,4 +89,39 @@ body {
   margin-top: 4px;
   white-space: pre-wrap;
   word-break: break-word;
+}
+
+/* 播放語音按鈕 */
+.play-btn {
+  margin-top: 6px;
+  background: #007acc;
+  border: none;
+  color: white;
+  padding: 6px 12px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background 0.3s;
+}
+
+.play-btn:hover {
+  background: #005fa3;
+}
+
+/* 音速與聲線選擇區 */
+.controls {
+  margin: 10px 0 30px 0;
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.controls label {
+  font-size: 14px;
+}
+
+.controls select,
+.controls input[type=range] {
+  cursor: pointer;
 }
