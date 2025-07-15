@@ -2,76 +2,30 @@
 <html lang="zh-Hant">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>五十音表</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>基礎50音</title>
   <link rel="stylesheet" href="style.css" />
-  <script src="data.js" defer></script>
-  <script src="js/common.js" defer></script>
 </head>
 <body>
-  <body onclick="speechSynthesis.resume()">
   <div class="container">
-    <h1>五十音表</h1>
 
-    <div class="controls">
-      <label for="voiceSelect">聲線：</label>
-      <select id="voiceSelect"></select>
-
-      <label for="rateRange">語速：</label>
-      <input type="range" id="rateRange" min="0.3" max="2" step="0.1" value="1">
-      <span id="rateValue">1</span>
-    </div>
-
-    <table class="kana-table" id="kanaTable"></table>
-
-    <div class="back top">
+    <div class="back">
       <a href="index.html">← 回目錄</a>
     </div>
+
+    <h1>基礎50音</h1>
+
+    <!-- 表格或其他排版自行依需求調整 -->
+    <table class="kana-table" border="1" cellspacing="0" cellpadding="8" style="width:100%; text-align:center;">
+      <tr><th></th><th>a</th><th>i</th><th>u</th><th>e</th><th>o</th></tr>
+      <tr><th>か</th><td>か</td><td>き</td><td>く</td><td>け</td><td>こ</td></tr>
+      <tr><th>さ</th><td>さ</td><td>し</td><td>す</td><td>せ</td><td>そ</td></tr>
+      <tr><th>た</th><td>た</td><td>ち</td><td>つ</td><td>て</td><td>と</td></tr>
+      <!-- 依需求補足完整五十音 -->
+    </table>
+
   </div>
 
-  <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      const table = document.getElementById("kanaTable");
-
-      let rows = [];
-      for (let group of DATA.kana) {
-        let tr = document.createElement("tr");
-        group.forEach(cell => {
-          let td = document.createElement("td");
-          if (cell.jp) {
-            td.innerHTML = `
-              <div class="kana-char">
-                ${cell.jp}
-                <button class="play" data-text="${cell.jp}">🔊</button>
-              </div>
-              <div class="roma">${cell.roma}</div>
-            `;
-          } else {
-            td.textContent = "";
-          }
-          tr.appendChild(td);
-        });
-        table.appendChild(tr);
-      }
-
-      document.body.addEventListener("click", e => {
-        if (e.target.classList.contains("play")) {
-          const txt = e.target.dataset.text;
-          speakText(txt);
-        }
-      });
-
-      const rateRange = document.getElementById("rateRange");
-      const rateValue = document.getElementById("rateValue");
-      rateRange.addEventListener("input", () => {
-        rateValue.textContent = rateRange.value;
-      });
-    });
-  </script>
-  <div class="back">
-    <a href="index.html">← 回目錄</a>
-    <a href="#">▲ TOP</a>
-  </div>
+  <button id="btn-top" title="回到頂端" onclick="window.scrollTo({top:0,behavior:'smooth'})">▲</button>
 </body>
 </html>
-
