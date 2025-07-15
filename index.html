@@ -2,23 +2,26 @@
 <html lang="zh-Hant">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Japanese Learning - 主頁</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>主目錄</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <div class="container">
-    <h1>Japanese Learning 主頁</h1>
-    <ul class="menu">
-      <li><a href="daily.html">日常用句</a></li>
-      <li><a href="words.html">單字學習</a></li>
-      <li><a href="kana.html">五十音</a></li>
-      <li><a href="quiz.html">測驗</a></li>
-    </ul>
+
+    <h1>學習日語主目錄</h1>
+
+    <nav>
+      <ul>
+        <li><a href="daily.html">日常用句學習</a></li>
+        <li><a href="words.html">單字學習</a></li>
+        <li><a href="kana.html">基礎50音</a></li>
+        <li><a href="quiz.html">N5 測驗</a></li>
+      </ul>
+    </nav>
+
   </div>
-  <div class="back top">
-    <a href="index.html">← 回目錄</a>
-    <a href="#">▲ TOP</a>
-  </div>
+
+  <button id="btn-top" title="回到頂端" onclick="window.scrollTo({top:0,behavior:'smooth'})">▲</button>
 </body>
 </html>
