@@ -2,28 +2,82 @@
 <html lang="zh-Hant">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>測驗</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>N5 測驗</title>
   <link rel="stylesheet" href="style.css" />
-  <script src="data.js" defer></script>
-  <script src="js/common.js" defer></script>
-  <script src="js/quiz.js" defer></script>
 </head>
 <body>
-  <body onclick="speechSynthesis.resume()">
   <div class="container">
-    <h1>測驗</h1>
 
-    <div id="quizContainer"></div>
-
-    <div class="back top">
+    <div class="back">
       <a href="index.html">← 回目錄</a>
     </div>
-  </div>
-  <div class="back">
-    <a href="index.html">← 回目錄</a>
-    <a href="#">▲ TOP</a>
-  </div>
-</body>
-</html>
 
+    <h1>N5 測驗</h1>
+
+    <div id="quiz-container">
+      <!-- 題目區 -->
+    </div>
+
+  </div>
+
+  <button id="btn-top" title="回到頂端" onclick="window.scrollTo({top:0,behavior:'smooth'})">▲</button>
+
+  <script>
+    // 範例簡單題庫
+    const quizData = [
+      {
+        question: "「ありがとう」是什麼意思？",
+        choices: ["謝謝", "再見", "你好", "請問"],
+        answer: 0
+      },
+      {
+        question: "「さようなら」是什麼意思？",
+        choices: ["你好", "再見", "謝謝", "對不起"],
+        answer: 1
+      },
+      // 請補充至至少50題
+    ];
+
+    let currentIndex = 0;
+    let score = 0;
+
+    const container = document.getElementById("quiz-container");
+
+    function showQuestion() {
+      if (currentIndex >= quizData.length) {
+        showResult();
+        return;
+      }
+      const q = quizData[currentIndex];
+      container.innerHTML = `
+        <div><strong>第${currentIndex + 1}題 / 共${quizData.length}題</strong></div>
+        <p>${q.question}</p>
+        ${q.choices.map((c, i) => `<button onclick="selectAnswer(${i})">${c}</button>`).join("")}
+      `;
+    }
+
+    function selectAnswer(choice) {
+      if (choice === quizData[currentIndex].answer) {
+        score++;
+      }
+      currentIndex++;
+      showQuestion();
+    }
+
+    function showResult() {
+      container.innerHTML = `
+        <h3>測驗結束！</h3>
+        <p>你的分數：${score} / ${quizData.length}</p>
+        <button onclick="restartQuiz()">再試一次</button>
+      `;
+    }
+
+    function restartQuiz() {
+      currentIndex = 0;
+      score = 0;
+      showQuestion();
+    }
+
+    showQuestion();
+  </script
