@@ -1,0 +1,123 @@
+body {
+  font-family: "Noto Sans TC", "Hiragino Kaku Gothic ProN", sans-serif;
+  margin: 0;
+  padding: 0;
+  background: #fdfdfd;
+  color: #333;
+}
+
+.container {
+  max-width: 800px;
+  margin: 40px auto;
+  padding: 20px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+}
+
+h1, h2 {
+  text-align: center;
+  color: #444;
+}
+
+.kana-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: center;
+}
+
+.kana-table td {
+  border: 1px solid #ddd;
+  padding: 12px;
+  font-size: 20px;
+  vertical-align: top;
+}
+
+.kana-char {
+  font-size: 28px;
+  margin-bottom: 4px;
+}
+
+.roma {
+  font-size: 14px;
+  color: #666;
+}
+
+button {
+  padding: 6px 10px;
+  font-size: 14px;
+  margin: 5px;
+  border: none;
+  border-radius: 6px;
+  background: #007acc;
+  color: white;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #005fa3;
+}
+
+.controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+  gap: 10px;
+}
+
+.back {
+  margin-top: 30px;
+  text-align: center;
+}
+
+.back a {
+  display: inline-block;
+  background: #eee;
+  padding: 8px 16px;
+  border-radius: 6px;
+  text-decoration: none;
+  color: #333;
+  transition: background 0.3s;
+}
+
+.back a:hover {
+  background: #ddd;
+}
+
+.question-box {
+  margin: 20px 0;
+}
+
+.question {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.choices button {
+  display: block;
+  width: 100%;
+  margin-bottom: 10px;
+  text-align: left;
+}
+
+.status {
+  font-size: 16px;
+  color: #888;
+  margin-bottom: 5px;
+}
+
+.result {
+  text-align: center;
+  margin-top: 30px;
+}
+
+.wrong-item {
+  background: #f9f9f9;
+  border-left: 4px solid #e74c3c;
+  margin: 10px 0;
+  padding: 10px;
+  text-align: left;
+}
