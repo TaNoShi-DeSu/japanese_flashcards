@@ -1,44 +1,137 @@
 <!DOCTYPE html>
-<html lang="zh-Hant">
+<html lang="ja">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>N5 語彙學習</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>N5 語彙練習</title>
   <link rel="stylesheet" href="style.css" />
+  <style>
+    body {
+      font-family: sans-serif;
+      margin: 0;
+      padding-top: 80px;
+    }
+    header {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      background: #fff;
+      z-index: 999;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.5em 1em;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .button-bar button {
+      margin-right: 10px;
+    }
+    .control-panel {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    main {
+      max-width: 900px;
+      margin: auto;
+      padding: 1em;
+    }
+    .vocab-item {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr auto auto;
+      gap: 0.5em;
+      align-items: center;
+      padding: 0.75em;
+      border-bottom: 1px solid #ccc;
+    }
+    .vocab-item button {
+      padding: 0.3em 0.6em;
+    }
+    #topBtn {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      padding: 0.6em 1em;
+      background: #007bff;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    }
+    @media (max-width: 600px) {
+      .vocab-item {
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: auto auto auto;
+        gap: 0.3em;
+      }
+    }
+  </style>
 </head>
 <body>
-  <div class="container">
-    <div class="back"><a href="index.html">← 回目錄</a></div>
-    <h1>語彙學習</h1>
-
-    <div class="controls">
-      <label for="voiceSelect">聲線選擇：</label>
-      <select id="voiceSelect"></select>
-      <label for="rateRange">語速：</label>
-      <input type="range" id="rateRange" min="0.3" max="1.5" step="0.1" value="0.5" />
-      <span id="rateValue">0.5</span>
+  <header>
+    <div class="button-bar">
+      <button onclick="location.href='index.html'">回目錄</button>
     </div>
+    <div class="control-panel">
+      <label>聲線:
+        <select id="voiceSelect"></select>
+      </label>
+      <label>語速:
+        <select id="rateSelect">
+          <option value="0.8">慢</option>
+          <option value="1" selected>正常</option>
+          <option value="1.2">快</option>
+        </select>
+      </label>
+    </div>
+  </header>
+  <main id="vocabContainer"></main>
+  <button id="topBtn" onclick="scrollToTop()">TOP</button>
 
-    <div id="vocab-list" class="sentence-list"></div>
-  </div>
-
-  <button id="btn-top" onclick="window.scrollTo({ top: 0, behavior: 'smooth' })">▲</button>
-
-  <script src="voice.js"></script>
   <script src="data.js"></script>
   <script>
-    const list = document.getElementById("vocab-list");
-    DATA.vocab.forEach((item) => {
+    const container = document.getElementById("vocabContainer");
+    const voiceSelect = document.getElementById("voiceSelect");
+    const rateSelect = document.getElementById("rateSelect");
+
+    function loadVoices() {
+      const voices = speechSynthesis.getVoices();
+      voiceSelect.innerHTML = '';
+      voices.forEach((voice, i) => {
+        const opt = document.createElement("option");
+        opt.value = voice.name;
+        opt.textContent = voice.name + (voice.lang ? ` (${voice.lang})` : "");
+        voiceSelect.appendChild(opt);
+      });
+    }
+    speechSynthesis.onvoiceschanged = loadVoices;
+
+    function speak(text) {
+      const utterance = new SpeechSynthesisUtterance(text);
+      const selectedVoice = voiceSelect.value;
+      const voices = speechSynthesis.getVoices();
+      utterance.voice = voices.find(v => v.name === selectedVoice);
+      utterance.rate = parseFloat(rateSelect.value);
+      speechSynthesis.speak(utterance);
+    }
+
+    DATA.vocab.forEach(item => {
       const div = document.createElement("div");
-      div.className = "sentence-item";
+      div.className = "vocab-item";
       div.innerHTML = `
-        <div class="jp">${item.jp}</div>
-        <div class="roma-zh">${item.roma} / ${item.zh}</div>
-        <button class="play-btn">▶ 播放</button>
+        <div>${item.jp}</div>
+        <div>${item.roma}</div>
+        <div>${item.zh}</div>
+        <button onclick="speak('${item.jp}')">🔊</button>
+        <button onclick="this.classList.toggle('marked')">⭐</button>
       `;
-      list.appendChild(div);
-      div.querySelector(".play-btn").onclick = () => speak(item.jp);
+      container.appendChild(div);
     });
+
+    function scrollToTop() {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
   </script>
 </body>
 </html>
