@@ -1,0 +1,10 @@
+jlpt-n5-web/
+├── index.html
+├── style/
+│   └── main.css
+├── js/
+│   └── app.js
+├── data/
+│   └── vocab-n5.json  
+├── audio/
+│   └── vocab/         
