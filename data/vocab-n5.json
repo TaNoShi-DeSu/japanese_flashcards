@@ -1,112 +1,117 @@
-[
-  {
-    "id": "0001",
-    "kanji": "学校",
-    "kana": "がっこう",
-    "romaji": "gakkou",
-    "meaning_zh": "學校",
-    "example_jp": "私は学校へ行きます。",
-    "example_zh": "我去學校。",
-    "audio_vocab": "audio/vocab/gakkou.mp3",
-    "audio_example": "audio/vocab/gakkou_example.mp3"
-  },
-  {
-    "id": "0002",
-    "kanji": "先生",
-    "kana": "せんせい",
-    "romaji": "sensei",
-    "meaning_zh": "老師",
-    "example_jp": "先生は教室にいます。",
-    "example_zh": "老師在教室裡。",
-    "audio_vocab": "audio/vocab/sensei.mp3",
-    "audio_example": "audio/vocab/sensei_example.mp3"
-  },
-  {
-    "id": "0003",
-    "kanji": "学生",
-    "kana": "がくせい",
-    "romaji": "gakusei",
-    "meaning_zh": "學生",
-    "example_jp": "彼は学生です。",
-    "example_zh": "他是學生。",
-    "audio_vocab": "audio/vocab/gakusei.mp3",
-    "audio_example": "audio/vocab/gakusei_example.mp3"
-  },
-  {
-    "id": "0004",
-    "kanji": "日本",
-    "kana": "にほん",
-    "romaji": "nihon",
-    "meaning_zh": "日本",
-    "example_jp": "日本は美しい国です。",
-    "example_zh": "日本是個美麗的國家。",
-    "audio_vocab": "audio/vocab/nihon.mp3",
-    "audio_example": "audio/vocab/nihon_example.mp3"
-  },
-  {
-    "id": "0005",
-    "kanji": "水",
-    "kana": "みず",
-    "romaji": "mizu",
-    "meaning_zh": "水",
-    "example_jp": "水を飲みます。",
-    "example_zh": "喝水。",
-    "audio_vocab": "audio/vocab/mizu.mp3",
-    "audio_example": "audio/vocab/mizu_example.mp3"
-  },
-  {
-    "id": "0006",
-    "kanji": "本",
-    "kana": "ほん",
-    "romaji": "hon",
-    "meaning_zh": "書",
-    "example_jp": "本を読みます。",
-    "example_zh": "看書。",
-    "audio_vocab": "audio/vocab/hon.mp3",
-    "audio_example": "audio/vocab/hon_example.mp3"
-  },
-  {
-    "id": "0007",
-    "kanji": "猫",
-    "kana": "ねこ",
-    "romaji": "neko",
-    "meaning_zh": "貓",
-    "example_jp": "猫が好きです。",
-    "example_zh": "喜歡貓。",
-    "audio_vocab": "audio/vocab/neko.mp3",
-    "audio_example": "audio/vocab/neko_example.mp3"
-  },
-  {
-    "id": "0008",
-    "kanji": "犬",
-    "kana": "いぬ",
-    "romaji": "inu",
-    "meaning_zh": "狗",
-    "example_jp": "犬を飼っています。",
-    "example_zh": "養了一隻狗。",
-    "audio_vocab": "audio/vocab/inu.mp3",
-    "audio_example": "audio/vocab/inu_example.mp3"
-  },
-  {
-    "id": "0009",
-    "kanji": "車",
-    "kana": "くるま",
-    "romaji": "kuruma",
-    "meaning_zh": "車子",
-    "example_jp": "車で行きます。",
-    "example_zh": "搭車去。",
-    "audio_vocab": "audio/vocab/kuruma.mp3",
-    "audio_example": "audio/vocab/kuruma_example.mp3"
-  },
-  {
-    "id": "0010",
-    "kanji": "家",
-    "kana": "いえ",
-    "romaji": "ie",
-    "meaning_zh": "家",
-    "example_jp": "家に帰ります。",
-    "example_zh": "回家。",
-    "audio_vocab": "audio/vocab/ie.mp3",
-    "audio_example": "audio/vocab/ie_example.mp3"
-  }
-]
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>JLPT N5 語彙學習</title>
+  <style>
+    body {
+      font-family: 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif;
+      background-color: #f8f5f0;
+      color: #333;
+      margin: 0;
+      padding: 2rem;
+    }
+    .container {
+      max-width: 800px;
+      margin: auto;
+      background-color: #fffaf4;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      padding: 2rem;
+    }
+    h1 {
+      color: #6d4c41;
+      text-align: center;
+      margin-bottom: 1rem;
+    }
+    .vocab-card {
+      border-bottom: 1px solid #e0dcd5;
+      padding: 1rem 0;
+    }
+    .vocab-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .kana, .kanji {
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+    .meaning {
+      font-size: 1.2rem;
+      color: #5d4037;
+    }
+    .example {
+      margin-top: 0.5rem;
+    }
+    .audio-buttons button {
+      margin-right: 1rem;
+    }
+    .progress-bar {
+      height: 12px;
+      background-color: #f0e4d7;
+      border-radius: 8px;
+      overflow: hidden;
+      margin-top: 2rem;
+    }
+    .progress {
+      height: 100%;
+      background-color: #d2b48c;
+      width: 0;
+      transition: width 0.3s;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>JLPT N5 語彙學習</h1>
+    <div id="vocab-list"></div>
+    <div class="progress-bar"><div id="progress" class="progress"></div></div>
+  </div>
+
+  <script>
+    async function loadVocabulary() {
+      const res = await fetch('data/vocab-n5.json');
+      const vocabData = await res.json();
+      const list = document.getElementById('vocab-list');
+      const progress = document.getElementById('progress');
+
+      vocabData.forEach((item, index) => {
+        const div = document.createElement('div');
+        div.className = 'vocab-card';
+
+        div.innerHTML = `
+          <div class="vocab-header">
+            <div>
+              <div class="kanji">${item.kanji}</div>
+              <div class="kana">${item.kana} (${item.romaji})</div>
+            </div>
+            <div class="meaning">${item.meaning_zh}</div>
+          </div>
+          <div class="example">
+            <p>📘 ${item.example_jp}</p>
+            <p>📙 ${item.example_zh}</p>
+            <div class="audio-buttons">
+              <button onclick="playAudio('${item.audio_vocab}')">🔊 單字</button>
+              <button onclick="playAudio('${item.audio_example}')">🔊 例句</button>
+            </div>
+          </div>
+        `;
+
+        list.appendChild(div);
+      });
+
+      // Progress bar logic
+      progress.style.width = (vocabData.length / 100 * 10) + '%'; // 10 out of 100 (N5 基礎)
+    }
+
+    function playAudio(src) {
+      const audio = new Audio(src);
+      audio.play();
+    }
+
+    loadVocabulary();
+  </script>
+</body>
+</html>
