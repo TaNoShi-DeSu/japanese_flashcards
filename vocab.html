@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>N5 語彙學習</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <div class="back"><a href="index.html">← 回目錄</a></div>
+    <h1>語彙學習</h1>
+
+    <div class="controls">
+      <label for="voiceSelect">聲線選擇：</label>
+      <select id="voiceSelect"></select>
+      <label for="rateRange">語速：</label>
+      <input type="range" id="rateRange" min="0.3" max="1.5" step="0.1" value="0.5">
+      <span id="rateValue">0.5</span>
+    </div>
+
+    <div id="vocab-list" class="sentence-list">
+      <!-- 動態生成單字卡片 -->
+    </div>
+  </div>
+
+  <button id="btn-top" onclick="window.scrollTo({ top:0, behavior:'smooth' })">▲</button>
+
+  <script src="voice.js"></script>
+  <script src="data.js"></script>
+  <script>
+    const list = document.getElementById("vocab-list");
+    DATA.vocab.forEach(item => {
+      const div = document.createElement("div");
+      div.className = "sentence-item";
+      div.innerHTML = `
+        <div class="jp">${item.jp}</div>
+        <div class="roma-zh">${item.roma} / ${item.zh}</div>
+        <button class="play-btn">▶ 播放</button>
+      `;
+      list.appendChild(div);
+      div.querySelector(".play-btn").onclick = () => speak(item.jp);
+    });
+  </script>
+</body>
+</html>
