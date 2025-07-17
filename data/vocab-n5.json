@@ -1,0 +1,112 @@
+[
+  {
+    "id": "0001",
+    "kanji": "学校",
+    "kana": "がっこう",
+    "romaji": "gakkou",
+    "meaning_zh": "學校",
+    "example_jp": "私は学校へ行きます。",
+    "example_zh": "我去學校。",
+    "audio_vocab": "audio/vocab/gakkou.mp3",
+    "audio_example": "audio/vocab/gakkou_example.mp3"
+  },
+  {
+    "id": "0002",
+    "kanji": "先生",
+    "kana": "せんせい",
+    "romaji": "sensei",
+    "meaning_zh": "老師",
+    "example_jp": "先生は教室にいます。",
+    "example_zh": "老師在教室裡。",
+    "audio_vocab": "audio/vocab/sensei.mp3",
+    "audio_example": "audio/vocab/sensei_example.mp3"
+  },
+  {
+    "id": "0003",
+    "kanji": "学生",
+    "kana": "がくせい",
+    "romaji": "gakusei",
+    "meaning_zh": "學生",
+    "example_jp": "彼は学生です。",
+    "example_zh": "他是學生。",
+    "audio_vocab": "audio/vocab/gakusei.mp3",
+    "audio_example": "audio/vocab/gakusei_example.mp3"
+  },
+  {
+    "id": "0004",
+    "kanji": "日本",
+    "kana": "にほん",
+    "romaji": "nihon",
+    "meaning_zh": "日本",
+    "example_jp": "日本は美しい国です。",
+    "example_zh": "日本是個美麗的國家。",
+    "audio_vocab": "audio/vocab/nihon.mp3",
+    "audio_example": "audio/vocab/nihon_example.mp3"
+  },
+  {
+    "id": "0005",
+    "kanji": "水",
+    "kana": "みず",
+    "romaji": "mizu",
+    "meaning_zh": "水",
+    "example_jp": "水を飲みます。",
+    "example_zh": "喝水。",
+    "audio_vocab": "audio/vocab/mizu.mp3",
+    "audio_example": "audio/vocab/mizu_example.mp3"
+  },
+  {
+    "id": "0006",
+    "kanji": "本",
+    "kana": "ほん",
+    "romaji": "hon",
+    "meaning_zh": "書",
+    "example_jp": "本を読みます。",
+    "example_zh": "看書。",
+    "audio_vocab": "audio/vocab/hon.mp3",
+    "audio_example": "audio/vocab/hon_example.mp3"
+  },
+  {
+    "id": "0007",
+    "kanji": "猫",
+    "kana": "ねこ",
+    "romaji": "neko",
+    "meaning_zh": "貓",
+    "example_jp": "猫が好きです。",
+    "example_zh": "喜歡貓。",
+    "audio_vocab": "audio/vocab/neko.mp3",
+    "audio_example": "audio/vocab/neko_example.mp3"
+  },
+  {
+    "id": "0008",
+    "kanji": "犬",
+    "kana": "いぬ",
+    "romaji": "inu",
+    "meaning_zh": "狗",
+    "example_jp": "犬を飼っています。",
+    "example_zh": "養了一隻狗。",
+    "audio_vocab": "audio/vocab/inu.mp3",
+    "audio_example": "audio/vocab/inu_example.mp3"
+  },
+  {
+    "id": "0009",
+    "kanji": "車",
+    "kana": "くるま",
+    "romaji": "kuruma",
+    "meaning_zh": "車子",
+    "example_jp": "車で行きます。",
+    "example_zh": "搭車去。",
+    "audio_vocab": "audio/vocab/kuruma.mp3",
+    "audio_example": "audio/vocab/kuruma_example.mp3"
+  },
+  {
+    "id": "0010",
+    "kanji": "家",
+    "kana": "いえ",
+    "romaji": "ie",
+    "meaning_zh": "家",
+    "example_jp": "家に帰ります。",
+    "example_zh": "回家。",
+    "audio_vocab": "audio/vocab/ie.mp3",
+    "audio_example": "audio/vocab/ie_example.mp3"
+  }
+]
