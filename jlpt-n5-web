@@ -1,0 +1,10 @@
+jlpt-n5-web/
+├── index.html
+├── style/
+│   └── main.css
+├── js/
+│   └── app.js
+├── data/
+│   └── vocab-n5.json  ← 準備中
+├── audio/
+│   └── vocab/         ← MP3 檔會放在這裡
