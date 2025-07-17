@@ -1,12 +1,66 @@
-body { font-family: "Noto Sans TC", sans-serif; margin:0; background:#fdfdfd; color:#333; }
-.container { max-width:800px; margin:40px auto; padding:20px; background:#fff; border-radius:12px; box-shadow:0 4px 10px rgba(0,0,0,0.08); }
-.back { margin:20px 0; text-align:left; }
-.back a { display:inline-block; padding:8px 16px; background:#eee; border-radius:6px; text-decoration:none; color:#333; margin:5px 0; }
-.back a:hover { background:#ddd; }
-#btn-top { position:fixed; bottom:40px; right:30px; width:44px; height:44px; background:#007acc; color:#fff; border:none; border-radius:50%; font-size:24px; cursor:pointer; box-shadow:0 4px 10px rgba(0,0,0,0.3); }
-#btn-top:hover { background:#005fa3; }
-.controls { margin:20px 0; display:flex; gap:15px; align-items:center; flex-wrap:wrap; }
-.controls select, .controls input[type=range] { cursor:pointer; }
-/* 加強語彙卡片 flex 排列 */
-.sentence-list { display: flex; flex-wrap: wrap; gap: 12px; }
-.sentence-item { flex: 1 1 48%; background: #f9f9f9; border-radius: 8px; padding: 12px; box-sizing: border-box; position: relative;}
+.container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 10px;
+  font-family: "Noto Sans JP", sans-serif;
+}
+.back {
+  margin-bottom: 10px;
+}
+.back a {
+  color: #0066cc;
+  text-decoration: none;
+  font-weight: bold;
+}
+.controls {
+  margin: 15px 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+#vocab-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.sentence-item {
+  flex: 1 1 48%;
+  background: #f9f9f9;
+  border-radius: 8px;
+  padding: 12px;
+  box-sizing: border-box;
+  position: relative;
+}
+.sentence-item .jp {
+  font-size: 1.4rem;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+.sentence-item .roma-zh {
+  color: #555;
+  font-size: 0.95rem;
+  margin-bottom: 10px;
+}
+.play-btn {
+  cursor: pointer;
+  background: #0a74da;
+  color: white;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 5px;
+  font-weight: 600;
+}
+#btn-top {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  background: #0a74da;
+  color: white;
+  border: none;
+  padding: 10px 14px;
+  border-radius: 50%;
+  font-size: 20px;
+  cursor: pointer;
+  z-index: 999;
+}
